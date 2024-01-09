@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sokalp - {{test.test_name}}{% endblock title %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'portal/user-style.css' %}">
+{% endblock styles %}
+
+{% block content %}
+  <nav>
+    <div class="nav-div">
+      <img src="{% static 'portal/sokalp.png' %}" alt="" />
+    </div>
+  </nav>
+
+  <div class="parent">
+    <div class="container">
+      <h1>{{ test.test_name }} Test</h1>
+    </div>
+    <div class="container">
+      <p class="initial-heading">Instructions</p>
+      <p class="initial-instructions">
+        
+      </p>
+      <p class="regards">Good Luck!</p>
+      <div class="buttons">
+        <a href="{% url 'test' %}" class="btn btn-start-test">Start Test</a>
+        <a href="{% url 'logout' %}" class="btn btn-logout">Logout</a>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
