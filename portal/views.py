@@ -6,6 +6,7 @@ from .models import Test, Question, TestStatus, UserAnswers, Time, TestHour
 from django.contrib.auth.models import User
 import random
 import json
+from datetime import datetime, timedelta
 
 
 def err1_page(request):
@@ -171,7 +172,10 @@ def create_test(request):
 
     if (request.method == "POST"):
         test_name = request.POST["test-name"]
-        Test.objects.create(test_name=test_name)
+        test = Test.objects.create(test_name=test_name)
+        time = datetime(year=2024, month=12, day=12, hour=1, minute=0, second=0)
+
+        TestHour.objects.create(test=test, time=time)
 
     return HttpResponseRedirect(reverse('admin'))
 
