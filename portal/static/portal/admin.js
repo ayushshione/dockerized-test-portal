@@ -1,0 +1,50 @@
+function getCSRFToken() {
+  var csrfToken = null;
+
+  var cookies = document.cookie.split(";");
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].trim();
+    if (cookie.startsWith("csrftoken=")) {
+      csrfToken = cookie.substring("csrftoken=".length, cookie.length);
+      break;
+    }
+  }
+
+  return csrfToken;
+}
+
+const collections = document.getElementsByClassName("time-test");
+
+Array.prototype.forEach.call(collections, (timeInput) => {
+  timeInput.addEventListener("change", function () {
+    time_now = timeInput.value;
+    const test_id = inputElement.getAttribute('data-mydata');
+
+    fetch(`${window.location.href}save-answer`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken(),
+      },
+      body: JSON.stringify({
+        test_id: test_id,
+        time_now: time_now
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error("There was a problem with the fetch operation:", error);
+      });
+
+    console.log("Time changed:", timeInput.value);
+  });
+});

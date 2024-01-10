@@ -18,4 +18,5 @@ urlpatterns = [
     path('test/save-answer', views.save_question, name='save-question'),
     path('test/finish', views.finish_test, name='finish-test'),
     path('test/get-test-status', views.get_test_status, name='get-test-status'),
+    path('reset-user/<int:userID>/<int:testID>/', views.reset_user, name='reset-user')
 ]

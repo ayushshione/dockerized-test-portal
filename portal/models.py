@@ -62,3 +62,9 @@ class Time(models.Model):
   def __str__(self):
     return f"{self.user.username} ({self.start_time.hour}:{self.start_time.minute})"
 
+class TestHour(models.Model):
+  test = models.ForeignKey(Test, on_delete=models.CASCADE)
+  time = models.TimeField()
+
+  def __str__(self):
+    return f"{self.test.test_name} ({self.time})"

@@ -17,6 +17,6 @@ celery_app.autodiscover_tasks()
 celery_app.conf.beat_schedule = {
     'print-hello': {
         'task': 'portal.tasks.print_hello',
-        'schedule': 10,  # 10 seconds
+        'schedule': 1,  # 10 seconds
     },
 }

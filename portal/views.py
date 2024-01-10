@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden, JsonResponse
-from .models import Test, Question, TestStatus, UserAnswers, Time
+from .models import Test, Question, TestStatus, UserAnswers, Time, TestHour
+from django.contrib.auth.models import User
 import random
 import json
 
@@ -257,6 +258,7 @@ def delete_question(request, questionID):
 
     return redirect(reverse('edit-test', args=[test.id]))
 
+
 def user_details(request, testID):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
@@ -272,7 +274,7 @@ def user_details(request, testID):
     for test_status in test_statuses:
         user = test_status.user
         test = test_status.test
-        
+
         user_answers = UserAnswers.objects.filter(user=user)
         score = 0
 
@@ -280,18 +282,18 @@ def user_details(request, testID):
             question = user_answer.question
             correct_op = Question.objects.filter(question=question, test=test)
 
-            if(correct_op == user_answer.user_option):
+            if (correct_op == user_answer.user_option):
                 score += 1
-        
-        user_details.append({"id": user.id, 
-                                 "username": user.username, 
-                                 "test_status": test_status.test_status, 
-                                 "score": score})
-    
+
+        user_details.append({"id": user.id,
+                             "username": user.username,
+                             "test_status": test_status.test_status,
+                             "score": score})
 
     return render(request, "portal/user-details.html", {
         "user_details": user_details
     })
+
 
 def get_next_question(request, questionnum):
     if (not request.user.is_authenticated):
@@ -366,3 +368,42 @@ def get_test_status(request):
     return JsonResponse({
         "test_status": test_status.test_status
     })
+
+
+def reset_user(request, userID, testID):
+    if(not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+    
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+
+    user = User.objects.filter(id=userID).first()
+    test = Test.objects.filter(id=testID).first()
+
+    time = Time.objects.get(user=user, test=test)
+    time.delete()
+
+    ts = TestStatus.objects.filter(user=user, test=test).first()
+    ts.test_status = '1'
+    ts.save()
+
+    return JsonResponse({
+        "message": "User successfully reseted!"
+    })
+
+def set_time(request):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (request.session.get('test_id') is None):
+        return HttpResponseRedirect(reverse('test'))
+    
+    if (request.method == "POST"):
+        data = json.loads(request.body)
+
+        test_id = data["test_id"]
+        time_now = data["time_now"]
+
+        
+
+    return
