@@ -18,9 +18,9 @@ const collections = document.getElementsByClassName("time-test");
 Array.prototype.forEach.call(collections, (timeInput) => {
   timeInput.addEventListener("change", function () {
     time_now = timeInput.value;
-    const test_id = inputElement.getAttribute('data-mydata');
+    const test_id = timeInput.getAttribute("data-mydata");
 
-    fetch(`${window.location.href}save-answer`, {
+    fetch(`${window.location.href}change-time/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +28,7 @@ Array.prototype.forEach.call(collections, (timeInput) => {
       },
       body: JSON.stringify({
         test_id: test_id,
-        time_now: time_now
+        time_now: time_now,
       }),
     })
       .then((response) => {

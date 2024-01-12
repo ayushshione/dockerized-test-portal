@@ -16,29 +16,42 @@
       <div class="nav-content">
         <img src="{% static 'portal/sokalp.png' %}" alt="" />
         <div id="countdownExample">
-          <p id='time' class="time-p">00:30</p>
+          <div id="timer"></div>
           <script>
-              function startTimer(duration, display) {
-                var timer = duration, minutes, seconds;
-                setInterval(function () {
-                    minutes = parseInt(timer / 60, 10);
-                    seconds = parseInt(timer % 60, 10);
-            
-                    minutes = minutes < 10 ? "0" + minutes : minutes;
-                    seconds = seconds < 10 ? "0" + seconds : seconds;
-            
-                    display.textContent = minutes + ":" + seconds;
-            
-                    if (--timer < 0) {
-                        timer = duration;
-                    }
-                }, 1000);
+            const hours = parseInt({{hours}});
+            const minutes = parseInt({{minutes}});
+            const seconds = parseInt({{seconds}});
+
+            console.log(hours)
+            console.log(minutes)
+            console.log(seconds)
+
+            let timeInSeconds = hours*60*60 + minutes*60 + seconds;
+        
+            function updateTimer() {
+                const hours = Math.floor(timeInSeconds / 3600);
+                const minutes = Math.floor((timeInSeconds % 3600) / 60);
+                const seconds = timeInSeconds % 60;
+        
+                document.getElementById('timer').innerHTML = `Time remaining: ${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
+        
+                if (timeInSeconds === 0) {
+                    document.getElementById('timer').innerHTML = 'Time is up!';
+                    clearInterval(timerInterval);
+                } else {
+                    timeInSeconds--;
+                }
             }
-            
-            var fiveMinutes = 60,
-                display = document.querySelector('#time');
-            startTimer(fiveMinutes, display);
-          </script>
+        
+            // Format time to two digits (e.g., 5 => '05')
+            function formatTime(time) {
+                return String(time).padStart(2, '0');
+            }
+        
+            // Update the timer every second
+            const timerInterval = setInterval(updateTimer, 1000);
+        
+        </script>
       </div>
       </div>
     </div>

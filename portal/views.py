@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 import random
 import json
 from datetime import datetime, timedelta
+import pytz
 
 
 def err1_page(request):
@@ -75,22 +76,43 @@ def test_page(request):
             'i': i,
         })
 
-    time_check = Time.objects.filter(user=user, test=test)
+    time = Time.objects.filter(user=user, test=test).first()
 
-    if (len(time_check) > 0):
-        time_check.delete()
-
-    Time.objects.create(
+    if (time is None):
+        print("=================================")
+        time = Time.objects.create(
         user=request.user,
         test=test,
     )
+
+    # test_hour = TestHour.objects.filter(test=test).first()
+    time_a = datetime.now().astimezone(pytz.utc).replace(tzinfo=None)
+    time_b = datetime(year=1, month=1, day=1, hour=time_a.hour, minute=time_a.minute, second=time_a.second)
+
+    # aware_datetime2 = target_timezone.localize(time.start_time)
+    time_c = time.start_time.astimezone(pytz.utc).replace(tzinfo=None)
+    time_d = datetime(year=1, month=1, day=1, hour=time_c.hour, minute=time_c.minute, second=time_c.second)
+    time_diff2 = time_b-time_d
+
+    test_hour = TestHour.objects.get(test=test)
+
+    time_diff = timedelta(hours=test_hour.time.hour, minutes=test_hour.time.minute, seconds=test_hour.time.second) - time_diff2
+
+    hours = time_diff.seconds // 3600
+    minutes = (time_diff.seconds // 60) % 60
+    seconds = time_diff.seconds % 60
+
+    print(f"{hours}:{minutes}:{seconds}")
 
     return render(request, 'portal/test.html', {
         'test': test,
         'nums': nums,
         'question_len': len(question),
         'saved_answers': json_string,
-        'first_qid': questions[0]["id"]
+        'first_qid': questions[0]["id"],
+        'hours': hours,
+        'minutes': minutes,
+        'seconds': seconds,
     })
 
 
@@ -173,7 +195,8 @@ def create_test(request):
     if (request.method == "POST"):
         test_name = request.POST["test-name"]
         test = Test.objects.create(test_name=test_name)
-        time = datetime(year=2024, month=12, day=12, hour=1, minute=0, second=0)
+        time = datetime(year=2024, month=12, day=12,
+                        hour=1, minute=0, second=0)
 
         TestHour.objects.create(test=test, time=time)
 
@@ -375,9 +398,9 @@ def get_test_status(request):
 
 
 def reset_user(request, userID, testID):
-    if(not request.user.is_authenticated):
+    if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
-    
+
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
 
@@ -395,19 +418,51 @@ def reset_user(request, userID, testID):
         "message": "User successfully reseted!"
     })
 
+
 def set_time(request):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
 
-    if (request.session.get('test_id') is None):
-        return HttpResponseRedirect(reverse('test'))
-    
     if (request.method == "POST"):
         data = json.loads(request.body)
 
         test_id = data["test_id"]
         time_now = data["time_now"]
 
-        
+        hour = ""
+        minute = ""
+        second = ""
 
-    return
+        i = 0
+
+        while (time_now[i] != ':'):
+            hour += time_now[i]
+            i += 1
+
+        i += 1
+
+        while (time_now[i] != ':'):
+            minute += time_now[i]
+            i += 1
+        i += 1
+
+        while (i < len(time_now)):
+            second += time_now[i]
+            i += 1
+
+        hour = int(hour)
+        minute = int(minute)
+        second = int(second)
+
+        test = Test.objects.get(id=test_id)
+        time = TestHour.objects.get(test=test)
+        time.delete()
+
+        tm = datetime(year=2024, month=12, day=12, hour=hour,
+                      minute=minute, second=second)
+
+        TestHour.objects.create(test=test, time=tm)
+
+    return JsonResponse({
+        'message': 'Time was set successfully'
+    })
