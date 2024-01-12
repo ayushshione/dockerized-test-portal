@@ -319,7 +319,8 @@ def user_details(request, testID):
                              "score": score})
 
     return render(request, "portal/user-details.html", {
-        "user_details": user_details
+        "user_details": user_details,
+        "tests": test,
     })
 
 
@@ -526,3 +527,41 @@ def upload_questions(request, testID):
                 test.save()
 
     return HttpResponseRedirect(reverse('edit-test', args=[testID]))
+
+
+def upload_users(request, testID):
+    if(request.method == "POST"):
+        file = request.FILES['questions']
+        obj = ExcelFile.objects.create(
+            file = file
+        )
+        path = file.file
+        df = pd.read_excel(path)
+        test = Test.objects.get(id=testID)
+
+        for d in df.values:
+            username = d[0]
+            password = d[1]
+            first_name = d[2]
+            last_name = d[3]
+
+            user = User.objects.filter(
+                username=username,
+                password=password
+            )
+
+            if(user.first() is None):
+                user = User.objects.create(
+                    username=username,
+                    password=password,
+                    first_name = first_name,
+                    last_name = last_name,
+                )
+
+                TestStatus.objects.create(
+                    user=user,
+                    test=test,
+                    test_status='1',
+                )
+
+    return HttpResponseRedirect(reverse('user-details', args=[testID]))

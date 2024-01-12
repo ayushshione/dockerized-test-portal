@@ -28,6 +28,10 @@
         {% endfor %}
       </tbody>
     </table>
-    <button class='btn btn-primary'>Add Users</button>
+    <form action="{% url 'upload-users' tests.id %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <button class='btn btn-success'>Add Users from Excel</button>
+      <input required type="file" name='questions'>
+    </form>
   </center>
 {% endblock content %}
