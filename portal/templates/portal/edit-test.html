@@ -91,7 +91,11 @@
     </table>
 
     <button class='btn btn-success' data-bs-toggle="modal" data-bs-target="#reg-modal">Add Question</button>
-    <button class='btn btn-success'>Add Questions from Excel</button>
+    <form action="{% url 'upload-questions' tests.id %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <button class='btn btn-success'>Add Questions from Excel</button>
+      <input required type="file" name='questions'>
+    </form>
   </center>
 
   <div class="modal fade" id="reg-modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">

@@ -13,10 +13,15 @@ function getCSRFToken() {
   return csrfToken;
 }
 
+
 const collections = document.getElementsByClassName("time-test");
+const spinnerWrapperEl = document.querySelector('.spinner-wrapper')
+
+
 
 Array.prototype.forEach.call(collections, (timeInput) => {
   timeInput.addEventListener("change", function () {
+    spinnerWrapperEl.style.display = "flex";
     time_now = timeInput.value;
     const test_id = timeInput.getAttribute("data-mydata");
 
@@ -38,6 +43,7 @@ Array.prototype.forEach.call(collections, (timeInput) => {
         return response.json();
       })
       .then((data) => {
+        spinnerWrapperEl.style.display = 'none';
         console.log(data);
       })
       .catch((error) => {

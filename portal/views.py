@@ -2,12 +2,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden, JsonResponse
-from .models import Test, Question, TestStatus, UserAnswers, Time, TestHour
+from .models import Test, Question, TestStatus, UserAnswers, Time, TestHour, ExcelFile
 from django.contrib.auth.models import User
 import random
 import json
 from datetime import datetime, timedelta
 import pytz
+import pandas as pd
+from django.conf import settings
 
 
 def err1_page(request):
@@ -79,7 +81,6 @@ def test_page(request):
     time = Time.objects.filter(user=user, test=test).first()
 
     if (time is None):
-        print("=================================")
         time = Time.objects.create(
         user=request.user,
         test=test,
@@ -466,3 +467,62 @@ def set_time(request):
     return JsonResponse({
         'message': 'Time was set successfully'
     })
+
+
+def upload_questions(request, testID):
+    if(request.method == 'POST'):
+        file = request.FILES['questions']
+        obj = ExcelFile.objects.create(
+            file = file
+        )
+        path = file.file
+        df = pd.read_excel(path)
+        test = Test.objects.get(id=testID)
+        
+        for d in df.values:
+            question = d[0]
+            questionIsCode=d[1]
+            op1=d[2]
+            op1IsCode=d[3]
+            op2=d[4]
+            op2IsCode=d[5]
+            op3=d[6]
+            op3IsCode=d[7]
+            op4=d[8]
+            op4IsCode=d[9]
+            correct_op=d[10]
+            
+            questionObj = Question.objects.filter(
+                    test=test,
+                    question=question,
+                    op1=op1,
+                    op2=op2,
+                    op3=op3,
+                    op4=op4,
+                    correct_op=correct_op,
+                    questionIsCode=questionIsCode,
+                    op1IsCode=(op1IsCode),
+                    op2IsCode=op2IsCode,
+                    op3IsCode=op3IsCode,
+                    op4IsCode=op4IsCode,
+                ).first()
+
+            if(questionObj is None):
+                Question.objects.create(
+                    test=test,
+                    question=question,
+                    op1=op1,
+                    op2=op2,
+                    op3=op3,
+                    op4=op4,
+                    correct_op=correct_op,
+                    questionIsCode=questionIsCode,
+                    op1IsCode=op1IsCode,
+                    op2IsCode=op2IsCode,
+                    op3IsCode=op3IsCode,
+                    op4IsCode=op4IsCode,
+                )
+                test.test_question_no += 1
+                test.save()
+
+    return HttpResponseRedirect(reverse('edit-test', args=[testID]))

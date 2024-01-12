@@ -57,6 +57,7 @@ h1 {
 .btn {
     padding: 10px;
     border-radius: 6px;
+    transition: all 0.1s;
 }
 
 .btn-cwm {
@@ -71,6 +72,7 @@ h1 {
     border-width: 0.5px;
     display: block;
     text-align: center;
+    transition: all 0.1s;
 }
 
 .btn-cwm:hover {

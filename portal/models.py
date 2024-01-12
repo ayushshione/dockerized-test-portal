@@ -68,3 +68,6 @@ class TestHour(models.Model):
 
   def __str__(self):
     return f"{self.test.test_name} ({self.time})"
+
+class ExcelFile(models.Model):
+  file = models.FileField(upload_to="excel")

@@ -6,3 +6,5 @@ mysqlclient>=2.0
 redis>=3.5
 celery>=5.0
 pytz
+pandas
+openpyxl
