@@ -541,9 +541,11 @@ def upload_users(request, testID):
 
         for d in df.values:
             username = d[0]
-            password = d[1]
+            password = str(d[1])
             first_name = d[2]
             last_name = d[3]
+
+            print("Password: ", password)
 
             user = User.objects.filter(
                 username=username,
@@ -551,7 +553,7 @@ def upload_users(request, testID):
             )
 
             if(user.first() is None):
-                user = User.objects.create(
+                user = User.objects.create_user(
                     username=username,
                     password=password,
                     first_name = first_name,

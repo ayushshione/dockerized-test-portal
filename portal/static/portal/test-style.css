@@ -54,7 +54,7 @@ body {
 
 .op-div div{
   display: inline-block;
-  overflow-wrap: break-word;
+  text-wrap: break-word;
 }
 
 
