@@ -15,6 +15,10 @@ const op4_r = document.getElementById("op4-r");
 const butnext = document.getElementById("next");
 const goback = document.getElementById("goback");
 
+const escapeHtml = (unsafe) => {
+  return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+}
+
 function updateClassList(currQuestion_ID) {
   if (currQuestion_ID == -1) {
     currQuestion_ID = currQuestionID;
@@ -40,25 +44,25 @@ function updateUI(questionData) {
   visitedQuestions[currQuestionNumber] = questionData;
 
   if (questionData["op1IsCode"]) {
-    op1.innerHTML = `<pre style='border-style:none'><code class='language-python'>${questionData["op1"]}</code></pre>`;
+    op1.innerHTML = `<pre style='border-style:none'><code class='language-python'>${escapeHtml(questionData["op1"])}</code></pre>`;
   } else {
     op1.innerText = questionData["op1"];
   }
 
   if (questionData["op2IsCode"]) {
-    op2.innerHTML = `<pre class='prettyprint' style='border-style:none'>${questionData["op2"]}</pre>`;
+    op2.innerHTML = `<pre class='prettyprint' style='border-style:none'>${escapeHtml(questionData["op2"])}</pre>`;
   } else {
     op2.innerText = questionData["op2"];
   }
 
   if (questionData["op3IsCode"]) {
-    op3.innerHTML = `<pre class='prettyprint' style='border-style:none'>${questionData["op3"]}</pre>`;
+    op3.innerHTML = `<pre class='prettyprint' style='border-style:none'>${escapeHtml(questionData["op3"])}</pre>`;
   } else {
     op3.innerText = questionData["op3"];
   }
 
   if (questionData["op4IsCode"]) {
-    op4.innerHTML = `<pre class='prettyprint' style='border-style:none'>${questionData["op4"]}</pre>`;
+    op4.innerHTML = `<pre class='prettyprint' style='border-style:none'>${escapeHtml(questionData["op4"])}</pre>`;
   } else {
     op4.innerText = questionData["op4"];
   }

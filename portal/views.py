@@ -263,7 +263,6 @@ def edit_test(request, testID):
             return HttpResponseRedirect(reverse('create-question', args=[test.id]))
         else:
             is_form_invalid = True
-            print('=================================================')
 
     form = AddQuestionForm()
 
@@ -334,9 +333,12 @@ def user_details(request, testID):
                              "username": user.username,
                              "test_status": test_status.test_status,
                              "score": score})
+    
+    sorted_users = sorted(user_details, key=lambda x: x['score'], reverse=True)
+
 
     return render(request, "portal/user-details.html", {
-        "user_details": user_details,
+        "user_details": sorted_users,
         "tests": test,
     })
 
@@ -397,7 +399,7 @@ def finish_test(request):
     if (test_status is not None):
         test_status.test_status = '2'
         test_status.save()
-        return HttpResponseRedirect(reverse('logout'))
+        return render(request, 'portal/successful-submission.html')
 
     return HttpResponseRedirect(reverse('test'))
 

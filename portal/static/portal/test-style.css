@@ -57,6 +57,10 @@ body {
   text-wrap: break-word;
 }
 
+.op-div label{
+  word-wrap: break-word;
+}
+
 
 .pallette-div {
   background-color: #fff;
