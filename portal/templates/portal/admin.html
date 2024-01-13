@@ -73,6 +73,16 @@
         {% endfor %}
       </tbody>
     </table>
+
+    {% if is_form_valid %}
+      <p 
+      style='font-size: 12px;
+      font-weight: 600;
+      color: #ff4857;'
+      >
+        Please enter valid test name!
+    </p>
+  {% endif %}
     
     <button class='btn btn-success mb-3' data-bs-toggle="modal" data-bs-target="#reg-modal">Create Test</button> <br>
     <a href='{% url "logout" %}' class='btn btn-danger'>Logout</a>
@@ -87,11 +97,15 @@
           <h5 class="modal-title" id="modal-title">Create a Test</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="{% url 'create-test' %}" method="post">
+        <form method="post">
           {% csrf_token %}
           <div class="modal-body">
-            <label for="modal-email" class="form-label">Test Name:</label>
-            <input type="text" class="form-control" id="modal-email" name='test-name' placeholder="e.g. DSA Example Test">
+              <label for="modal-email" class="form-label">Test Name</label>
+              {{form.test_name}}
+              <label for="modal-email" class="form-label">Instructions for Test</label>
+              {{form.instruction}}
+            {% comment %}
+            <input type="text" class="form-control" id="modal-email" name='test-name' placeholder="e.g. DSA Example Test"> {% endcomment %}
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Create</button>

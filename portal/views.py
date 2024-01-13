@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 import pytz
 import pandas as pd
 from django.conf import settings
+from .forms import CreateTestForm, AddQuestionForm
 
 
 def err1_page(request):
@@ -82,22 +83,25 @@ def test_page(request):
 
     if (time is None):
         time = Time.objects.create(
-        user=request.user,
-        test=test,
-    )
+            user=request.user,
+            test=test,
+        )
 
     # test_hour = TestHour.objects.filter(test=test).first()
     time_a = datetime.now().astimezone(pytz.utc).replace(tzinfo=None)
-    time_b = datetime(year=1, month=1, day=1, hour=time_a.hour, minute=time_a.minute, second=time_a.second)
+    time_b = datetime(year=1, month=1, day=1, hour=time_a.hour,
+                      minute=time_a.minute, second=time_a.second)
 
     # aware_datetime2 = target_timezone.localize(time.start_time)
     time_c = time.start_time.astimezone(pytz.utc).replace(tzinfo=None)
-    time_d = datetime(year=1, month=1, day=1, hour=time_c.hour, minute=time_c.minute, second=time_c.second)
+    time_d = datetime(year=1, month=1, day=1, hour=time_c.hour,
+                      minute=time_c.minute, second=time_c.second)
     time_diff2 = time_b-time_d
 
     test_hour = TestHour.objects.get(test=test)
 
-    time_diff = timedelta(hours=test_hour.time.hour, minutes=test_hour.time.minute, seconds=test_hour.time.second) - time_diff2
+    time_diff = timedelta(hours=test_hour.time.hour, minutes=test_hour.time.minute,
+                          seconds=test_hour.time.second) - time_diff2
 
     hours = time_diff.seconds // 3600
     minutes = (time_diff.seconds // 60) % 60
@@ -143,9 +147,30 @@ def admin_panel(request):
         return HttpResponseForbidden('You are not allowed to access this resource!')
 
     test = Test.objects.all()
+    is_form_invalid = False
+
+    if (request.method == "POST"):
+        form = CreateTestForm(request.POST)
+
+        if (form.is_valid()):
+            form_data = form.cleaned_data
+            test_name = form_data["test_name"]
+            test_form = Test.objects.create(test_name=test_name)
+            time = datetime(year=1, month=1, day=1,
+                            hour=1, minute=0, second=0)
+
+            TestHour.objects.create(test=test_form, time=time)
+
+            return HttpResponseRedirect(reverse('create-test'))
+        else:
+            is_form_invalid = True
+
+    form = CreateTestForm()
 
     return render(request, 'portal/admin.html', {
         "tests": test,
+        "form": form,
+        "is_form_valid": is_form_invalid,
     })
 
 
@@ -186,24 +211,6 @@ def logout_user(request):
     return HttpResponseRedirect(reverse('login'))
 
 
-def create_test(request):
-    if (not request.user.is_authenticated):
-        return HttpResponseRedirect(reverse('login'))
-
-    if (not request.user.is_superuser):
-        return HttpResponseForbidden('You are not allowed to access this resource!')
-
-    if (request.method == "POST"):
-        test_name = request.POST["test-name"]
-        test = Test.objects.create(test_name=test_name)
-        time = datetime(year=2024, month=12, day=12,
-                        hour=1, minute=0, second=0)
-
-        TestHour.objects.create(test=test, time=time)
-
-    return HttpResponseRedirect(reverse('admin'))
-
-
 def edit_test(request, testID):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
@@ -214,9 +221,57 @@ def edit_test(request, testID):
     test = Test.objects.filter(id=testID).first()
     question = Question.objects.filter(test=test)
 
+    test = Test.objects.filter(id=testID).first()
+
+    is_form_invalid = False
+    if (request.method == "POST"):
+        form = AddQuestionForm(request.POST)
+
+        if(form.is_valid()):
+            form_data = form.cleaned_data
+            question = form_data['question']
+            op1 = form_data['op1']
+            op2 = form_data['op2']
+            op3 = form_data['op3']
+            op4 = form_data['op4']
+            correct_op = int(form_data['correct_op'])
+
+            questionIsCode = form_data['questionIsCode']
+            op1IsCode = form_data['op1IsCode']
+            op2IsCode = form_data['op2IsCode']
+            op3IsCode = form_data['op3IsCode']
+            op4IsCode = form_data['op4IsCode']
+
+            Question.objects.create(
+                test=test,
+                question=question,
+                op1=op1,
+                op2=op2,
+                op3=op3,
+                op4=op4,
+                correct_op=correct_op,
+                questionIsCode=questionIsCode,
+                op1IsCode=op1IsCode,
+                op2IsCode=op2IsCode,
+                op3IsCode=op3IsCode,
+                op4IsCode=op4IsCode,
+            )
+
+            test.test_question_no += 1
+            test.save()
+
+            return HttpResponseRedirect(reverse('create-question', args=[test.id]))
+        else:
+            is_form_invalid = True
+            print('=================================================')
+
+    form = AddQuestionForm()
+
     return render(request, 'portal/edit-test.html', {
         'tests': test,
-        'questions': question
+        'questions': question,
+        'form': form,
+        'is_form_invalid': is_form_invalid,
     })
 
 
@@ -227,46 +282,8 @@ def create_question(request, testID):
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
 
-    test = Test.objects.filter(id=testID).first()
 
-    if (request.method == "POST"):
-        question = request.POST['question']
-        op1 = request.POST['op1']
-        op2 = request.POST['op2']
-        op3 = request.POST['op3']
-        op4 = request.POST['op4']
-
-        whichAreCode = request.POST.getlist('checks[]')
-        list_sh = ['question', 'op1', 'op2', 'op3', 'op4']
-        dict_sh = {}
-
-        for sh in list_sh:
-            if (sh in whichAreCode):
-                dict_sh[sh] = True
-            else:
-                dict_sh[sh] = False
-
-        correct_op = request.POST['correct_op']
-
-        Question.objects.create(
-            test=test,
-            question=question,
-            op1=op1,
-            op2=op2,
-            op3=op3,
-            op4=op4,
-            correct_op=correct_op,
-            questionIsCode=dict_sh['question'],
-            op1IsCode=dict_sh['op1'],
-            op2IsCode=dict_sh['op2'],
-            op3IsCode=dict_sh['op3'],
-            op4IsCode=dict_sh['op4'],
-        )
-
-        test.test_question_no += 1
-        test.save()
-
-    return redirect(reverse('edit-test', args=[test.id]))
+    return redirect(reverse('edit-test', args=[testID]))
 
 
 def delete_question(request, questionID):
@@ -471,44 +488,44 @@ def set_time(request):
 
 
 def upload_questions(request, testID):
-    if(request.method == 'POST'):
+    if (request.method == 'POST'):
         file = request.FILES['questions']
         obj = ExcelFile.objects.create(
-            file = file
+            file=file
         )
         path = file.file
         df = pd.read_excel(path)
         test = Test.objects.get(id=testID)
-        
+
         for d in df.values:
             question = d[0]
-            questionIsCode=d[1]
-            op1=d[2]
-            op1IsCode=d[3]
-            op2=d[4]
-            op2IsCode=d[5]
-            op3=d[6]
-            op3IsCode=d[7]
-            op4=d[8]
-            op4IsCode=d[9]
-            correct_op=d[10]
-            
-            questionObj = Question.objects.filter(
-                    test=test,
-                    question=question,
-                    op1=op1,
-                    op2=op2,
-                    op3=op3,
-                    op4=op4,
-                    correct_op=correct_op,
-                    questionIsCode=questionIsCode,
-                    op1IsCode=(op1IsCode),
-                    op2IsCode=op2IsCode,
-                    op3IsCode=op3IsCode,
-                    op4IsCode=op4IsCode,
-                ).first()
+            questionIsCode = d[1]
+            op1 = d[2]
+            op1IsCode = d[3]
+            op2 = d[4]
+            op2IsCode = d[5]
+            op3 = d[6]
+            op3IsCode = d[7]
+            op4 = d[8]
+            op4IsCode = d[9]
+            correct_op = d[10]
 
-            if(questionObj is None):
+            questionObj = Question.objects.filter(
+                test=test,
+                question=question,
+                op1=op1,
+                op2=op2,
+                op3=op3,
+                op4=op4,
+                correct_op=correct_op,
+                questionIsCode=questionIsCode,
+                op1IsCode=(op1IsCode),
+                op2IsCode=op2IsCode,
+                op3IsCode=op3IsCode,
+                op4IsCode=op4IsCode,
+            ).first()
+
+            if (questionObj is None):
                 Question.objects.create(
                     test=test,
                     question=question,
@@ -530,10 +547,10 @@ def upload_questions(request, testID):
 
 
 def upload_users(request, testID):
-    if(request.method == "POST"):
+    if (request.method == "POST"):
         file = request.FILES['questions']
         obj = ExcelFile.objects.create(
-            file = file
+            file=file
         )
         path = file.file
         df = pd.read_excel(path)
@@ -552,12 +569,12 @@ def upload_users(request, testID):
                 password=password
             )
 
-            if(user.first() is None):
+            if (user.first() is None):
                 user = User.objects.create_user(
                     username=username,
                     password=password,
-                    first_name = first_name,
-                    last_name = last_name,
+                    first_name=first_name,
+                    last_name=last_name,
                 )
 
                 TestStatus.objects.create(
@@ -567,3 +584,28 @@ def upload_users(request, testID):
                 )
 
     return HttpResponseRedirect(reverse('user-details', args=[testID]))
+
+
+def create_test(request):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+
+    # if (request.method == "POST"):
+    #     form = CreateTestForm(request.POST)
+    #     is_form_valid = True
+
+    #     if(form.is_valid()):
+    #         form_data = form.cleaned_data
+    #         test_name = form_data["test_name"]
+    #         test = Test.objects.create(test_name=test_name)
+    #         time = datetime(year=1, month=1, day=1,
+    #                         hour=1, minute=0, second=0)
+
+    #         TestHour.objects.create(test=test, time=time)
+    #     else:
+    #         is_form_valid = False
+
+    return HttpResponseRedirect(reverse('admin'))
