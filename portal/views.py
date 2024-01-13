@@ -325,7 +325,7 @@ def user_details(request, testID):
 
         for user_answer in user_answers:
             question = user_answer.question
-            correct_op = Question.objects.filter(question=question, test=test)
+            correct_op = Question.objects.filter(question=question, test=test).first().correct_op
 
             if (correct_op == user_answer.user_option):
                 score += 1
