@@ -46,7 +46,7 @@ function updateUI(questionData) {
   if (questionData["op1IsCode"]) {
     op1.innerHTML = `<pre style='border-style:none'><code class='language-python'>${escapeHtml(questionData["op1"])}</code></pre>`;
   } else {
-    op1.innerText = questionData["op1"];
+    op1.innerHTML= `<div class='op-div-under'>${questionData["op1"]}</div>`;
   }
 
   if (questionData["op2IsCode"]) {

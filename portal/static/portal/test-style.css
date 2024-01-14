@@ -57,7 +57,8 @@ body {
   text-wrap: break-word;
 }
 
-.op-div label{
+.op-div .op-div-under{
+  max-width: 200px;
   word-wrap: break-word;
 }
 
