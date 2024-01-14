@@ -148,6 +148,7 @@ def admin_panel(request):
 
     test = Test.objects.all()
     is_form_invalid = False
+    no_tests = len(test)
 
     if (request.method == "POST"):
         form = CreateTestForm(request.POST)
@@ -167,10 +168,11 @@ def admin_panel(request):
 
     form = CreateTestForm()
 
-    return render(request, 'portal/admin.html', {
+    return render(request, 'portal/admin_2.html', {
         "tests": test,
         "form": form,
         "is_form_valid": is_form_invalid,
+        "test_number": no_tests,
     })
 
 

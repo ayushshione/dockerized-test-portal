@@ -1,0 +1,233 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{% static 'portal/admin-style.css' %}"/>
+    <link rel="icon" type="image/x-icon" href="{% static 'portal/favicon.png' %}">
+  </head>
+  <body class="bg-slate-100 tracking-wide leading-4">
+    <div class="">
+      <div
+        class="bg-white p-6 shadow-md fixed top-0 left-0 w-48 h-screen flex flex-col justify-between"
+      >
+        <div class="">
+          <img src="{% static 'portal/sokalp.png' %}" class="h-auto" alt="" />
+          <button
+            class="flex items-center gap-3 text-teal-950 font-semibold mt-10"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6 stroke-orange-400"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122"
+              />
+            </svg>
+            My tests
+          </button>
+          <button
+            class="flex items-center gap-3 hover:text-orange-400 text-gray-500 font-semibold mt-10"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"
+              />
+            </svg>
+
+            Results
+          </button>
+          <button
+            class="flex items-center gap-3 hover:text-orange-400 text-gray-500 font-semibold mt-10"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              />
+            </svg>
+
+            My account
+          </button>
+        </div>
+        <a
+          class="sign-out-btn flex items-center gap-3 text-gray-500 hover:text-red-500 font-semibold"
+          href='{% url "logout" %}'
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m-6 3.75 3 3m0 0 3-3m-3 3V1.5m6 9h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75"
+            />
+          </svg>
+          <p class="">Sign out</p>
+        </a>
+      </div>
+      <div class="ml-48">
+        <div class="flex items-center justify-between mx-8 mt-4">
+          <h1 class="text-xl font-semibold">
+            My tests <span class="text-gray-600">({{test_number}})</span>
+          </h1>
+          <div class="flex gap-4 items-center">
+            <button
+              class="bg-white inline-block px-4 py-[12px] font-semibold text-[16px] rounded-md border-2 hover:border-orange-400 hover:text-orange-400"
+            >
+              Import test
+            </button>
+            <button
+              class="bg-orange-400 text-white inline-block px-4 py-[12px] font-semibold text-[18px] rounded-lg border-2 hover:bg-orange-500"
+            >
+              New test
+            </button>
+          </div>
+        </div>
+        <div
+          class="bg-white mt-8 mx-8 rounded-lg flex items-center shadow-sm shadow-slate-300"
+        >
+          <div class="flex mr-6 hover:bg-slate-100 px-6 py-4">
+            <span class="text-gray-500 text-[17px] mr-4">Category</span>
+            <span class="text-[17px] font-semibold mr-3">All categories</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-4 h-4 mt-1"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m19.5 8.25-7.5 7.5-7.5-7.5"
+              />
+            </svg>
+          </div>
+          <div class="flex items-center px-6 py-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              />
+            </svg>
+            <span class="ml-3 text-gray-500 text-[17px]"
+              >Manage categories</span
+            >
+          </div>
+        </div>
+        <div class="grid grid-cols-1 mx-8 gap-3 mt-4 mb-4 md:grid-cols-2">
+          {% for test in tests %}
+            <a href="{% url 'edit-test' test.id %}">
+              <div class="bg-white p-3 rounded-lg hover:shadow-md active:shadow-sm flex flex-col self-start">
+                <div class="flex justify-between items-center">
+                  <div class="flex gap-3 mt-3 ml-3 items-center">
+                    <span
+                      class="text-[12.5px] px-[8px] py-[6px] font-semibold border-2 border-green-500 rounded-md text-green-500"
+                      >ACTIVE</span
+                    >
+                    <span class="text-[14px] font-semibold text-gray-400"
+                      >CREATED 14-01-2024</span
+                    >
+                  </div>
+                  <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9.0013 13.667C7.71019 13.667 6.66797 14.7092 6.66797 16.0003C6.66797 17.2914 7.71019 18.3337 9.0013 18.3337C10.2924 18.3337 11.3346 17.2914 11.3346 16.0003C11.3346 14.7092 10.2924 13.667 9.0013 13.667ZM23.0013 13.667C21.7102 13.667 20.668 14.7092 20.668 16.0003C20.668 17.2914 21.7102 18.3337 23.0013 18.3337C24.2924 18.3337 25.3346 17.2914 25.3346 16.0003C25.3346 14.7092 24.2924 13.667 23.0013 13.667ZM16.0013 13.667C14.7102 13.667 13.668 14.7092 13.668 16.0003C13.668 17.2914 14.7102 18.3337 16.0013 18.3337C17.2924 18.3337 18.3346 17.2914 18.3346 16.0003C18.3346 14.7092 17.2924 13.667 16.0013 13.667Z"
+                      fill="#808E9D"
+                    ></path>
+                  </svg>
+                </div>
+                <h1 class="mt-[23px] text-[20px] ml-3 font-bold">
+                  {{test.test_name}}
+                </h1>
+                <p
+                  class="ml-3 mt-[23px] text-base text-[16px] leading-6 tracking-wider text-gray-500"
+                >
+                  (no description)
+                </p>
+                <div class="flex gap-3 mt-[23px] ml-3 items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-7 h-7"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z"
+                    />
+                  </svg>
+                  <p>
+                    <span class="font-bold text-[18px]">45.2%</span>
+                    <span class="text-[17px] ml-2 text-gray-500">avg. score</span>
+                  </p>
+                </div>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
