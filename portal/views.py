@@ -175,6 +175,19 @@ def admin_panel(request):
         "test_number": no_tests,
     })
 
+def time_settings(request, testID):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+    
+    test = Test.objects.filter(id=testID).first()
+
+    return render(request, 'portal/test-settings/time-settings.html', {
+        'test': test
+    })
+
 
 def login_user(request):
     if request.user.is_authenticated:

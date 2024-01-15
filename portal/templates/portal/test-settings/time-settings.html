@@ -1,16 +1,18 @@
 {% load static %}
+{% load custom_filters %}
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Sokalp - Basic settings</title>
-    <link rel="stylesheet" href="{% static 'portal/basic-settings.css' %}" />
+    <title>Sokalp - Time settings</title>
+    <link rel="stylesheet" href="{% static 'portal/time-settings.css' %}" />
   </head>
   <body class="bg-slate-100 tracking-wide leading-4 w-screen">
+    {% csrf_token %}
     <div
       class="upper-nav-bar ml-[80px] bg-white flex justify-between items-center"
     >
-      <h1 class="font-semibold p-4 text-base">{{tests.test_name}}</h1>
+      <h1 class="font-semibold p-4 text-base">{{test.test_name}}</h1>
       <div
         class="flex gap-2 items-center text-gray-500 p-4 hover:bg-slate-200 h-full"
       >
@@ -41,7 +43,7 @@
         class="bg-white p-6 shadow-md fixed top-0 left-0 w-[80px] h-screen flex flex-col items-center justify-between"
       >
         <div class="flex items-center flex-col w-[44px]">
-          <a href="{% url 'admin' %}">
+          <a href="./test-ind.html">
             <img src="{% static 'portal/sokalp-logo.png' %}" class="h-auto" alt="" />
           </a>
           <button class="flex items-center gap-3 font-semibold mt-10">
@@ -148,30 +150,34 @@
           <h1 class="font-bold text-[18px]">Test configuration</h1>
           <ul class="list-none">
             <li>
-              <div
-                class="p-3 flex items-center shadow-sm gap-3 bg-white rounded-md"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6 stroke-orange-400"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"
-                  />
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                  />
-                </svg>
-                <p class="text-[15px] font-semibold">Basic Settings</p>
-              </div>
+              <a href="{% url 'edit-test' test.id %}">
+                <div class="p-3 flex items-center group hover:bg-white gap-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6 stroke-slate-500 group-hover:stroke-orange-400"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                    />
+                  </svg>
+                  <p
+                    class="text-[15px] text-slate-500 group-hover:text-black font-semibold"
+                  >
+                    Basic Settings
+                  </p>
+                </div>
+              </a>
             </li>
             <li>
               <div
@@ -199,31 +205,27 @@
               </div>
             </li>
             <li>
-              <a href="{% url 'time-settings' tests.id %}">
-                <div
-                  class="p-3 flex items-center gap-3 rounded-md group hover:bg-white"
+              <div
+                class="p-3 flex shadow-sm items-center gap-3 bg-white rounded-md"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6 stroke-orange-400"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-6 h-6 stroke-slate-500 group-hover:stroke-orange-400"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                    />
-                  </svg>
-                  <p
-                    class="text-[14px] text-slate-500 group-hover:text-black font-semibold"
-                  >
-                    Time settings
-                  </p>
-                </div>
-              </a>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  />
+                </svg>
+                <p class="text-[14px] group-hover:text-black font-semibold">
+                  Time settings
+                </p>
+              </div>
             </li>
             <li>
               <div
@@ -253,42 +255,33 @@
           </ul>
         </div>
         <div class="mt-2 px-[8px] flex-grow flex flex-col gap-6 mr-4">
-          <h1 class="font-semibold text-[18px] mb-4">Basic settings</h1>
+          <h1 class="font-semibold text-[18px] mb-4">Time settings</h1>
 
           <div class="bg-white p-5 rounded-md flex-1 flex flex-col gap-3">
             <h1 class="font-semibold leading-6 text-[13px] mb-6">
-              INITIAL SETTINGS
+              TEST DURATION
             </h1>
             <label
-              for="test-name"
-              class="text-slate-400 leading-2 font-semibold mb-1"
-              >Test name</label
+              for="time-input"
+              class="text-black leading-2 font-normal text-base mb-1"
+              >Time to complete the test: (hh:mm:ss)</label
             >
-            <input
-              type="text"
+            <input type="time" step="1" name="time-test" id='time-test' class='time-test border-b-2 mb-4 text-[17px] hover:border-slate-500 focus:border-orange-400 outline-none text-slate-500' data-mydata="{{test.id}}" value='{{ test.id|time }}'>
+            {% comment %} <input
+              type="time"
               class="border-b-2 mb-4 text-[17px] hover:border-slate-500 focus:border-orange-400 outline-none text-slate-500"
-              name="test-name"
-              id="test-name"
-              value="{{tests.test_name}}"
-            />
-
-            <label
-              for="test-instructions"
-              class="text-slate-400 text-[16px] leading-2 font-semibold mb-1"
-              >Instructions for users</label
-            >
-            <textarea
-              type="text"
-              class="border-2 rounded-md focus:outline-orange-400 mb-4 text-[17px] p-4 outline-1 hover:border-slate-500 text-slate-500"
-              name="test-instructions"
-              id="test-instructions"
-            >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio nam nihil saepe tenetur unde a quos repudiandae quibusdam adipisci corporis.</textarea>
+              name="time-input"
+              id="time-input"
+              value="{{test.id|time}}"
+            /> {% endcomment %}
           </div>
           <button
-              class="bg-orange-400 w-20 inline-block text-white px-4 py-[12px] font-semibold text-[18px] rounded-lg border-2 hover:bg-orange-500"
-            >
-              Save
-            </button>
+            id='butt'
+            class="bg-orange-400 w-20 inline-block text-white px-4 py-[12px] font-semibold text-[18px] rounded-lg border-2 hover:bg-orange-500"
+          >
+            Save
+          </button>
+          <script src='{% static "portal/admin.js" %}'></script>
         </div>
       </div>
     </div>

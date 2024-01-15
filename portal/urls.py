@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin-panel/', views.admin_panel, name='admin'),
     path('create-test/', views.create_test, name='create-test'),
     path('edit-test/<int:testID>', views.edit_test, name='edit-test'),
+    path('time-settings/<int:testID>', views.time_settings, name='time-settings'),
     path('delete-question/<int:questionID>', views.delete_question, name='delete-question'),
     path('test-already-attempted/', views.err1_page, name='err1'),
     path('user-details/<int:testID>', views.user_details, name='user-details'),
@@ -19,7 +20,7 @@ urlpatterns = [
     path('test/finish', views.finish_test, name='finish-test'),
     path('test/get-test-status', views.get_test_status, name='get-test-status'),
     path('reset-user/<int:userID>/<int:testID>/', views.reset_user, name='reset-user'),
-    path('admin-panel/change-time/', views.set_time, name='change-time'),
+    path('basic-settings/change-time/', views.set_time, name='change-time'),
     path('upload-question/<int:testID>', views.upload_questions, name='upload-questions'),
     path('upload-users/<int:testID>', views.upload_users, name='upload-users'),
 ]

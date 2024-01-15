@@ -14,18 +14,18 @@ function getCSRFToken() {
 }
 
 
-const collections = document.getElementsByClassName("time-test");
-const spinnerWrapperEl = document.querySelector('.spinner-wrapper')
+const timeInput = document.getElementById("time-test");
+const butt = document.getElementById('butt');
+// const spinnerWrapperEl = document.querySelector('.spinner-wrapper')
 
 
-
-Array.prototype.forEach.call(collections, (timeInput) => {
-  timeInput.addEventListener("change", function () {
-    spinnerWrapperEl.style.display = "flex";
+// Array.prototype.forEach.call(collections, (timeInput) => {
+  butt.addEventListener("click", function () {
+    // spinnerWrapperEl.style.display = "flex";
     time_now = timeInput.value;
     const test_id = timeInput.getAttribute("data-mydata");
 
-    fetch(`${window.location.href}change-time/`, {
+    fetch(`/basic-settings/change-time/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ Array.prototype.forEach.call(collections, (timeInput) => {
         return response.json();
       })
       .then((data) => {
-        spinnerWrapperEl.style.display = 'none';
+        // spinnerWrapperEl.style.display = 'none';
         console.log(data);
       })
       .catch((error) => {
@@ -53,4 +53,4 @@ Array.prototype.forEach.call(collections, (timeInput) => {
 
     console.log("Time changed:", timeInput.value);
   });
-});
+// });
