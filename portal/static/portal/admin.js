@@ -16,12 +16,12 @@ function getCSRFToken() {
 
 const timeInput = document.getElementById("time-test");
 const butt = document.getElementById('butt');
-// const spinnerWrapperEl = document.querySelector('.spinner-wrapper')
+const spinnerWrapperEl = document.querySelector('.spinner-wrapper')
 
 
 // Array.prototype.forEach.call(collections, (timeInput) => {
   butt.addEventListener("click", function () {
-    // spinnerWrapperEl.style.display = "flex";
+    spinnerWrapperEl.style.display = "flex";
     time_now = timeInput.value;
     const test_id = timeInput.getAttribute("data-mydata");
 
@@ -43,7 +43,7 @@ const butt = document.getElementById('butt');
         return response.json();
       })
       .then((data) => {
-        // spinnerWrapperEl.style.display = 'none';
+        spinnerWrapperEl.style.display = 'none';
         console.log(data);
       })
       .catch((error) => {

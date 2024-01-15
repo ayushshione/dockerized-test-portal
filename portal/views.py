@@ -313,7 +313,7 @@ def edit_test(request, testID):
 
     form = AddQuestionForm()
 
-    return render(request, 'portal/test-settings/basic-settings.html', {
+    return render(request, 'portal/edit-test.html', {
         'tests': test,
         'questions': question,
         'form': form,
