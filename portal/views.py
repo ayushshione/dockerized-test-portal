@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 import pytz
 import pandas as pd
 from django.conf import settings
-from .forms import CreateTestForm, AddQuestionForm
+from .forms import CreateTestForm, AddQuestionForm, EditTestForm
 
 
 def err1_page(request):
@@ -175,13 +175,14 @@ def admin_panel(request):
         "test_number": no_tests,
     })
 
+
 def time_settings(request, testID):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
 
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
-    
+
     test = Test.objects.filter(id=testID).first()
 
     return render(request, 'portal/test-settings/time-settings.html', {
@@ -226,6 +227,37 @@ def logout_user(request):
     return HttpResponseRedirect(reverse('login'))
 
 
+def basic_settings(request, testID):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+
+    test = Test.objects.filter(id=testID).first()
+
+    is_form_invalid = False
+
+    if (request.method == 'POST'):
+        form = EditTestForm(request.POST)
+
+        if (form.is_valid()):
+            form_data = form.cleaned_data
+            test_name = form_data['test_name']
+            test.test_name = test_name
+            test.save()
+        else:
+            is_form_invalid = True
+
+    form = EditTestForm(request.POST)
+
+    return render(request, 'portal/test-settings/basic-settings.html', {
+        'tests': test,
+        'form': form,
+        'is_form_invalid': is_form_invalid,
+    })
+
+
 def edit_test(request, testID):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
@@ -234,15 +266,15 @@ def edit_test(request, testID):
         return HttpResponseForbidden('You are not allowed to access this resource!')
 
     test = Test.objects.filter(id=testID).first()
-    question = Question.objects.filter(test=test)
 
     test = Test.objects.filter(id=testID).first()
+    question = Question.objects.filter(test=test)
 
     is_form_invalid = False
     if (request.method == "POST"):
         form = AddQuestionForm(request.POST)
 
-        if(form.is_valid()):
+        if (form.is_valid()):
             form_data = form.cleaned_data
             question = form_data['question']
             op1 = form_data['op1']
@@ -296,7 +328,6 @@ def create_question(request, testID):
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
 
-
     return redirect(reverse('edit-test', args=[testID]))
 
 
@@ -339,7 +370,8 @@ def user_details(request, testID):
 
         for user_answer in user_answers:
             question = user_answer.question
-            correct_op = Question.objects.filter(question=question, test=test).first().correct_op
+            correct_op = Question.objects.filter(
+                question=question, test=test).first().correct_op
 
             if (correct_op == user_answer.user_option):
                 score += 1
@@ -348,9 +380,8 @@ def user_details(request, testID):
                              "username": user.username,
                              "test_status": test_status.test_status,
                              "score": score})
-    
-    sorted_users = sorted(user_details, key=lambda x: x['score'], reverse=True)
 
+    sorted_users = sorted(user_details, key=lambda x: x['score'], reverse=True)
 
     return render(request, "portal/user-details.html", {
         "user_details": sorted_users,

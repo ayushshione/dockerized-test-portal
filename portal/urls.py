@@ -9,6 +9,7 @@ urlpatterns = [
     path('create-question/<int:testID>', views.create_question, name='create-question'),
     path('admin-panel/', views.admin_panel, name='admin'),
     path('create-test/', views.create_test, name='create-test'),
+    path('basic-settings/<int:testID>', views.basic_settings, name='basic-settings'),
     path('edit-test/<int:testID>', views.edit_test, name='edit-test'),
     path('time-settings/<int:testID>', views.time_settings, name='time-settings'),
     path('delete-question/<int:questionID>', views.delete_question, name='delete-question'),
