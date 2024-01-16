@@ -302,19 +302,19 @@
                 <p class="text-[18px] leading-6">{{question.question}}</p>
               </div>
               <div class='flex flex-col gap-2 mb-6'>
-                <div class="flex gap-4 ml-16 items-center break-words p-3">
+                <div class="flex gap-4 ml-16 items-center {% if question.correct_op == 1%}bg-green-300 bg-opacity-25 {%endif%} break-words p-3">
                   <input type="checkbox" id="op1" class="size-4" disabled>
                   <label for="op1" class="text-[18px] leading-6">{{question.op1}}</label>
                 </div>
-                <div class="flex gap-4 ml-16 items-center break-words p-3">
+                <div class="flex gap-4 ml-16 items-center {% if question.correct_op == 2%}bg-green-300 bg-opacity-25 {%endif%} break-words p-3">
                   <input type="checkbox" id="op2" class="size-4" disabled>
                   <label for="op2" class="text-[18px] leading-6">{{question.op2}}</label>
                 </div>
-                <div class="flex gap-4 ml-16 items-center break-words p-3">
+                <div class="flex gap-4 ml-16 items-center {% if question.correct_op == 3%}bg-green-300 bg-opacity-25 {%endif%} break-words p-3">
                   <input type="checkbox" id="op3" class="size-4" disabled>
                   <label for="op3" class="text-[18px] leading-6">{{question.op3}}</label>
                 </div>
-                <div class="flex gap-4 ml-16 items-center break-words bg-green-300 bg-opacity-25 rounded-md p-3">
+                <div class="flex gap-4 ml-16 items-center break-words {% if question.correct_op == 4%}bg-green-300 bg-opacity-25 {%endif%} rounded-md p-3">
                   <input type="checkbox" id="op4" class="size-4" disabled>
                   <label for="op4" class="text-[18px] leading-6">{{question.op4}}</label>
                 </div>
