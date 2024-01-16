@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from tinymce.models import HTMLField
 
 # Create your models here.
 class Test(models.Model):
   test_name = models.CharField(max_length=100)
   test_question_no = models.BigIntegerField(default=0)
-  instructions = models.TextField(default='')
+  instructions =  HTMLField(default='')
 
   def __str__(self):
     return f"{self.test_name} ({self.test_question_no})"

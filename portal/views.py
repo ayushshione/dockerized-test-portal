@@ -244,7 +244,9 @@ def basic_settings(request, testID):
         if (form.is_valid()):
             form_data = form.cleaned_data
             test_name = form_data['test_name']
+            instruction = form_data['instruction']
             test.test_name = test_name
+            test.instructions = instruction
             test.save()
         else:
             is_form_invalid = True
@@ -270,6 +272,23 @@ def edit_test(request, testID):
     test = Test.objects.filter(id=testID).first()
     question = Question.objects.filter(test=test)
 
+    questions_len = len(question)
+
+    return render(request, 'portal/test-settings/questions-manager.html', {
+        'tests': test,
+        'questions': question,
+        'questions_len': questions_len
+    })
+
+def add_question(request, testID):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+    
+    test = Test.objects.filter(id=testID).first()
+
     is_form_invalid = False
     if (request.method == "POST"):
         form = AddQuestionForm(request.POST)
@@ -283,12 +302,6 @@ def edit_test(request, testID):
             op4 = form_data['op4']
             correct_op = int(form_data['correct_op'])
 
-            questionIsCode = form_data['questionIsCode']
-            op1IsCode = form_data['op1IsCode']
-            op2IsCode = form_data['op2IsCode']
-            op3IsCode = form_data['op3IsCode']
-            op4IsCode = form_data['op4IsCode']
-
             Question.objects.create(
                 test=test,
                 question=question,
@@ -297,11 +310,11 @@ def edit_test(request, testID):
                 op3=op3,
                 op4=op4,
                 correct_op=correct_op,
-                questionIsCode=questionIsCode,
-                op1IsCode=op1IsCode,
-                op2IsCode=op2IsCode,
-                op3IsCode=op3IsCode,
-                op4IsCode=op4IsCode,
+                questionIsCode=False,
+                op1IsCode=False,
+                op2IsCode=False,
+                op3IsCode=False,
+                op4IsCode=False,
             )
 
             test.test_question_no += 1
@@ -310,18 +323,14 @@ def edit_test(request, testID):
             return HttpResponseRedirect(reverse('create-question', args=[test.id]))
         else:
             is_form_invalid = True
+        
+    form = AddQuestionForm(request.POST)
 
-    form = AddQuestionForm()
-    questions_len = len(question)
-
-    return render(request, 'portal/test-settings/questions-manager.html', {
+    return render(request, 'portal/test-settings/add-question.html', {
         'tests': test,
-        'questions': question,
         'form': form,
         'is_form_invalid': is_form_invalid,
-        'questions_len': questions_len
     })
-
 
 def create_question(request, testID):
     if (not request.user.is_authenticated):
@@ -634,7 +643,6 @@ def upload_users(request, testID):
                 )
 
     return HttpResponseRedirect(reverse('user-details', args=[testID]))
-
 
 def create_test(request):
     if (not request.user.is_authenticated):

@@ -105,7 +105,7 @@ body {
   line-height: 2;
   letter-spacing: 0.2px;
   font-weight: 500;
-  margin-bottom: 30px;
+  margin-bottom: 120px;
 }
 
 .nav-div {
@@ -114,6 +114,10 @@ body {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   display: flex;
   justify-content: center;
+}
+
+.instruct{
+  margin-bottom: 30px;
 }
 
 .buttons {

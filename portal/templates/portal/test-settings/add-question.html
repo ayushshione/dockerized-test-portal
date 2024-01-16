@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Sokalp - Test settings</title>
+    <title>Sokalp - Add question</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'portal/questions-manager.css' %}" />
+    <link rel="stylesheet" href="{% static 'portal/add-question.css' %}" />
     <link rel="icon" type="image/x-icon" href="{% static 'portal/favicon.png' %}">
   </head>
   <body class="bg-slate-100 tracking-wide leading-4 w-screen">
@@ -45,8 +45,8 @@
         class="bg-white p-6 shadow-md fixed top-0 left-0 w-[80px] h-screen flex flex-col items-center justify-between"
       >
         <div class="flex items-center flex-col w-[44px]">
-          <a href="{% url 'admin' %}">
-            <img src="{% static 'portal/sokalp-logo.png' %}" class="h-auto" alt="" />
+          <a href="./test-ind.html">
+            <img src="../sokalp-logo.png" class="h-auto" alt="" />
           </a>
           <button class="flex items-center gap-3 font-semibold mt-10">
             <svg
@@ -262,82 +262,77 @@
             </li>
           </ul>
         </div>
-        <script>
-          function changeLoc(){
-            window.location.href="{% url 'add-question' tests.id %}"
-          }
-        </script>
-        <div class="mt-2  flex-grow flex flex-col gap-5 mr-8">
-          <div class="flex justify-between items-center mb-4">
-            <h1 class="font-semibold text-[18px]">Questions manager</h1>
-            <div class="flex gap-[1.25px]">
-              <button
-              href='{% url "add-question" tests.id %}'
-              onclick= "changeLoc()"
-              class="bg-orange-400 text-white px-4 py-[10px] font-semibold text-[16px] rounded-tr-none rounded-br-none rounded-lg hover:bg-orange-500"
-            >                    
-              Add question         
-            </button>
-            <button
-              class="bg-orange-400 text-white px-4 py-[12px] font-semibold text-[18px] rounded-tl-none rounded-bl-none rounded-md hover:bg-orange-500"
-            >                    
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-            </svg>        
-            </button>
+        <form method='POST' class="mt-2 px-[8px] flex-grow flex flex-col gap-6 mr-4">
+          {% csrf_token %}
+          <div class="flex gap-4 items-center mb-4">
+            <a href="{% url 'edit-test' tests.id %}">
+              <div class="hover:bg-slate-300 p-0.5 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-5 h-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.75 19.5 8.25 12l7.5-7.5"
+                  />
+                </svg>
+              </div>
+            </a>
+            <h1 class="font-semibold text-[18px]">New question</h1>
           </div>
+
+          <div class="bg-white p-8 rounded-md flex-1 flex mr-8 flex-col gap-5">
+            <div class="question">
+              {{form.question}}
+            </div>
+            <h1 class="font-semibold mt-[22px] text-[20px]">Answers</h1>
+            <p class="text-[16px]">
+              After setting possible answers, select the correct ones.
+            </p>
+            
+              {% for radio in form.correct_op %}
+                <div
+                class="flex gap-12 mt-3 flex-grow items-start flex-shrink-0 w-full flex-1"
+                >
+                  {{radio.tag}}
+                  {% if forloop.counter == 1 %}
+                    {{form.op1}}
+                  {% elif forloop.counter == 2 %}
+                    {{form.op2}}
+                  {% elif forloop.counter == 3 %}
+                    {{form.op3}}
+                  {% elif forloop.counter == 4 %}
+                    {{form.op4}}
+                  {% endif %}
+                </div>
+              {% endfor %}
           </div>
-          <div class="bg-white rounded-md flex-1 flex gap-3 items-center justify-between">
-            <div class="flex gap-4 items-center p-5">
-              <input type="checkbox" id="checkbox-1" class="size-4 p-5">
-              <label for="checkbox-1" class="font-semibold text-[13px]">QUESTIONS {{ questions_len }}</label>
-            </div>
-            <div class="flex items-center p-5 hover:bg-slate-200">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-              </svg>              
-            </div>
-          </div> 
-          {% for question in questions %}
-            <div class="bg-white rounded-md flex-1 flex gap-2 flex-col px-2">
-              <div class="flex gap-4 items-start p-5 justify-between">
-                <div class="flex gap-4">
-                  <input type="checkbox" id="checkbox-1" class="size-4">
-                  <label for="checkbox-1" class="font-semibold text-[16px]">Q. {{forloop.counter}}</label>
-                </div>
-                <p class="text-slate-500">Points: 1</p>
-              </div>
-              <div class="ml-12 mb-4">
-                  {{question.question|safe}}
-              </div>
-              <div class='flex flex-col gap-2 mb-6'>
-                <div class="flex gap-4 ml-16 items-start {% if question.correct_op == 1%}bg-green-300 bg-opacity-25 rounded-md {%endif%} break-words p-3">
-                  <input type="checkbox" id="op1" class="size-4" disabled>
-                    <label for="op1" class="text-[18px] leading-6">
-                        {{question.op1|safe}}
-                    </label>
-                </div>
-                <div class="flex gap-4 ml-16 items-start {% if question.correct_op == 2%}bg-green-300 bg-opacity-25 rounded-md {%endif%} break-words p-3">
-                  <input type="checkbox" id="op2" class="size-4" disabled>
-                  <label for="op2" class="text-[18px] leading-6">
-                      {{question.op2|safe}}
-                  </label>
-                </div>
-                <div class="flex gap-4 ml-16 items-start {% if question.correct_op == 3%}bg-green-300 bg-opacity-25 rounded-md {%endif%} break-words p-3">
-                  <input type="checkbox" id="op3" class="size-4" disabled>
-                    <label for="op3" class="text-[18px] leading-6">
-                        {{question.op3|safe}}
-                    </label>
-                </div>
-                <div class="flex gap-4 ml-16 items-start break-words {% if question.correct_op == 4%}bg-green-300 bg-opacity-25 rounded-md {%endif%} p-3">
-                  <input type="checkbox" id="op4" class="size-4" disabled>
-                    <label for="op4" class="text-[18px] leading-6">
-                        {{question.op4|safe}}
-                    </label>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
+          <button
+            class="bg-orange-400 w-20 inline-block text-white px-4 py-[12px] font-semibold text-[18px] rounded-lg border-2 hover:bg-orange-500"
+          >
+            Save
+          </button>
+        </form>
+      </div>
     </div>
+    <script
+      src="https://cdn.tiny.cloud/1/eqsk1eogz31hulp6xuzqj2v0x8gdrfbpc47hcrlhx6ty8bt5/tinymce/5/tinymce.min.js"
+      referrerpolicy="origin"
+    ></script>
+    <script>
+      tinymce.init({
+        selector: ".tinymce",
+        height: 200, // Match the height in TINYMCE_DEFAULT_CONFIG
+        menubar: false,
+        plugins: "textcolor lists link",
+        toolbar:
+          "undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link",
+      });
+    </script>
   </body>
 </html>

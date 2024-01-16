@@ -20,41 +20,58 @@ class EditTestForm(forms.Form):
                                         'id': 'modal-email'}), label='Test Name: ', max_length=50,)
 
     instruction = forms.CharField(widget=forms.Textarea
-                                  (attrs={'class': 'border-2 rounded-md focus:outline-orange-400 mb-4 text-[17px] p-4 outline-1 hover:border-slate-500 text-slate-500',
+                                  (attrs={'class': 'tinymce border-2 rounded-md focus:outline-orange-400 mb-4 text-[17px] p-4 outline-1 hover:border-slate-500 text-slate-500',
                                           'placeholder': 'e.g. Length of the test is one hour',
-                                          'id': 'modal-email'}), label='Test Name: ', max_length=50, required=False)
+                                          'id': 'modal-email'}), label='Test Name: ', required=False)
 
 
 class AddQuestionForm(forms.Form):
     question = forms.CharField(widget=forms.Textarea
-                               (attrs={'class': 'form-control',
-                                       'placeholder': 'Enter the Question',
-                                       'id': 'floatingTextarea'}), label='Test Name: ', required=True)
+                                  (attrs={'class': 'tinymce border-2 rounded-md focus:outline-orange-400 mb-4 text-[17px] p-4 outline-1 hover:border-slate-500 text-slate-500',
+                                          'placeholder': 'e.g. Length of the test is one hour',
+                                          'id': 'modal-email'}), label='Test Name: ', required=False)
+
     questionIsCode = forms.BooleanField(required=False)
 
     op1 = forms.CharField(widget=forms.Textarea
-                          (attrs={'class': 'form-control',
-                                  'placeholder': 'Enter Option 1',
-                                  'id': 'floatingTextarea'}), label='Test Name: ', required=True)
+                                  (attrs={'class': 'tinymce border-2 rounded-md focus:outline-orange-400 mb-4 text-[17px] p-4 outline-1 hover:border-slate-500 text-slate-500',
+                                          'placeholder': 'Enter Option 1',
+                                          'id': 'modal-email'}), label='Test Name: ', required=False)
+
     op1IsCode = forms.BooleanField(required=False)
 
     op2 = forms.CharField(widget=forms.Textarea
-                          (attrs={'class': 'form-control',
-                                  'placeholder': 'Enter Option 2',
-                                  'id': 'floatingTextarea'}), label='Test Name: ', required=True)
+                                  (attrs={'class': 'tinymce border-2 rounded-md focus:outline-orange-400 mb-4 text-[17px] p-4 outline-1 hover:border-slate-500 text-slate-500',
+                                          'placeholder': 'Enter Option 2',
+                                          'id': 'modal-email'}), label='Test Name: ', required=False)
+
     op2IsCode = forms.BooleanField(required=False)
 
     op3 = forms.CharField(widget=forms.Textarea
-                          (attrs={'class': 'form-control',
-                                  'placeholder': 'Enter Option 3',
-                                  'id': 'floatingTextarea'}), label='Test Name: ', required=True)
+                                  (attrs={'class': 'tinymce border-2 rounded-md focus:outline-orange-400 mb-4 text-[17px] p-4 outline-1 hover:border-slate-500 text-slate-500',
+                                          'placeholder': 'Enter Option 3',
+                                          'id': 'modal-email'}), label='Test Name: ', required=False)
+
     op3IsCode = forms.BooleanField(required=False)
 
     op4 = forms.CharField(widget=forms.Textarea
-                          (attrs={'class': 'form-control',
-                                  'placeholder': 'Enter Option 4',
-                                  'id': 'floatingTextarea'}), label='Test Name: ', required=True)
-    op4IsCode = forms.BooleanField(required=False)
+                                  (attrs={'class': 'tinymce border-2 rounded-md focus:outline-orange-400 mb-4 text-[17px] p-4 outline-1 hover:border-slate-500 text-slate-500',
+                                          'placeholder': 'Enter Option 4',
+                                          'id': 'modal-email'}), label='Test Name: ', required=False)
 
-    correct_op = forms.CharField(label='Correct Option', widget=forms.TextInput(
-        attrs={'min': 1, 'max': '4', 'type': 'number', 'class': 'form-control', 'id': 'floatingInput'}))
+    op4IsCode = forms.BooleanField(required=False)
+    
+    OPTIONS = [
+        ('1', 'Option 1'),
+        ('2', 'Option 2'),
+        ('3', 'Option 3'),
+        ('4', 'Option 4'),
+    ]
+
+    correct_op = forms.ChoiceField(
+        choices=OPTIONS,
+        widget=forms.RadioSelect(attrs={'class': 'size-4'}),
+    )
+
+#     correct_op = forms.CharField(label='Correct Option', widget=forms.TextInput(
+#         attrs={'min': 1, 'max': '4', 'type': 'number', 'class': 'form-control', 'id': 'floatingInput'}))

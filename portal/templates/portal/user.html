@@ -19,11 +19,10 @@
       <h1>{{ test.test_name }} Test</h1>
     </div>
     <div class="container">
+      <div class='instruct'>
       <p class="initial-heading">Instructions</p>
-      <p class="initial-instructions">
-        
-      </p>
-      <p class="regards">Good Luck!</p>
+        {{ test.instructions|safe }}
+      </div>
       <div class="buttons">
         <a href="{% url 'test' %}" class="btn btn-start-test">Start Test</a>
         <a href="{% url 'logout' %}" class="btn btn-logout">Logout</a>

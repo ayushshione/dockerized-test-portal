@@ -8,3 +8,4 @@ celery>=5.0
 pytz
 pandas
 openpyxl
+django-tinymce

@@ -289,6 +289,17 @@
               Save
             </button>
           </form>
+          <script src="https://cdn.tiny.cloud/1/eqsk1eogz31hulp6xuzqj2v0x8gdrfbpc47hcrlhx6ty8bt5/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+          <script>
+            tinymce.init({
+              selector: '.tinymce',
+              height: 360,  // Match the height in TINYMCE_DEFAULT_CONFIG
+              width: 800,   // Match the width in TINYMCE_DEFAULT_CONFIG
+              menubar: false,
+              plugins: 'textcolor lists link',
+              toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link',
+            });
+          </script>
       </div>
     </div>
   </body>
