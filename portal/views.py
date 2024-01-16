@@ -312,12 +312,14 @@ def edit_test(request, testID):
             is_form_invalid = True
 
     form = AddQuestionForm()
+    questions_len = len(question)
 
-    return render(request, 'portal/edit-test.html', {
+    return render(request, 'portal/test-settings/questions-manager.html', {
         'tests': test,
         'questions': question,
         'form': form,
         'is_form_invalid': is_form_invalid,
+        'questions_len': questions_len
     })
 
 
