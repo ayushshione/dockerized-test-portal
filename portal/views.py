@@ -644,6 +644,25 @@ def upload_questions(request, testID):
 
     return HttpResponseRedirect(reverse('edit-test', args=[testID]))
 
+def users_database(request):
+    users_full = User.objects.filter(is_superuser=False)
+
+    users = []
+
+    for user in users_full:
+        test_status = TestStatus.objects.filter(user=user).first()
+        test = Test.objects.filter(id=test_status.test.id).first()
+        users.append({
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'username': user.username,
+            'email': user.email,
+            'test_name': "" if test is None else test.test_name,
+        })
+
+    return render(request, 'portal/users-database.html', {
+        'users': users,
+    })
 
 def upload_users(request, testID):
     if (request.method == "POST"):

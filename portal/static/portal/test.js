@@ -38,33 +38,33 @@ Object.entries(savedAnswers).map((entry) => {
 });
 
 function updateUI(questionData) {
-  question_para.innerText = questionData["question"];
-  question_number.innerText = currQuestionNumber;
+  question_para.innerHTML = questionData["question"];
+  question_number.innerHTML = currQuestionNumber;
 
   visitedQuestions[currQuestionNumber] = questionData;
 
   if (questionData["op1IsCode"]) {
-    op1.innerHTML = `<pre style='border-style:none'><code class='language-python'>${escapeHtml(questionData["op1"])}</code></pre>`;
+    op1.innerHTML = `${escapeHtml(questionData["op1"])}`;
   } else {
-    op1.innerHTML= `<div class='op-div-under'>${questionData["op1"]}</div>`;
+    op1.innerHTML = `${questionData["op1"]}`;
   }
 
   if (questionData["op2IsCode"]) {
-    op2.innerHTML = `<pre class='prettyprint' style='border-style:none'>${escapeHtml(questionData["op2"])}</pre>`;
+    op2.innerHTML = `${escapeHtml(questionData["op2"])}`;
   } else {
-    op2.innerText = questionData["op2"];
+    op2.innerHTML = questionData["op2"];
   }
 
   if (questionData["op3IsCode"]) {
-    op3.innerHTML = `<pre class='prettyprint' style='border-style:none'>${escapeHtml(questionData["op3"])}</pre>`;
+    op3.innerHTML = `${escapeHtml(questionData["op3"])}`;
   } else {
-    op3.innerText = questionData["op3"];
+    op3.innerHTML = questionData["op3"];
   }
 
   if (questionData["op4IsCode"]) {
-    op4.innerHTML = `<pre class='prettyprint' style='border-style:none'>${escapeHtml(questionData["op4"])}</pre>`;
+    op4.innerHTML = `${escapeHtml(questionData["op4"])}`;
   } else {
-    op4.innerText = questionData["op4"];
+    op4.innerHTML = questionData["op4"];
   }
 
   const toMark = document.getElementById(currQuestionID);
