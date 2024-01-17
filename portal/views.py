@@ -332,6 +332,46 @@ def add_question(request, testID):
         'is_form_invalid': is_form_invalid,
     })
 
+def add_test(request):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+    
+    is_form_invalid = False
+
+    if(request.method == "POST"):
+        form = CreateTestForm(request.POST)
+
+        if(form.is_valid()):
+            form_data = form.cleaned_data
+            test_name = form_data['test_name']
+            instruction = form_data['instruction']
+
+            test_form = Test.objects.create(
+                test_name = test_name,
+                instructions = instruction
+            )
+
+            time = datetime(year=1, month=1, day=1,
+                            hour=1, minute=0, second=0)
+
+            TestHour.objects.create(test=test_form, time=time)
+
+            return HttpResponseRedirect(reverse('edit-test', args=[test_form.id]))
+
+        else:
+            is_form_invalid = True
+
+
+    form = CreateTestForm()
+    
+    return render(request, 'portal/test-settings/add-test.html', {
+        'form': form,
+        'is_form_invalid': is_form_invalid,
+    })
+
 def create_question(request, testID):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))

@@ -23,6 +23,7 @@ urlpatterns = [
     path('reset-user/<int:userID>/<int:testID>/', views.reset_user, name='reset-user'),
     path('basic-settings/change-time/', views.set_time, name='change-time'),
     path('add-questions/<int:testID>', views.add_question, name='add-question'),
+    path('add-test', views.add_test, name='add-test'),
     path('upload-question/<int:testID>', views.upload_questions, name='upload-questions'),
     path('upload-users/<int:testID>', views.upload_users, name='upload-users'),
 ]
