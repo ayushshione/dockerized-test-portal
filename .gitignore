@@ -3,3 +3,4 @@ data
 .venv
 .pyc
 .pyo
+node_modules

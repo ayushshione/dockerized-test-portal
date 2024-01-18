@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 import pytz
 import pandas as pd
 from django.conf import settings
-from .forms import CreateTestForm, AddQuestionForm, EditTestForm
+from .forms import CreateTestForm, AddQuestionForm, EditTestForm, AddUserForm
 
 
 def err1_page(request):
@@ -331,6 +331,73 @@ def add_question(request, testID):
         'form': form,
         'is_form_invalid': is_form_invalid,
     })
+
+def add_user(request):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+    
+    is_form_invalid = False
+
+    if(request.method == "POST"):
+        form = AddUserForm(request.POST)
+
+        if(form.is_valid()):
+            form_data = form.cleaned_data
+
+            username = form_data['username']
+            password = form_data['password']
+            first_name = form_data['first_name']
+            last_name = form_data['last_name']
+            email = form_data['email']
+            test_id = int(form_data['test_id'])
+
+            user = User.objects.filter(
+                username=username,
+            )
+
+            test = Test.objects.filter(
+                id=test_id,
+            ).first()
+
+            if (user.first() is None):
+                user = User.objects.create_user(
+                    username=username,
+                    password=password,
+                    first_name=first_name,
+                    last_name=last_name,
+                    email=email,
+                )
+
+                test_status = TestStatus.objects.create(
+                    user=user,
+                    test=test,
+                )
+
+            else:
+                user.first().set_password(password)
+                user.first().save()
+
+                test_status = TestStatus.objects.filter(
+                    user=user.first(),
+                ).first()
+
+                test_status.test = test
+                test_status.save()  
+        else:
+            is_form_invalid = True     
+
+        return HttpResponseRedirect(reverse('users-database'))
+
+    form = AddUserForm()
+    
+    return render(request, 'portal/add-user.html', {
+        'form': form,
+        'is_form_invalid': is_form_invalid,
+    })
+    
 
 def add_test(request):
     if (not request.user.is_authenticated):
@@ -668,7 +735,14 @@ def users_database(request):
         'users_len': users_len,
     })
 
+
 def upload_users(request):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+    
     if (request.method == "POST"):
         file = request.FILES['questions']
         obj = ExcelFile.objects.create(
@@ -709,11 +783,11 @@ def upload_users(request):
 
             else:
                 user.first().set_password(password)
-                user.save()
+                user.first().save()
 
                 test_status = TestStatus.objects.filter(
-                    user=user,
-                )
+                    user=user.first(),
+                ).first()
 
                 test_status.test = test
                 test_status.save()       

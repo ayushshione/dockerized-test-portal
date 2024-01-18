@@ -11,6 +11,10 @@ function showModal(){
   modal.classList.add('flex')
 }
 
+function changeLoc(){
+  window.location.href = '/add-user'
+}
+
 document.getElementById('hide-modal').addEventListener('click', (e) => {
   e.preventDefault();
   const modal = document.getElementById('modal-sam')
