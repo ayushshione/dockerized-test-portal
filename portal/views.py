@@ -648,6 +648,7 @@ def users_database(request):
     users_full = User.objects.filter(is_superuser=False)
 
     users = []
+    users_len = len(users_full)
 
     for user in users_full:
         test_status = TestStatus.objects.filter(user=user).first()
@@ -662,6 +663,7 @@ def users_database(request):
 
     return render(request, 'portal/users-database.html', {
         'users': users,
+        'users_len': users_len,
     })
 
 def upload_users(request, testID):
