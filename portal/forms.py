@@ -29,26 +29,31 @@ class AddUserForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput
                                 (attrs={'class': 'border-b-2 mb-4 text-[17px] hover:border-slate-500 focus:border-orange-400 outline-none text-slate-500',
                                         'placeholder': 'e.g. johndoe123',
+                                        'autocomplete': 'off',
                                         'id': 'modal-email'}), label='Test Name: ', max_length=50,)
     
     password = forms.CharField(widget=forms.PasswordInput
                                 (attrs={'class': 'border-b-2 mb-4 text-[17px] hover:border-slate-500 focus:border-orange-400 outline-none text-slate-500',
                                         'placeholder': 'Password',
+                                        'autocomplete': 'off',
                                         'id': 'modal-email'}), label='Test Name: ', max_length=50,)
     
     first_name = forms.CharField(widget=forms.TextInput
                                 (attrs={'class': 'border-b-2 mb-4 text-[17px] hover:border-slate-500 focus:border-orange-400 outline-none text-slate-500',
                                         'placeholder': 'e.g. John',
+                                        'autocomplete': 'off',
                                         'id': 'modal-email'}), label='Test Name: ', max_length=50,)
     
     last_name = forms.CharField(widget=forms.TextInput
                                 (attrs={'class': 'border-b-2 mb-4 text-[17px] hover:border-slate-500 focus:border-orange-400 outline-none text-slate-500',
                                         'placeholder': 'e.g. Doe',
+                                        'autocomplete': 'off',
                                         'id': 'modal-email'}), label='Test Name: ', max_length=50,)
     
     email = forms.CharField(widget=forms.TextInput
                                 (attrs={'class': 'border-b-2 mb-4 text-[17px] hover:border-slate-500 focus:border-orange-400 outline-none text-slate-500',
                                         'placeholder': 'johndoe@gmail.com',
+                                        'autocomplete': 'off',
                                         'id': 'modal-email'}), label='Test Name: ', max_length=50,)
 
 #     test_id = forms.CharField(widget=forms.NumberInput
