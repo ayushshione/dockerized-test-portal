@@ -1,4 +1,5 @@
 from django import forms
+from .models import Test
 
 
 class CreateTestForm(forms.Form):
@@ -49,11 +50,13 @@ class AddUserForm(forms.Form):
                                 (attrs={'class': 'border-b-2 mb-4 text-[17px] hover:border-slate-500 focus:border-orange-400 outline-none text-slate-500',
                                         'placeholder': 'johndoe@gmail.com',
                                         'id': 'modal-email'}), label='Test Name: ', max_length=50,)
+
+#     test_id = forms.CharField(widget=forms.NumberInput
+#                                 (attrs={'class': 'border-b-2 mb-4 text-[17px] hover:border-slate-500 focus:border-orange-400 outline-none text-slate-500',
+#                                         'placeholder': '28',
+#                                         'id': 'modal-email'}), label='Test Name: ', max_length=50,)
     
-    test_id = forms.CharField(widget=forms.NumberInput
-                                (attrs={'class': 'border-b-2 mb-4 text-[17px] hover:border-slate-500 focus:border-orange-400 outline-none text-slate-500',
-                                        'placeholder': '28',
-                                        'id': 'modal-email'}), label='Test Name: ', max_length=50,)
+    test = forms.ModelChoiceField(queryset=Test.objects.all(), empty_label="Select a test", widget=forms.Select(attrs={'class': 'border-[2px] rounded-md p-2 outline-none border-slate-300'}))
     
 
 

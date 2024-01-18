@@ -9,7 +9,7 @@ class Test(models.Model):
   instructions =  HTMLField(default='')
 
   def __str__(self):
-    return f"{self.test_name} ({self.test_question_no})"
+    return f"{self.test_name}"
 
 
 class Question(models.Model):

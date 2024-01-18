@@ -352,15 +352,11 @@ def add_user(request):
             first_name = form_data['first_name']
             last_name = form_data['last_name']
             email = form_data['email']
-            test_id = int(form_data['test_id'])
+            test = form_data['test']
 
             user = User.objects.filter(
                 username=username,
             )
-
-            test = Test.objects.filter(
-                id=test_id,
-            ).first()
 
             if (user.first() is None):
                 user = User.objects.create_user(
