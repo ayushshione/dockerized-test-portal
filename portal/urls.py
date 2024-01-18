@@ -26,5 +26,5 @@ urlpatterns = [
     path('users-database', views.users_database, name='users-database'),
     path('add-test', views.add_test, name='add-test'),
     path('upload-question/<int:testID>', views.upload_questions, name='upload-questions'),
-    path('upload-users/<int:testID>', views.upload_users, name='upload-users'),
+    path('upload-users/', views.upload_users, name='upload-users'),
 ]

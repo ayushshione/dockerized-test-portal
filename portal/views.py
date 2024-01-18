@@ -652,7 +652,9 @@ def users_database(request):
 
     for user in users_full:
         test_status = TestStatus.objects.filter(user=user).first()
-        test = Test.objects.filter(id=test_status.test.id).first()
+        test = None
+        if test_status is not None:
+            test = Test.objects.filter(id=test_status.test.id).first()
         users.append({
             'first_name': user.first_name,
             'last_name': user.last_name,
@@ -666,7 +668,7 @@ def users_database(request):
         'users_len': users_len,
     })
 
-def upload_users(request, testID):
+def upload_users(request):
     if (request.method == "POST"):
         file = request.FILES['questions']
         obj = ExcelFile.objects.create(
@@ -674,20 +676,22 @@ def upload_users(request, testID):
         )
         path = file.file
         df = pd.read_excel(path)
-        test = Test.objects.get(id=testID)
 
         for d in df.values:
             username = d[0]
             password = str(d[1])
             first_name = d[2]
             last_name = d[3]
-
-            print("Password: ", password)
+            email = d[4]
+            test_id = int(d[5])
 
             user = User.objects.filter(
                 username=username,
-                password=password
             )
+
+            test = Test.objects.filter(
+                id=test_id,
+            ).first()
 
             if (user.first() is None):
                 user = User.objects.create_user(
@@ -695,15 +699,26 @@ def upload_users(request, testID):
                     password=password,
                     first_name=first_name,
                     last_name=last_name,
+                    email=email,
                 )
 
-                TestStatus.objects.create(
+                test_status = TestStatus.objects.create(
                     user=user,
                     test=test,
-                    test_status='1',
                 )
 
-    return HttpResponseRedirect(reverse('user-details', args=[testID]))
+            else:
+                user.first().set_password(password)
+                user.save()
+
+                test_status = TestStatus.objects.filter(
+                    user=user,
+                )
+
+                test_status.test = test
+                test_status.save()       
+
+    return HttpResponseRedirect(reverse('users-database'))
 
 def create_test(request):
     if (not request.user.is_authenticated):
