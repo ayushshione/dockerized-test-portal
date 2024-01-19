@@ -616,6 +616,11 @@ def reset_user(request, userID, testID):
 
     user = User.objects.filter(id=userID).first()
     test = Test.objects.filter(id=testID).first()
+    user_answers = UserAnswers.objects.filter(user=user)
+
+    for user_answer in user_answers:
+        if(user_answer.question.test == test):
+            user_answer.delete()
 
     time = Time.objects.get(user=user, test=test)
     time.delete()
