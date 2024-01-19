@@ -624,9 +624,7 @@ def reset_user(request, userID, testID):
     ts.test_status = '1'
     ts.save()
 
-    return JsonResponse({
-        "message": "User successfully reseted!"
-    })
+    return HttpResponseRedirect(reverse('users-database'))
 
 
 def set_time(request):
@@ -747,12 +745,16 @@ def users_database(request):
         test = None
         if test_status is not None:
             test = Test.objects.filter(id=test_status.test.id).first()
+            
         users.append({
+            'user_id': user.id,
             'first_name': user.first_name,
             'last_name': user.last_name,
             'username': user.username,
             'email': user.email,
+            'test_id': test.id,
             'test_name': "" if test is None else test.test_name,
+            'test_status': test_status.test_status,
         })
 
     return render(request, 'portal/users-database.html', {

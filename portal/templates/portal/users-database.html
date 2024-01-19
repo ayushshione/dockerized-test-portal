@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <title>Sokalp - Users database</title>
-    <link rel="stylesheet" href="{% static 'portal/users-database.css' %}" />
+    <link rel="stylesheet" href="{% static 'src/styles.css' %}" />
     <link
       rel="icon"
       type="image/x-icon"
@@ -30,6 +30,10 @@
       table tr th {
         border-top: 1px solid #cbd5e1;
         text-align: left;
+      }
+
+      #reset-user:hover{
+        stroke: #fb923c;
       }
     </style>
   </head>
@@ -225,6 +229,9 @@
                 >
                   E-MAIL ADDRESS
                 </td>
+                <td class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left">
+
+                </td>
               </tr>
               <tr class="">
                 <td
@@ -293,6 +300,8 @@
                     id=""
                   />
                 </td>
+                <td class="py-2 text-[12px] font-semibold tracking-wide text-left">                  
+                </td>
               </tr>
               {% for user in users %}
               <tr class="">
@@ -303,7 +312,9 @@
                   {% if user.test_name == "" %}
                    - 
                   {% else %} 
-                   {{user.test_name}}
+                   <span>
+                    {{user.test_name}}
+                   </span>
                   {% endif %}
                 </td>
                 <td class="px-3 py-5 text-[14px] text-gray-700">
@@ -333,6 +344,15 @@
                   {% else %}
                    {{user.email}} 
                   {% endif %}
+                </td>
+                <td class="py-2 text-[12px] font-semibold tracking-wide text-left">
+                  <a href="{% url 'reset-user' user.user_id user.test_id  %}">
+                    <button class="{% if user.test_status == '1' %} hidden {% elif user.test_status == '2' %} inline-block {% endif %}">
+                      <svg xmlns="http://www.w3.org/2000/svg" id='reset-user' fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                      </svg>
+                    </button>
+                  </a>
                 </td>
               </tr>
               {% endfor %}
