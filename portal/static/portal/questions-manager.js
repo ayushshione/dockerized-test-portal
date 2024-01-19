@@ -14,11 +14,56 @@ function getCSRFToken() {
 }
 
 const checkboxes = document.getElementsByName("question_check");
+const checkbox_all = document.getElementById("checkbox-all");
 const selected_box = document.getElementById("selected-box");
 const initial_text = selected_box.innerText;
 const delete_button = document.getElementById("delete-btn");
-const spinnerWrapperEl = document.querySelector('.spinner-wrapper')
+const spinnerWrapperEl = document.querySelector(".spinner-wrapper");
 let selected = 0;
+
+function triggerChangeEvent(element) {
+  const event = new Event('change');
+  element.dispatchEvent(event);
+}
+
+checkboxes.forEach((checkbox) => {
+  checkbox.addEventListener("change", () => {
+    if (checkbox.checked == true) {
+      if (delete_button.classList.contains("hidden")) {
+        delete_button.classList.add("flex");
+        delete_button.classList.remove("hidden");
+      }
+      selected++;
+    } else {
+      selected--;
+    }
+
+    if (selected <= 0) {
+      selected_box.innerText = initial_text;
+      if (delete_button.classList.contains("flex")) {
+        delete_button.classList.add("hidden");
+        delete_button.classList.remove("flex");
+      }
+    } else {
+      selected_box.innerText = `${selected} SELECTED`;
+    }
+  });
+});
+
+checkbox_all.addEventListener("change", () => {
+
+  if (checkbox_all.checked) {
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = true;
+      triggerChangeEvent(checkbox)
+    });
+  } else {
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+      triggerChangeEvent(checkbox)
+    });
+  }
+});
 
 delete_button.addEventListener("click", () => {
   const toDelete = [];
@@ -47,8 +92,8 @@ delete_button.addEventListener("click", () => {
       return response.json();
     })
     .then((data) => {
-      spinnerWrapperEl.style.display = 'none';
-      location.reload()
+      spinnerWrapperEl.style.display = "none";
+      location.reload();
     })
     .catch((error) => {
       // Handle errors
@@ -56,54 +101,27 @@ delete_button.addEventListener("click", () => {
     });
 });
 
-
-checkboxes.forEach((checkbox) => {
-  checkbox.addEventListener("change", () => {
-    if (checkbox.checked == true) {
-      if (delete_button.classList.contains("hidden")) {
-        delete_button.classList.add("flex");
-        delete_button.classList.remove("hidden");
-      }
-      selected++;
-    } else {
-      selected--;
-    }
-
-    if (selected <= 0) {
-      selected_box.innerText = initial_text;
-      if (delete_button.classList.contains("flex")) {
-        delete_button.classList.add("hidden");
-        delete_button.classList.remove("flex");
-      }
-    } else {
-      selected_box.innerText = `${selected} SELECTED`;
-    }
-  });
-});
-
-
-function showModal(){
-  const modal = document.getElementById('modal-sam')
-  const add_user = document.getElementById('add-question')
-  const modal_button = document.getElementById('modal-button')
+function showModal() {
+  const modal = document.getElementById("modal-sam");
+  const add_user = document.getElementById("add-question");
+  const modal_button = document.getElementById("modal-button");
 
   add_user.disabled = true;
   modal_button.disabled = true;
 
-  modal.classList.remove('hidden');
-  modal.classList.add('flex')
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
 }
 
-document.getElementById('hide-modal').addEventListener('click', (e) => {
+document.getElementById("hide-modal").addEventListener("click", (e) => {
   e.preventDefault();
-  const modal = document.getElementById('modal-sam')
-  const add_user = document.getElementById('add-question')
-  const modal_button = document.getElementById('modal-button')
+  const modal = document.getElementById("modal-sam");
+  const add_user = document.getElementById("add-question");
+  const modal_button = document.getElementById("modal-button");
 
   add_user.disabled = false;
   modal_button.disabled = false;
 
-  modal.classList.remove('flex');
-  modal.classList.add('hidden')
-})
-
+  modal.classList.remove("flex");
+  modal.classList.add("hidden");
+});
