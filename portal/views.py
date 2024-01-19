@@ -688,16 +688,11 @@ def upload_questions(request, testID):
 
         for d in df.values:
             question = d[0]
-            questionIsCode = d[1]
-            op1 = d[2]
-            op1IsCode = d[3]
-            op2 = d[4]
-            op2IsCode = d[5]
-            op3 = d[6]
-            op3IsCode = d[7]
-            op4 = d[8]
-            op4IsCode = d[9]
-            correct_op = d[10]
+            op1 = d[1]
+            op2 = d[2]
+            op3 = d[3]
+            op4 = d[4]
+            correct_op = d[5]
 
             questionObj = Question.objects.filter(
                 test=test,
@@ -707,11 +702,11 @@ def upload_questions(request, testID):
                 op3=op3,
                 op4=op4,
                 correct_op=correct_op,
-                questionIsCode=questionIsCode,
-                op1IsCode=(op1IsCode),
-                op2IsCode=op2IsCode,
-                op3IsCode=op3IsCode,
-                op4IsCode=op4IsCode,
+                questionIsCode=False,
+                op1IsCode=(False),
+                op2IsCode=False,
+                op3IsCode=False,
+                op4IsCode=False,
             ).first()
 
             if (questionObj is None):
@@ -723,11 +718,11 @@ def upload_questions(request, testID):
                     op3=op3,
                     op4=op4,
                     correct_op=correct_op,
-                    questionIsCode=questionIsCode,
-                    op1IsCode=op1IsCode,
-                    op2IsCode=op2IsCode,
-                    op3IsCode=op3IsCode,
-                    op4IsCode=op4IsCode,
+                    questionIsCode=False,
+                    op1IsCode=False,
+                    op2IsCode=False,
+                    op3IsCode=False,
+                    op4IsCode=False,
                 )
                 test.test_question_no += 1
                 test.save()

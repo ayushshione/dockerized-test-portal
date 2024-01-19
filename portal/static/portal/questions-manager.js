@@ -17,10 +17,12 @@ const checkboxes = document.getElementsByName("question_check");
 const selected_box = document.getElementById("selected-box");
 const initial_text = selected_box.innerText;
 const delete_button = document.getElementById("delete-btn");
+const spinnerWrapperEl = document.querySelector('.spinner-wrapper')
 let selected = 0;
 
 delete_button.addEventListener("click", () => {
   const toDelete = [];
+  spinnerWrapperEl.style.display = "flex";
   checkboxes.forEach((checkbox) => {
     if (checkbox.checked) {
       toDelete.push(checkbox.id);
@@ -45,7 +47,7 @@ delete_button.addEventListener("click", () => {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
+      spinnerWrapperEl.style.display = 'none';
       location.reload()
     })
     .catch((error) => {
@@ -53,6 +55,7 @@ delete_button.addEventListener("click", () => {
       console.error("There was a problem with the fetch operation:", error);
     });
 });
+
 
 checkboxes.forEach((checkbox) => {
   checkbox.addEventListener("change", () => {
@@ -77,3 +80,30 @@ checkboxes.forEach((checkbox) => {
     }
   });
 });
+
+
+function showModal(){
+  const modal = document.getElementById('modal-sam')
+  const add_user = document.getElementById('add-question')
+  const modal_button = document.getElementById('modal-button')
+
+  add_user.disabled = true;
+  modal_button.disabled = true;
+
+  modal.classList.remove('hidden');
+  modal.classList.add('flex')
+}
+
+document.getElementById('hide-modal').addEventListener('click', (e) => {
+  e.preventDefault();
+  const modal = document.getElementById('modal-sam')
+  const add_user = document.getElementById('add-question')
+  const modal_button = document.getElementById('modal-button')
+
+  add_user.disabled = false;
+  modal_button.disabled = false;
+
+  modal.classList.remove('flex');
+  modal.classList.add('hidden')
+})
+

@@ -9,9 +9,59 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'src/styles.css' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'portal/favicon.png' %}">
+    <style>
+      table {
+        border-collapse: separate;
+        border-spacing: 0;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        width: 100%;
+      }
+      table tr th,
+      table tr td {
+        border-bottom: 1px solid #cbd5e1;
+      }
+      table tr:last-child th,
+      table tr:last-child td {
+        border-bottom: 0;
+      }
+      table tr th {
+        border-top: 1px solid #cbd5e1;
+        text-align: left;
+      }
+
+      #reset-user:hover{
+        stroke: #fb923c;
+      }
+    </style>
   </head>
   <body class="bg-slate-100 tracking-wide leading-4 w-screen">
     {% csrf_token %}
+    <div class="spinner-wrapper" style='display: none'>
+      <div class="spinner-border text-primary" role='status'>
+        <span class="visually-hidden" style='color:white; font-size:18px'>Deleting Question...</span>
+      </div>
+    </div>
+    <style>
+      .spinner-wrapper {
+        background-color: rgba(0, 0, 0, 0.3);
+        position: fixed;
+        top: 0;
+        left:0;
+        width: 100%;
+        height: 100%;
+        z-index:9999;
+        display: flex;
+        justify-content: center;
+      }
+    
+      .spinner-border {
+        height: 60px;
+        width: 60px;
+        margin-top: 30vh;
+      }
+    
+    </style>
     
     <div
       class="upper-nav-bar ml-[80px] bg-white flex justify-between items-center"
@@ -264,23 +314,20 @@
             </li>
           </ul>
         </div>
-        <script>
-          function changeLoc(){
-            window.location.href="{% url 'add-question' tests.id %}"
-          }
-        </script>
         <div class="mt-2  flex-grow flex flex-col gap-5 mr-8">
           <div class="flex justify-between items-center mb-4">
             <h1 class="font-semibold text-[18px]">Questions manager</h1>
             <div class="flex gap-[1.25px]">
               <button
-              href='{% url "add-question" tests.id %}'
+              id='add-question'
               onclick= "changeLoc()"
               class="bg-orange-400 text-white px-4 py-[10px] font-semibold text-[16px] rounded-tr-none rounded-br-none rounded-lg hover:bg-orange-500"
             >                    
               Add question         
             </button>
             <button
+              onclick = 'showModal()'
+              id='modal-button'
               class="bg-orange-400 text-white px-4 py-[12px] font-semibold text-[18px] rounded-tl-none rounded-bl-none rounded-md hover:bg-orange-500"
             >                    
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -350,7 +397,88 @@
           <script>
             const test_id = {{tests.id}}
           </script>
-          <script src='{% static "portal/questions-manager.js" %}'></script>
     </div>
+
+    <div
+      id="modal-sam"
+      class="modal-sam hidden fixed inset-0 bg-black bg-opacity-25 justify-center items-center"
+    >
+      <div class="w-[600px] flex flex-col">
+        <div class="bg-white p-5 rounded">
+          <div>
+            <h1 class="text-[16px] font-semibold">Excel File Upload</h1>
+          </div>
+          <div class="mt-8">
+            <p class="text-[14px]">
+              Structure of the excel file should be of this format.
+            </p>
+            <table class="min-w-full mt-5">
+              <tbody>
+                <tr class="">
+                  <td
+                    class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                    QUESTION
+                  </td>
+                  <td
+                    class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                    OPTION 1
+                  </td>
+                  <td
+                    class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                    OPTION 2
+                  </td>
+                  <td
+                    class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                   OPTION 3
+                  </td>
+                  <td
+                    class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                    OPTION 4
+                  </td>
+                  <td
+                    class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                    CORRECT OP
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <form action="{% url 'upload-questions' tests.id %}" class="mt-8 flex flex-col" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="p-3 border-[1px] border-slate-300 rounded-md">
+                <input required type="file" name='questions' />
+              </div>
+
+              <div class="buttons mt-9 flex gap-4 self-end items-center">
+                <button
+                  id="hide-modal"
+                  class="text-black px-4 py-[10px] font-semibold border-[2px] text-[16px] rounded-md hover:border-orange-400 hover:text-orange-400"
+                >
+                  Cancel
+                </button>
+                  <button
+                    onclick=""
+                    class="bg-orange-400 text-white px-4 py-[10px] font-semibold text-[16px] rounded-md hover:bg-orange-500"
+                  >
+                    Upload
+                  </button>
+              </div>
+              <script src='{% static "portal/users-database.js" %}'></script>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src='{% static "portal/questions-manager.js" %}'></script>
+    <script>
+      function changeLoc(){
+        window.location.href="{% url 'add-question' tests.id %}"
+      }
+    </script>
   </body>
 </html>
