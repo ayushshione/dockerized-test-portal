@@ -977,6 +977,10 @@ video {
   stroke: #64748b;
 }
 
+.stroke-red-400 {
+  stroke: #f87171;
+}
+
 .p-0 {
   padding: 0px;
 }
