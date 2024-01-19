@@ -54,13 +54,17 @@ checkbox_all.addEventListener("change", () => {
 
   if (checkbox_all.checked) {
     checkboxes.forEach((checkbox) => {
-      checkbox.checked = true;
-      triggerChangeEvent(checkbox)
+      if(checkbox.checked == false){
+        checkbox.checked = true;
+        triggerChangeEvent(checkbox)
+      }
     });
   } else {
     checkboxes.forEach((checkbox) => {
-      checkbox.checked = false;
-      triggerChangeEvent(checkbox)
+      if(checkbox.checked == true){
+        checkbox.checked = false;
+        triggerChangeEvent(checkbox)
+      }
     });
   }
 });
