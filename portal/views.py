@@ -120,7 +120,6 @@ def test_page(request):
         'seconds': seconds,
     })
 
-
 def user_page(request):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
@@ -369,6 +368,7 @@ def add_user(request):
 
                 test_status = TestStatus.objects.create(
                     user=user,
+                    test_status = '1',
                     test=test,
                 )
 
@@ -380,8 +380,13 @@ def add_user(request):
                     user=user.first(),
                 ).first()
 
-                test_status.test = test
-                test_status.save()  
+                test_status.delete()
+
+                test_status = TestStatus.objects.create(
+                    user=user.first(),
+                    test_status = '1',
+                    test=test,
+                )  
         else:
             is_form_invalid = True     
 
@@ -511,6 +516,30 @@ def get_next_question(request, questionnum):
 
     return JsonResponse(questions[questionnum-1])
 
+def delete_questions(request):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+
+    if(request.method == "POST"):
+        data = json.loads(request.body)
+        to_delete = data['to_delete']
+        test_id = data['test_id']
+
+        test = Test.objects.get(id=test_id)
+
+        for qid in to_delete:
+            question = Question.objects.get(id=qid)
+            question.delete()
+
+            test.test_question_no -= 1
+            test.save()
+    
+    return JsonResponse({
+        'message': 'Questions are deleted.'
+    })
 
 def save_question(request):
     if (not request.user.is_authenticated):

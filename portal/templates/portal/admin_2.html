@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <title>Sokalp - Admin Panel</title>
-    <link rel="stylesheet" href="{% static 'portal/admin-style.css' %}"/>
+    <link rel="stylesheet" href="{% static 'src/styles.css' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'portal/favicon.png' %}">
   </head>
   <body class="bg-slate-100 tracking-wide leading-4">
@@ -132,7 +132,7 @@
             </button>
             <a href="{% url 'add-test' %}">
               <button
-              class="bg-orange-400 text-white inline-block px-4 py-[12px] font-semibold text-[18px] rounded-lg border-2 hover:bg-orange-500"
+              class="bg-orange-400 text-white inline-block px-4 py-[12px] font-semibold text-[18px] rounded-md border-2 hover:bg-orange-500"
             >
               New test
             </button>
@@ -140,7 +140,7 @@
           </div>
         </div>
         <div
-          class="bg-white mt-8 mx-8 rounded-lg flex items-center shadow-sm shadow-slate-300"
+          class="bg-white mt-8 mx-8 rounded-md flex items-center shadow-sm shadow-slate-300"
         >
           <div class="flex mr-6 hover:bg-slate-100 px-6 py-4">
             <span class="text-gray-500 text-[17px] mr-4">Category</span>
@@ -188,7 +188,7 @@
         <div class="grid grid-cols-1 mx-8 gap-3 mt-4 mb-4 md:grid-cols-2">
           {% for test in tests %}
             <a href="{% url 'basic-settings' test.id %}">
-              <div class="bg-white p-3 rounded-lg hover:shadow-md active:shadow-sm flex flex-col self-start">
+              <div class="bg-white p-3 rounded-md hover:shadow-md active:shadow-sm flex flex-col self-start">
                 <div class="flex justify-between items-center">
                   <div class="flex gap-3 mt-3 ml-3 items-center">
                     <span
