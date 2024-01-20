@@ -120,6 +120,7 @@ def test_page(request):
         'seconds': seconds,
     })
 
+
 def user_page(request):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
@@ -279,13 +280,14 @@ def edit_test(request, testID):
         'questions_len': questions_len
     })
 
+
 def add_question(request, testID):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
 
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
-    
+
     test = Test.objects.filter(id=testID).first()
 
     is_form_invalid = False
@@ -322,7 +324,7 @@ def add_question(request, testID):
             return HttpResponseRedirect(reverse('create-question', args=[test.id]))
         else:
             is_form_invalid = True
-        
+
     form = AddQuestionForm(request.POST)
 
     return render(request, 'portal/test-settings/add-question.html', {
@@ -331,19 +333,20 @@ def add_question(request, testID):
         'is_form_invalid': is_form_invalid,
     })
 
+
 def add_user(request):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
 
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
-    
+
     is_form_invalid = False
 
-    if(request.method == "POST"):
+    if (request.method == "POST"):
         form = AddUserForm(request.POST)
 
-        if(form.is_valid()):
+        if (form.is_valid()):
             form_data = form.cleaned_data
 
             username = form_data['username']
@@ -368,7 +371,7 @@ def add_user(request):
 
                 test_status = TestStatus.objects.create(
                     user=user,
-                    test_status = '1',
+                    test_status='1',
                     test=test,
                 )
 
@@ -384,21 +387,21 @@ def add_user(request):
 
                 test_status = TestStatus.objects.create(
                     user=user.first(),
-                    test_status = '1',
+                    test_status='1',
                     test=test,
-                )  
+                )
         else:
-            is_form_invalid = True     
+            is_form_invalid = True
 
         return HttpResponseRedirect(reverse('users-database'))
 
     form = AddUserForm()
-    
+
     return render(request, 'portal/add-user.html', {
         'form': form,
         'is_form_invalid': is_form_invalid,
     })
-    
+
 
 def add_test(request):
     if (not request.user.is_authenticated):
@@ -406,20 +409,20 @@ def add_test(request):
 
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
-    
+
     is_form_invalid = False
 
-    if(request.method == "POST"):
+    if (request.method == "POST"):
         form = CreateTestForm(request.POST)
 
-        if(form.is_valid()):
+        if (form.is_valid()):
             form_data = form.cleaned_data
             test_name = form_data['test_name']
             instruction = form_data['instruction']
 
             test_form = Test.objects.create(
-                test_name = test_name,
-                instructions = instruction
+                test_name=test_name,
+                instructions=instruction
             )
 
             time = datetime(year=1, month=1, day=1,
@@ -432,13 +435,13 @@ def add_test(request):
         else:
             is_form_invalid = True
 
-
     form = CreateTestForm()
-    
+
     return render(request, 'portal/test-settings/add-test.html', {
         'form': form,
         'is_form_invalid': is_form_invalid,
     })
+
 
 def create_question(request, testID):
     if (not request.user.is_authenticated):
@@ -516,6 +519,7 @@ def get_next_question(request, questionnum):
 
     return JsonResponse(questions[questionnum-1])
 
+
 def delete_questions(request):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
@@ -523,7 +527,7 @@ def delete_questions(request):
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
 
-    if(request.method == "POST"):
+    if (request.method == "POST"):
         data = json.loads(request.body)
         to_delete = data['to_delete']
         test_id = data['test_id']
@@ -536,9 +540,29 @@ def delete_questions(request):
 
             test.test_question_no -= 1
             test.save()
-    
+
     return JsonResponse({
         'message': 'Questions are deleted.'
+    })
+
+def delete_users(request):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+
+    if(request.method == "POST"):
+        data = json.loads(request.body)
+        to_delete = data['to_delete']
+
+        for uid in to_delete:
+            user1 = User.objects.get(id=uid)
+            user1.is_active = False
+            user1.save()
+
+    return JsonResponse({
+        'message': 'Users are deleted!'
     })
 
 def save_question(request):
@@ -619,7 +643,7 @@ def reset_user(request, userID, testID):
     user_answers = UserAnswers.objects.filter(user=user)
 
     for user_answer in user_answers:
-        if(user_answer.question.test == test):
+        if (user_answer.question.test == test):
             user_answer.delete()
 
     time = Time.objects.get(user=user, test=test)
@@ -734,8 +758,9 @@ def upload_questions(request, testID):
 
     return HttpResponseRedirect(reverse('edit-test', args=[testID]))
 
+
 def users_database(request):
-    users_full = User.objects.filter(is_superuser=False)
+    users_full = User.objects.filter(is_superuser=False, is_active=True)
 
     users = []
     users_len = len(users_full)
@@ -745,17 +770,18 @@ def users_database(request):
         test = None
         if test_status is not None:
             test = Test.objects.filter(id=test_status.test.id).first()
-            
-        users.append({
-            'user_id': user.id,
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'username': user.username,
-            'email': user.email,
-            'test_id': test.id,
-            'test_name': "" if test is None else test.test_name,
-            'test_status': test_status.test_status,
-        })
+
+        if user.is_active:    
+            users.append({
+                'user_id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'username': user.username,
+                'email': user.email,
+                'test_id': test.id,
+                'test_name': "" if test is None else test.test_name,
+                'test_status': test_status.test_status,
+            })
 
     return render(request, 'portal/users-database.html', {
         'users': users,
@@ -769,7 +795,7 @@ def upload_users(request):
 
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
-    
+
     if (request.method == "POST"):
         file = request.FILES['questions']
         obj = ExcelFile.objects.create(
@@ -817,9 +843,10 @@ def upload_users(request):
                 ).first()
 
                 test_status.test = test
-                test_status.save()       
+                test_status.save()
 
     return HttpResponseRedirect(reverse('users-database'))
+
 
 def create_test(request):
     if (not request.user.is_authenticated):
@@ -827,20 +854,5 @@ def create_test(request):
 
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
-
-    # if (request.method == "POST"):
-    #     form = CreateTestForm(request.POST)
-    #     is_form_valid = True
-
-    #     if(form.is_valid()):
-    #         form_data = form.cleaned_data
-    #         test_name = form_data["test_name"]
-    #         test = Test.objects.create(test_name=test_name)
-    #         time = datetime(year=1, month=1, day=1,
-    #                         hour=1, minute=0, second=0)
-
-    #         TestHour.objects.create(test=test, time=time)
-    #     else:
-    #         is_form_valid = False
 
     return HttpResponseRedirect(reverse('admin'))

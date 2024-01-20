@@ -341,8 +341,8 @@
           </div>
           </div>
           <div class="bg-white rounded-md flex-1 flex gap-3 items-center justify-between">
-            <div class="flex gap-5 items-center p-5">
-              <input type="checkbox" class='question_check' name='question-check-all' id="checkbox-all" class="size-4 p-5">
+            <div class="flex gap-3 items-center p-5">
+              <input type="checkbox" class='question_check size-4' name='question-check-all' id="checkbox-all" class="size-4 p-5">
               <label id='selected-box' for="checkbox-1" class="font-semibold text-[13px]">QUESTIONS {{ questions_len }}</label>
               
               <button id='delete-btn' class='group hover:text-red-500 hidden gap-3 items-center'>
@@ -362,7 +362,7 @@
             <div class="bg-white rounded-md flex-1 flex gap-2 flex-col px-2">
               <div class="flex gap-4 items-start p-5 justify-between">
                 <div class="flex gap-4">
-                  <input type="checkbox" class='question_check' name='question_check' id="{{question.id}}" class="size-4">
+                  <input type="checkbox" class='question_check size-4' name='question_check' id="{{question.id}}" class="size-4">
                   <label for="{{question.id}}" class="font-semibold text-[18px]">Q. {{forloop.counter}}</label>
                 </div>
                 <p class="text-slate-500">Points: 1</p>
