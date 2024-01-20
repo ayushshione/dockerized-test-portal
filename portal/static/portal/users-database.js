@@ -1,15 +1,16 @@
 
-function showModal(){
-  const modal = document.getElementById('modal-sam')
-  const add_user = document.getElementById('add-user')
-  const modal_button = document.getElementById('modal-button')
 
+const modal_button = document.getElementById('modal-button')
+
+modal_button.addEventListener('click', (e) => {
+  const add_user = document.getElementById('add-user')
+  const modal = document.getElementById('modal-sam')
   add_user.disabled = true;
   modal_button.disabled = true;
 
   modal.classList.remove('hidden');
   modal.classList.add('flex')
-}
+})
 
 function changeLoc(){
   window.location.href = '/add-user'

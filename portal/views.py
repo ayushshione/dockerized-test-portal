@@ -657,7 +657,7 @@ def reset_user(request, userID, testID):
     ts.test_status = '1'
     ts.save()
 
-    return HttpResponseRedirect(reverse('users-database'))
+    return HttpResponseRedirect(reverse('results', args=[test.id]))
 
 
 def set_time(request):
@@ -829,8 +829,6 @@ def results(request, testID):
                              "test_status": test_status.test_status,
                              "score": score})
     
-    print(user_details)
-
     return render(request, 'portal/test-settings/results.html', {
         'test': test,
         'users': user_details,
