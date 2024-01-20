@@ -30,4 +30,5 @@ urlpatterns = [
     path('upload-users/', views.upload_users, name='upload-users'),
     path('delete-questions', views.delete_questions, name='delete-questions'),
     path('delete-users', views.delete_users, name='delete-users'),
+    path('results/<int:testID>', views.results, name='results'),
 ]

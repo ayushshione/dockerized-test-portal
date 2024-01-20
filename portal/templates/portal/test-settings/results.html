@@ -1,14 +1,16 @@
 {% load static %}
+{% load custom_filters %}
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Sokalp - Test settings</title>
+    <title>Sokalp - Results</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'src/styles.css' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'portal/favicon.png' %}">
+
     <style>
       table {
         border-collapse: separate;
@@ -36,12 +38,12 @@
     </style>
   </head>
   <body class="bg-slate-100 tracking-wide leading-4 w-screen">
-    {% csrf_token %}
     <div class="spinner-wrapper" style='display: none'>
       <div class="spinner-border text-primary" role='status'>
-        <span class="visually-hidden" style='color:white; font-size:18px'>Deleting Question...</span>
+        <span class="visually-hidden" style='color:white; font-size:18px'>Chaning Time...</span>
       </div>
     </div>
+    {% csrf_token %}
     <style>
       .spinner-wrapper {
         background-color: rgba(0, 0, 0, 0.3);
@@ -62,11 +64,10 @@
       }
     
     </style>
-    
     <div
       class="upper-nav-bar ml-[80px] bg-white flex justify-between items-center"
     >
-      <h1 class="font-semibold p-4 text-base">{{tests.test_name}}</h1>
+      <h1 class="font-semibold p-4 text-base">{{test.test_name}}</h1>
       <div
         class="flex gap-2 items-center text-gray-500 p-4 hover:bg-slate-200 h-full"
       >
@@ -208,7 +209,7 @@
           <h1 class="font-bold text-[18px]">Test configuration</h1>
           <ul class="list-none">
             <li>
-              <a href="{% url 'basic-settings' tests.id %}">
+              <a href="{% url 'basic-settings' test.id %}">
                 <div class="p-3 flex items-center group hover:bg-white gap-3">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -238,59 +239,7 @@
               </a>
             </li>
             <li>
-              <a href="{% url 'edit-test' tests.id %}">
-                <div
-                  class="p-3 flex items-center shadow-sm gap-3 rounded-md group bg-white"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-6 h-6 stroke-orange-400"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
-                    />
-                  </svg>
-                  <p
-                    class="text-[14px] text-black font-semibold"
-                  >
-                    Questions manager
-                  </p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'time-settings' tests.id %}">
-                <div
-                  class="p-3 flex  items-center group hover:bg-white gap-3 rounded-md"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-6 h-6 stroke-slate-500 group-hover:stroke-orange-400"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                    />
-                  </svg>
-                  <p class="text-[14px] text-slate-500 group-hover:text-black font-semibold">
-                    Time settings
-                  </p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'results' tests.id %}">
+              <a href="{% url 'edit-test' test.id %}">
                 <div
                   class="p-3 flex items-center gap-3 rounded-md group hover:bg-white"
                 >
@@ -305,11 +254,61 @@
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"
+                      d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
                     />
                   </svg>
                   <p
                     class="text-[14px] text-slate-500 group-hover:text-black font-semibold"
+                  >
+                    Questions manager
+                  </p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <div
+                class="p-3 flex items-center gap-3 rounded-md group hover:bg-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6 stroke-slate-500 group-hover:stroke-orange-400"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  />
+                </svg>
+                <p class="text-[14px] text-slate-500 group-hover:text-black font-semibold">
+                  Time settings
+                </p>
+              </div>
+            </li>
+            <li>
+              <a href="{% url 'user-details' test.id %}">
+                <div
+                  class="p-3 flex shadow-sm items-center gap-3 bg-white rounded-md"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6 stroke-orange-400"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"
+                    />
+                  </svg>
+                  <p
+                    class="text-[14px] group-hover:text-black font-semibold"
                   >
                     Results
                   </p>
@@ -318,171 +317,185 @@
             </li>
           </ul>
         </div>
-        <div class="mt-2  flex-grow flex flex-col gap-5 mr-8">
-          <div class="flex justify-between items-center mb-4">
-            <h1 class="font-semibold text-[18px]">Questions manager</h1>
-            <div class="flex gap-[1.25px]">
-              <button
-              id='add-question'
-              onclick= "changeLoc()"
-              class="bg-orange-400 text-white px-4 py-[10px] font-semibold text-[16px] rounded-tr-none rounded-br-none rounded-lg hover:bg-orange-500"
-            >                    
-              Add question         
-            </button>
-            <button
-              onclick = 'showModal()'
-              id='modal-button'
-              class="bg-orange-400 text-white px-4 py-[12px] font-semibold text-[18px] rounded-tl-none rounded-bl-none rounded-md hover:bg-orange-500"
-            >                    
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-            </svg>        
-            </button>
-          </div>
-          </div>
-          <div class="bg-white rounded-md flex-1 flex gap-3 items-center justify-between">
-            <div class="flex gap-3 items-center p-5">
-              <input type="checkbox" class='question_check size-4' name='question-check-all' id="checkbox-all" class="size-4 p-5">
-              <label id='selected-box' for="checkbox-1" class="font-semibold text-[13px]">QUESTIONS {{ questions_len }}</label>
-              
-              <button id='delete-btn' class='group hover:text-red-500 hidden gap-3 items-center'>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                </svg>                    
-                <span class='text-[16px]'>Delete</span>
-              </button>
-            </div>
-            <div class="flex items-center p-5 hover:bg-slate-200">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-              </svg>              
-            </div>
-          </div> 
-          {% for question in questions %}
-            <div class="bg-white rounded-md flex-1 flex gap-2 flex-col px-2">
-              <div class="flex gap-4 items-start p-5 justify-between">
-                <div class="flex gap-4">
-                  <input type="checkbox" class='question_check size-4' name='question_check' id="{{question.id}}" class="size-4">
-                  <label for="{{question.id}}" class="font-semibold text-[18px]">Q. {{forloop.counter}}</label>
-                </div>
-                <p class="text-slate-500">Points: 1</p>
-              </div>
-              <div class="ml-12 mb-4">
-                  {{question.question|safe}}
-              </div>
-              <div class='flex flex-col gap-2 mb-6'>
-                <div class="flex gap-4 ml-16 items-start {% if question.correct_op == 1%}bg-green-300 bg-opacity-25 rounded-md {%endif%} break-words p-3">
-                  <input type="checkbox" id="op1" class="size-4" disabled>
-                    <label for="op1" class="text-[18px] leading-6">
-                        {{question.op1|safe}}
-                    </label>
-                </div>
-                <div class="flex gap-4 ml-16 items-start {% if question.correct_op == 2%}bg-green-300 bg-opacity-25 rounded-md {%endif%} break-words p-3">
-                  <input type="checkbox" id="op2" class="size-4" disabled>
-                  <label for="op2" class="text-[18px] leading-6">
-                      {{question.op2|safe}}
-                  </label>
-                </div>
-                <div class="flex gap-4 ml-16 items-start {% if question.correct_op == 3%}bg-green-300 bg-opacity-25 rounded-md {%endif%} break-words p-3">
-                  <input type="checkbox" id="op3" class="size-4" disabled>
-                    <label for="op3" class="text-[18px] leading-6">
-                        {{question.op3|safe}}
-                    </label>
-                </div>
-                <div class="flex gap-4 ml-16 items-start break-words {% if question.correct_op == 4%}bg-green-300 bg-opacity-25 rounded-md {%endif%} p-3">
-                  <input type="checkbox" id="op4" class="size-4" disabled>
-                    <label for="op4" class="text-[18px] leading-6">
-                        {{question.op4|safe}}
-                    </label>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
-          <script>
-            const test_id = {{tests.id}}
-          </script>
-    </div>
+        <div class="mt-2 px-[8px] flex-grow flex flex-col gap-6 mr-4">
+          <h1 class="font-semibold text-[18px] mb-4">Results</h1>
 
-    <div
-      id="modal-sam"
-      class="modal-sam hidden fixed inset-0 bg-black bg-opacity-25 justify-center items-center"
-    >
-      <div class="w-[600px] flex flex-col">
-        <div class="bg-white p-5 rounded">
-          <div>
-            <h1 class="text-[16px] font-semibold">Excel File Upload</h1>
-          </div>
-          <div class="mt-8">
-            <p class="text-[14px]">
-              Structure of the excel file should be of this format.
-            </p>
-            <table class="min-w-full mt-5">
+          <div class="bg-white p-5 rounded-md flex-1 flex flex-col gap-3">
+            <h1 class="font-semibold leading-6 text-[13px] mb-6">
+              RESULTS
+            </h1>
+            <table class="">
               <tbody>
                 <tr class="">
                   <td
                     class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
                   >
-                    QUESTION
+                    <input type="checkbox" class="size-4" name="checkbox-all" id="checkbox-all" />
                   </td>
                   <td
                     class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
                   >
-                    OPTION 1
+                    USERNAME
                   </td>
                   <td
                     class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
                   >
-                    OPTION 2
+                    FIRST NAME
                   </td>
                   <td
                     class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
                   >
-                   OPTION 3
+                    LAST NAME
                   </td>
                   <td
                     class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
                   >
-                    OPTION 4
+                    SCORE
                   </td>
                   <td
                     class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
                   >
-                    CORRECT OP
+                    TEST NAME
+                  </td>
+                  <td class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left">
+  
                   </td>
                 </tr>
+                <tr class="">
+                  <td
+                    class="py-2 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                    <input
+                      type="checkbox"
+                      class="size-4"
+                      style="display: none"
+                      name=""
+                      id=""
+                    />
+                  </td>
+                  <td
+                    class="py-2 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                    <input
+                      type="text"
+                      placeholder="Filter"
+                      class="border-b-2 font-normal text-[14px] p-2 outline-none focus:border-orange-400"
+                      name=""
+                      id=""
+                    />
+                  </td>
+                  <td
+                    class="py-2 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                    <input
+                      type="text"
+                      placeholder="Filter"
+                      class="border-b-2 font-normal text-[14px] p-2 outline-none focus:border-orange-400"
+                      name=""
+                      id=""
+                    />
+                  </td>
+                  <td
+                    class="py-2 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                    <input
+                      type="text"
+                      placeholder="Filter"
+                      class="border-b-2 font-normal text-[14px] p-2 outline-none focus:border-orange-400"
+                      name=""
+                      id=""
+                    />
+                  </td>
+                  <td
+                    class="py-2 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                    <input
+                      type="text"
+                      placeholder="Filter"
+                      class="border-b-2 font-normal text-[14px] p-2 outline-none focus:border-orange-400"
+                      name=""
+                      id=""
+                    />
+                  </td>
+                  <td
+                    class="py-2 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                    <input
+                      type="text"
+                      placeholder="Filter"
+                      class="border-b-2 font-normal text-[14px] p-2 outline-none focus:border-orange-400"
+                      name=""
+                      id="checkbox-all"
+                    />
+                  </td>
+                  <td class="py-2 text-[12px] font-semibold tracking-wide text-left">                  
+                  </td>
+                </tr>
+                {% for user in users %}
+                <tr class="">
+                  <td class="px-3 py-5 text-[14px] text-gray-700">
+                    <input type="checkbox" name='question_check' class="size-4 question_check" id='{{user.user_id}}' />
+                  </td>
+                  <td class="px-3 py-5 text-[14px] text-gray-700">
+                    {% if user.username == "" %}
+                     - 
+                    {% else %}
+                     {{user.username}} 
+                    {% endif %}
+                  </td>
+                  <td class="px-3 py-5 text-[14px] text-gray-700">
+                    {% if user.first_name == "" %} 
+                      - 
+                    {% else %}
+                      {{user.first_name|title}} 
+                    {% endif %}
+                  </td>
+                  <td class="px-3 py-5 text-[14px] text-gray-700">
+                    {% if user.last_name == "" %} 
+                      - 
+                    {% else %}
+                    {{user.last_name|title}} 
+                    {% endif %}
+                  </td>
+                  <td class="px-3 py-5 text-[14px] text-gray-700">
+                    {% if user.score == "" %}
+                     -
+                    {% else %}
+                     {{user.score}} 
+                    {% endif %}
+                  </td>
+                  <td class="px-3 py-5 text-[14px] text-gray-700">
+                    {% if user.test_name == "" %}
+                     - 
+                    {% else %} 
+                     <span>
+                      {{user.test_name}}
+                     </span>
+                    {% endif %}
+                  </td>
+                  <td class="py-2 text-[12px] font-semibold tracking-wide text-left">
+                    <a href="{% url 'reset-user' user.id test.id  %}">
+                      <button class="{% if user.test_status == '1' %} hidden {% elif user.test_status == '2' %} inline-block {% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" id='reset-user' fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                        </svg>
+                      </button>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
               </tbody>
             </table>
-            <form action="{% url 'upload-questions' tests.id %}" class="mt-8 flex flex-col" method="POST" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div class="p-3 border-[1px] border-slate-300 rounded-md">
-                <input required type="file" name='questions' />
-              </div>
-
-              <div class="buttons mt-9 flex gap-4 self-end items-center">
-                <button
-                  id="hide-modal"
-                  class="text-black px-4 py-[10px] font-semibold border-[2px] text-[16px] rounded-md hover:border-orange-400 hover:text-orange-400"
-                >
-                  Cancel
-                </button>
-                  <button
-                    onclick=""
-                    class="bg-orange-400 text-white px-4 py-[10px] font-semibold text-[16px] rounded-md hover:bg-orange-500"
-                  >
-                    Upload
-                  </button>
-              </div>
-              <script src='{% static "portal/users-database.js" %}'></script>
-            </form>
           </div>
+          <button
+            id='butt'
+            class="bg-orange-400 w-20 inline-block text-white px-4 py-[12px] font-semibold text-[18px] rounded-lg border-2 hover:bg-orange-500"
+          >
+            Save
+          </button>
+          <script src='{% static "portal/admin.js" %}'></script>
         </div>
       </div>
     </div>
-    <script src='{% static "portal/questions-manager.js" %}'></script>
-    <script>
-      function changeLoc(){
-        window.location.href="{% url 'add-question' tests.id %}"
-      }
-    </script>
   </body>
 </html>

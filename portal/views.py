@@ -792,6 +792,50 @@ def users_database(request):
         'users_len': users_len,
     })
 
+def results(request, testID):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+
+    test = Test.objects.get(id=testID)
+    test_statuses = TestStatus.objects.filter(test=test)
+
+    user_details = []
+
+    for test_status in test_statuses:
+        user = test_status.user
+
+        if(user.is_active == False or user.is_superuser == True):
+            continue
+
+        user_answers = UserAnswers.objects.filter(user=user)
+        score = 0
+
+        for user_answer in user_answers:
+            question = user_answer.question
+            if(question.test == test):
+                correct_op = Question.objects.filter(
+                    question=question, test=test).first().correct_op
+
+                if (correct_op == user_answer.user_option):
+                    score += 1
+
+        user_details.append({"id": user.id,
+                             "username": user.username,
+                             'first_name': user.first_name,
+                             "last_name": user.last_name,
+                             "test_status": test_status.test_status,
+                             "score": score})
+    
+    print(user_details)
+
+    return render(request, 'portal/test-settings/results.html', {
+        'test': test,
+        'users': user_details,
+    })
+
 
 def upload_users(request):
     if (not request.user.is_authenticated):
