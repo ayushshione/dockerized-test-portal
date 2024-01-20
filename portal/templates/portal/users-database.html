@@ -217,7 +217,7 @@
           </h1>
 
           <div class="p-5 rounded-md flex gap-5 items-center border-slate-300 mb-5 border-[1px]">
-            <p id=''>Users ({{users_len}})</p>
+            <p id=''>Users <span id='records_p'>({{users_len}})</span></p>
             
             <div id='delete-div' class='hidden gap-4 items-center'>
               <p id='selected-box' class='font-semibold text-[13px]'></p>
@@ -230,7 +230,7 @@
             </div>
           </div>
 
-          <table class="">
+          <table id='table' class="">
             <tbody>
               <tr class="">
                 <td
@@ -284,7 +284,7 @@
                     placeholder="Filter"
                     class="border-b-2 font-normal text-[14px] p-2 outline-none focus:border-orange-400"
                     name=""
-                    id=""
+                    id="username-filter"
                   />
                 </td>
                 <td
@@ -455,6 +455,9 @@
         </div>
       </div>
     </div>
+    <script>
+      const data = {{users|safe}}
+    </script>
     <script src='{% static "portal/users-database.js" %}'></script>
   </body>
 </html>
