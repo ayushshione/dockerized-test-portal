@@ -376,18 +376,21 @@ def add_user(request):
                 )
 
             else:
-                user.first().set_password(password)
-                user.first().is_active = True
-                user.first().save()
+                user_instance = user.first()
+                if not user_instance.is_active:
+                    user_instance.is_active = True
+                    user_instance.save()
+
+                user_instance.set_password(password)
 
                 test_status = TestStatus.objects.filter(
-                    user=user.first(),
+                    user=user_instance,
                 ).first()
 
                 test_status.delete()
 
                 test_status = TestStatus.objects.create(
-                    user=user.first(),
+                    user=user_instance,
                     test_status='1',
                     test=test,
                 )
@@ -836,16 +839,24 @@ def upload_users(request):
                 )
 
             else:
-                user.first().set_password(password)
-                user.first().is_active = True
-                user.first().save()
+                user_instance = user.first()
+                if not user_instance.is_active:
+                    user_instance.is_active = True
+                    user_instance.save()
+
+                user_instance.set_password(password)
 
                 test_status = TestStatus.objects.filter(
-                    user=user.first(),
+                    user=user_instance,
                 ).first()
 
-                test_status.test = test
-                test_status.save()
+                test_status.delete()
+
+                test_status = TestStatus.objects.create(
+                    user=user_instance,
+                    test_status='1',
+                    test=test,
+                )
 
     return HttpResponseRedirect(reverse('users-database'))
 
