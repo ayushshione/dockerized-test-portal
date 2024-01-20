@@ -70,6 +70,25 @@ checkbox_all.addEventListener("change", () => {
 });
 
 delete_button.addEventListener("click", () => {
+  showModal();
+});
+
+function showModal() {
+  const modal = document.getElementById("modal-sam");
+
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+}
+
+document.getElementById("hide-modal").addEventListener("click", (e) => {
+  e.preventDefault();
+  const modal = document.getElementById("modal-sam");
+
+  modal.classList.remove("flex");
+  modal.classList.add("hidden");
+});
+
+document.getElementById("delete-test-btn").addEventListener("click", (e) => {
   const toDelete = [];
   spinnerWrapperEl.style.display = "flex";
   checkboxes.forEach((checkbox) => {
@@ -103,29 +122,4 @@ delete_button.addEventListener("click", () => {
       // Handle errors
       console.error("There was a problem with the fetch operation:", error);
     });
-});
-
-function showModal() {
-  const modal = document.getElementById("modal-sam");
-  const add_user = document.getElementById("add-question");
-  const modal_button = document.getElementById("modal-button");
-
-  add_user.disabled = true;
-  modal_button.disabled = true;
-
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
-}
-
-document.getElementById("hide-modal").addEventListener("click", (e) => {
-  e.preventDefault();
-  const modal = document.getElementById("modal-sam");
-  const add_user = document.getElementById("add-question");
-  const modal_button = document.getElementById("modal-button");
-
-  add_user.disabled = false;
-  modal_button.disabled = false;
-
-  modal.classList.remove("flex");
-  modal.classList.add("hidden");
 });
