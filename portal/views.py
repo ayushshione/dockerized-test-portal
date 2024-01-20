@@ -377,6 +377,7 @@ def add_user(request):
 
             else:
                 user.first().set_password(password)
+                user.first().is_active = True
                 user.first().save()
 
                 test_status = TestStatus.objects.filter(
@@ -836,6 +837,7 @@ def upload_users(request):
 
             else:
                 user.first().set_password(password)
+                user.first().is_active = True
                 user.first().save()
 
                 test_status = TestStatus.objects.filter(

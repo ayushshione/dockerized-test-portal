@@ -242,7 +242,7 @@
                 <td
                   class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
                 >
-                  TEST NAME
+                  USERNAME
                 </td>
                 <td
                   class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
@@ -257,12 +257,12 @@
                 <td
                   class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
                 >
-                  USERNAME
+                  E-MAIL ADDRESS
                 </td>
                 <td
                   class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
                 >
-                  E-MAIL ADDRESS
+                  TEST NAME
                 </td>
                 <td class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left">
 
@@ -344,12 +344,10 @@
                   <input type="checkbox" name='question_check' class="size-4 question_check" id='{{user.user_id}}' />
                 </td>
                 <td class="px-3 py-5 text-[14px] text-gray-700">
-                  {% if user.test_name == "" %}
+                  {% if user.username == "" %}
                    - 
-                  {% else %} 
-                   <span>
-                    {{user.test_name}}
-                   </span>
+                  {% else %}
+                   {{user.username}} 
                   {% endif %}
                 </td>
                 <td class="px-3 py-5 text-[14px] text-gray-700">
@@ -367,17 +365,19 @@
                   {% endif %}
                 </td>
                 <td class="px-3 py-5 text-[14px] text-gray-700">
-                  {% if user.username == "" %}
-                   - 
-                  {% else %}
-                   {{user.username}} 
-                  {% endif %}
-                </td>
-                <td class="px-3 py-5 text-[14px] text-gray-700">
                   {% if user.email == "" %}
                    -
                   {% else %}
                    {{user.email}} 
+                  {% endif %}
+                </td>
+                <td class="px-3 py-5 text-[14px] text-gray-700">
+                  {% if user.test_name == "" %}
+                   - 
+                  {% else %} 
+                   <span>
+                    {{user.test_name}}
+                   </span>
                   {% endif %}
                 </td>
                 <td class="py-2 text-[12px] font-semibold tracking-wide text-left">
