@@ -185,10 +185,15 @@
             >
           </div>
         </div>
+        <script>
+          function handleDeleteTest(event, id){
+            event.stopPropagation();
+            window.location.href = `/delete-test/${id}`
+          }
+        </script>
         <div class="grid grid-cols-1 mx-8 gap-3 mt-4 mb-4 md:grid-cols-2">
           {% for test in tests %}
-            <a href="{% url 'basic-settings' test.id %}">
-              <div class="bg-white p-3 rounded-md hover:shadow-md active:shadow-sm flex flex-col self-start">
+              <div onclick="window.location.href = `{% url 'basic-settings' test.id %}`" class="bg-white p-3 rounded-md hover:shadow-md active:shadow-sm flex group flex-col self-start">
                 <div class="flex justify-between items-center">
                   <div class="flex gap-3 mt-3 ml-3 items-center">
                     <span
@@ -199,18 +204,11 @@
                       >CREATED 14-01-2024</span
                     >
                   </div>
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M9.0013 13.667C7.71019 13.667 6.66797 14.7092 6.66797 16.0003C6.66797 17.2914 7.71019 18.3337 9.0013 18.3337C10.2924 18.3337 11.3346 17.2914 11.3346 16.0003C11.3346 14.7092 10.2924 13.667 9.0013 13.667ZM23.0013 13.667C21.7102 13.667 20.668 14.7092 20.668 16.0003C20.668 17.2914 21.7102 18.3337 23.0013 18.3337C24.2924 18.3337 25.3346 17.2914 25.3346 16.0003C25.3346 14.7092 24.2924 13.667 23.0013 13.667ZM16.0013 13.667C14.7102 13.667 13.668 14.7092 13.668 16.0003C13.668 17.2914 14.7102 18.3337 16.0013 18.3337C17.2924 18.3337 18.3346 17.2914 18.3346 16.0003C18.3346 14.7092 17.2924 13.667 16.0013 13.667Z"
-                      fill="#808E9D"
-                    ></path>
-                  </svg>
+                  <button onclick='handleDeleteTest(event, {{test.id}})' id='{{test.id}}' class='hidden items-center justify-center group-hover:flex group-hover:text-red-500 '>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 stroke-slate-500 hover:text-red-500">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                    </svg>                    
+                  </button>
                 </div>
                 <h1 class="mt-[23px] text-[20px] ml-3 font-bold">
                   {{test.test_name}}
@@ -246,7 +244,6 @@
                   </p>
                 </div>
               </div>
-            </a>
           {% endfor %}
         </div>
       </div>

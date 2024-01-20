@@ -634,6 +634,17 @@ def get_test_status(request):
         "test_status": test_status.test_status
     })
 
+def delete_test(request, testID):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+
+    test = Test.objects.filter(id=testID).first()
+    test.delete()
+
+    return HttpResponseRedirect(reverse('admin'))
 
 def reset_user(request, userID, testID):
     if (not request.user.is_authenticated):
