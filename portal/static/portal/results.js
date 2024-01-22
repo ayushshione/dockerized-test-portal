@@ -1,3 +1,12 @@
+const checkboxes = document.getElementsByName("question_check");
+const checkbox_all = document.getElementById("checkbox-all");
+// const initial_text = selected_box.innerText;
+const delete_button = document.getElementById("delete-btn");
+const spinnerWrapperEl = document.querySelector(".spinner-wrapper");
+let selected = 0;
+
+initializeCheckboxes();
+
 function getCSRFToken() {
   var csrfToken = null;
 
@@ -12,12 +21,6 @@ function getCSRFToken() {
 
   return csrfToken;
 }
-const checkboxes = document.getElementsByName("question_check");
-const checkbox_all = document.getElementById("checkbox-all");
-// const initial_text = selected_box.innerText;
-const delete_button = document.getElementById("delete-btn");
-const spinnerWrapperEl = document.querySelector(".spinner-wrapper");
-let selected = 0;
 
 function triggerChangeEvent(element) {
   const event = new Event('change');
@@ -83,45 +86,164 @@ document.getElementById('reset-user-btn').addEventListener("click", () => {
 });
 
 
-checkboxes.forEach((checkbox) => {
-  checkbox.addEventListener("change", () => {
-    if (checkbox.checked == true) {
-      if (delete_button.classList.contains("hidden")) {
-        delete_button.classList.add("flex");
-        delete_button.classList.remove("hidden");
+function initializeCheckboxes(){
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked == true) {
+        if (delete_button.classList.contains("hidden")) {
+          delete_button.classList.add("flex");
+          delete_button.classList.remove("hidden");
+        }
+        selected++;
+      } else {
+        selected--;
       }
-      selected++;
-    } else {
-      selected--;
-    }
-
-    if (selected <= 0) {
-      // selected_box.innerText = initial_text;
-      if (delete_button.classList.contains("flex")) {
-        delete_button.classList.add("hidden");
-        delete_button.classList.remove("flex");
+  
+      if (selected <= 0) {
+        // selected_box.innerText = initial_text;
+        if (delete_button.classList.contains("flex")) {
+          delete_button.classList.add("hidden");
+          delete_button.classList.remove("flex");
+        }
+      } else {
+        // selected_box.innerText = `${selected} SELECTED`;
       }
+    });
+  });
+  
+  checkbox_all.addEventListener("change", () => {
+  
+    if (checkbox_all.checked) {
+      checkboxes.forEach((checkbox) => {
+        if(checkbox.disabled == false && checkbox.checked == false){
+          checkbox.checked = true;
+          triggerChangeEvent(checkbox)
+        }
+      });
     } else {
-      // selected_box.innerText = `${selected} SELECTED`;
+      checkboxes.forEach((checkbox) => {
+        if(checkbox.disabled == false && checkbox.checked == true){
+          checkbox.checked = false;
+          triggerChangeEvent(checkbox)
+        }
+      });
     }
   });
+}
+
+const username_filter = document.getElementById("username-filter");
+const table = document.getElementById("table");
+const tbody = table.getElementsByTagName("tbody")[0];
+
+savedRows = [];
+for (var i = 2; i < tbody.children.length; i++) {
+  savedRows.push(tbody.children[i].cloneNode(true));
+}
+
+console.log(savedRows[0]);
+
+username_filter.addEventListener("keyup", (e) => {
+  let filteredArr = [];
+
+  const target_val = e.target.value;
+
+  for (let i = tbody.children.length - 1; i >= 2; i--) {
+    tbody.removeChild(tbody.children[i]);
+  }
+
+  for (var i = 0; i < savedRows.length; i++) {
+    tbody.appendChild(savedRows[i]);
+  }
+
+  if (target_val === "") {
+  } else {
+    for (let i = 2; i < tbody.children.length; i++) {
+      const tdElements = tbody.children[i].getElementsByTagName("td")[1];
+
+      if (tdElements.innerText.includes(target_val)) {
+        filteredArr.push(tbody.children[i].cloneNode(true));
+      }
+    }
+
+    for (let i = tbody.children.length - 1; i >= 2; i--) {
+      tbody.removeChild(tbody.children[i]);
+    }
+
+    for (let i = 0; i < filteredArr.length; i++) {
+      tbody.appendChild(filteredArr[i]);
+    }
+  }
+  initializeCheckboxes();
 });
 
-checkbox_all.addEventListener("change", () => {
+const firstname_filter = document.getElementById("firstname-filter");
 
-  if (checkbox_all.checked) {
-    checkboxes.forEach((checkbox) => {
-      if(checkbox.disabled == false && checkbox.checked == false){
-        checkbox.checked = true;
-        triggerChangeEvent(checkbox)
-      }
-    });
-  } else {
-    checkboxes.forEach((checkbox) => {
-      if(checkbox.disabled == false && checkbox.checked == true){
-        checkbox.checked = false;
-        triggerChangeEvent(checkbox)
-      }
-    });
+firstname_filter.addEventListener("keyup", (e) => {
+  let filteredArr = [];
+
+  const target_val = (e.target.value).toLowerCase();
+
+  for (let i = tbody.children.length - 1; i >= 2; i--) {
+    tbody.removeChild(tbody.children[i]);
   }
+
+  for (var i = 0; i < savedRows.length; i++) {
+    tbody.appendChild(savedRows[i]);
+  }
+
+  if (target_val === "") {
+  } else {
+    for (let i = 2; i < tbody.children.length; i++) {
+      const tdElements = tbody.children[i].getElementsByTagName("td")[2];
+
+      if (tdElements.innerText.toLowerCase().includes(target_val)) {
+        filteredArr.push(tbody.children[i].cloneNode(true));
+      }
+    }
+
+    for (let i = tbody.children.length - 1; i >= 2; i--) {
+      tbody.removeChild(tbody.children[i]);
+    }
+
+    for (let i = 0; i < filteredArr.length; i++) {
+      tbody.appendChild(filteredArr[i]);
+    }
+  }
+  initializeCheckboxes();
+});
+
+const lastname_filter = document.getElementById("lastname-filter");
+
+lastname_filter.addEventListener("keyup", (e) => {
+  let filteredArr = [];
+
+  const target_val = (e.target.value).toLowerCase();
+
+  for (let i = tbody.children.length - 1; i >= 2; i--) {
+    tbody.removeChild(tbody.children[i]);
+  }
+
+  for (var i = 0; i < savedRows.length; i++) {
+    tbody.appendChild(savedRows[i]);
+  }
+
+  if (target_val === "") {
+  } else {
+    for (let i = 2; i < tbody.children.length; i++) {
+      const tdElements = tbody.children[i].getElementsByTagName("td")[3];
+
+      if (tdElements.innerText.toLowerCase().includes(target_val)) {
+        filteredArr.push(tbody.children[i].cloneNode(true));
+      }
+    }
+
+    for (let i = tbody.children.length - 1; i >= 2; i--) {
+      tbody.removeChild(tbody.children[i]);
+    }
+
+    for (let i = 0; i < filteredArr.length; i++) {
+      tbody.appendChild(filteredArr[i]);
+    }
+  }
+  initializeCheckboxes();
 });

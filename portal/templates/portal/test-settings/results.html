@@ -358,7 +358,7 @@
             <h1 class="font-semibold leading-6 text-[13px] mb-6">
               RESULTS
             </h1>
-            <table class="">
+            <table id='table' class="">
               <tbody>
                 <tr class="">
                   <td
@@ -385,11 +385,6 @@
                     class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
                   >
                     SCORE
-                  </td>
-                  <td
-                    class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
-                  >
-                    TEST NAME
                   </td>
                   <td class="py-2 text-[12px] font-semibold tracking-wide text-left">
                       <button id='delete-btn' class="hidden p-2">
@@ -419,7 +414,29 @@
                       placeholder="Filter"
                       class="border-b-2 font-normal text-[14px] p-2 outline-none focus:border-orange-400"
                       name=""
-                      id=""
+                      id="username-filter"
+                    />
+                  </td>
+                  <td
+                    class="py-2 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                    <input
+                      type="text"
+                      placeholder="Filter"
+                      class="border-b-2 font-normal text-[14px] p-2 outline-none focus:border-orange-400"
+                      name=""
+                      id="firstname-filter"
+                    />
+                  </td>
+                  <td
+                    class="py-2 text-[12px] font-semibold tracking-wide text-left"
+                  >
+                    <input
+                      type="text"
+                      placeholder="Filter"
+                      class="border-b-2 font-normal text-[14px] p-2 outline-none focus:border-orange-400"
+                      name=""
+                      id="lastname-filter"
                     />
                   </td>
                   <td
@@ -431,39 +448,6 @@
                       class="border-b-2 font-normal text-[14px] p-2 outline-none focus:border-orange-400"
                       name=""
                       id=""
-                    />
-                  </td>
-                  <td
-                    class="py-2 text-[12px] font-semibold tracking-wide text-left"
-                  >
-                    <input
-                      type="text"
-                      placeholder="Filter"
-                      class="border-b-2 font-normal text-[14px] p-2 outline-none focus:border-orange-400"
-                      name=""
-                      id=""
-                    />
-                  </td>
-                  <td
-                    class="py-2 text-[12px] font-semibold tracking-wide text-left"
-                  >
-                    <input
-                      type="text"
-                      placeholder="Filter"
-                      class="border-b-2 font-normal text-[14px] p-2 outline-none focus:border-orange-400"
-                      name=""
-                      id=""
-                    />
-                  </td>
-                  <td
-                    class="py-2 text-[12px] font-semibold tracking-wide text-left"
-                  >
-                    <input
-                      type="text"
-                      placeholder="Filter"
-                      class="border-b-2 font-normal text-[14px] p-2 outline-none focus:border-orange-400"
-                      name=""
-                      id="checkbox-all"
                     />
                   </td>
                   <td class="py-2 text-[12px] font-semibold tracking-wide text-left">                  
@@ -504,15 +488,6 @@
                      -
                     {% else %}
                      {{user.score}} / {{test_question_no}}
-                    {% endif %}
-                  </td>
-                  <td class="px-3 py-5 text-[14px] text-gray-700">
-                    {% if user.test_name == "" %}
-                     - 
-                    {% else %} 
-                     <span>
-                      {{test.test_name}}
-                     </span>
                     {% endif %}
                   </td>
                   <td class="py-2 text-[12px] font-semibold tracking-wide text-left">
