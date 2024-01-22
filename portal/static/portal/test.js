@@ -167,6 +167,8 @@ function getCSRFToken() {
 }
 
 function handleSave() {
+  const spinnerWrapperEl = document.querySelector(".spinner-wrapper");
+
   var csrf_token = getCSRFToken();
 
   let radioButtons = document.getElementsByName("answer");
@@ -191,7 +193,8 @@ function handleSave() {
     user_option = 4;
   }
 
-  fetch(`${window.location.href}save-answer`, {
+  spinnerWrapperEl.style.display = "flex";
+  return fetch(`${window.location.href}save-answer`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -209,6 +212,7 @@ function handleSave() {
       return response.json();
     })
     .then((data) => {
+      spinnerWrapperEl.style.display = "none";
       savedAnswers[currQuestionID] = user_option;
       updateClassList(-1);
       console.log(data);
@@ -220,8 +224,10 @@ function handleSave() {
 }
 
 function handleSaveAndNext() {
-  handleSave();
-  handleNext();
+  handleSave()
+  .then(() => {
+    handleNext();
+  });
 }
 
 function finishTest() {
