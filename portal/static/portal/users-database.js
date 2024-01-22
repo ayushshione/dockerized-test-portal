@@ -88,6 +88,155 @@ username_filter.addEventListener("keyup", (e) => {
   initializeCheckboxes();
 });
 
+const firstname_filter = document.getElementById("firstname-filter");
+
+firstname_filter.addEventListener("keyup", (e) => {
+  let filteredArr = [];
+
+  const target_val = (e.target.value).toLowerCase();
+
+  for (let i = tbody.children.length - 1; i >= 2; i--) {
+    tbody.removeChild(tbody.children[i]);
+  }
+
+  for (var i = 0; i < savedRows.length; i++) {
+    tbody.appendChild(savedRows[i]);
+  }
+
+  if (target_val === "") {
+  } else {
+    for (let i = 2; i < tbody.children.length; i++) {
+      const tdElements = tbody.children[i].getElementsByTagName("td")[2];
+
+      if (tdElements.innerText.toLowerCase().includes(target_val)) {
+        filteredArr.push(tbody.children[i].cloneNode(true));
+      }
+    }
+
+    for (let i = tbody.children.length - 1; i >= 2; i--) {
+      tbody.removeChild(tbody.children[i]);
+    }
+
+    for (let i = 0; i < filteredArr.length; i++) {
+      tbody.appendChild(filteredArr[i]);
+    }
+  }
+  records_p.innerText = `(${tbody.children.length - 2})`;
+  initializeCheckboxes();
+});
+
+const lastname_filter = document.getElementById("lastname-filter");
+
+lastname_filter.addEventListener("keyup", (e) => {
+  let filteredArr = [];
+
+  const target_val = (e.target.value).toLowerCase();
+
+  for (let i = tbody.children.length - 1; i >= 2; i--) {
+    tbody.removeChild(tbody.children[i]);
+  }
+
+  for (var i = 0; i < savedRows.length; i++) {
+    tbody.appendChild(savedRows[i]);
+  }
+
+  if (target_val === "") {
+  } else {
+    for (let i = 2; i < tbody.children.length; i++) {
+      const tdElements = tbody.children[i].getElementsByTagName("td")[3];
+
+      if (tdElements.innerText.toLowerCase().includes(target_val)) {
+        filteredArr.push(tbody.children[i].cloneNode(true));
+      }
+    }
+
+    for (let i = tbody.children.length - 1; i >= 2; i--) {
+      tbody.removeChild(tbody.children[i]);
+    }
+
+    for (let i = 0; i < filteredArr.length; i++) {
+      tbody.appendChild(filteredArr[i]);
+    }
+  }
+  records_p.innerText = `(${tbody.children.length - 2})`;
+  initializeCheckboxes();
+});
+
+const email_filter = document.getElementById("email-filter");
+
+email_filter.addEventListener("keyup", (e) => {
+  let filteredArr = [];
+
+  const target_val = (e.target.value).toLowerCase();
+
+  for (let i = tbody.children.length - 1; i >= 2; i--) {
+    tbody.removeChild(tbody.children[i]);
+  }
+
+  for (var i = 0; i < savedRows.length; i++) {
+    tbody.appendChild(savedRows[i]);
+  }
+
+  if (target_val === "") {
+  } else {
+    for (let i = 2; i < tbody.children.length; i++) {
+      const tdElements = tbody.children[i].getElementsByTagName("td")[4];
+
+      if (tdElements.innerText.toLowerCase().includes(target_val)) {
+        filteredArr.push(tbody.children[i].cloneNode(true));
+      }
+    }
+
+    for (let i = tbody.children.length - 1; i >= 2; i--) {
+      tbody.removeChild(tbody.children[i]);
+    }
+
+    for (let i = 0; i < filteredArr.length; i++) {
+      tbody.appendChild(filteredArr[i]);
+    }
+  }
+  records_p.innerText = `(${tbody.children.length - 2})`;
+  initializeCheckboxes();
+});
+
+const test_filter = document.getElementById("test-filter");
+
+test_filter.addEventListener("keyup", (e) => {
+  let filteredArr = [];
+
+  const target_val = (e.target.value).toLowerCase();
+
+  for (let i = tbody.children.length - 1; i >= 2; i--) {
+    tbody.removeChild(tbody.children[i]);
+  }
+
+  for (var i = 0; i < savedRows.length; i++) {
+    tbody.appendChild(savedRows[i]);
+  }
+
+  if (target_val === "") {
+  } else {
+    for (let i = 2; i < tbody.children.length; i++) {
+      const tdElements = tbody.children[i].getElementsByTagName("td")[5];
+
+      if (tdElements.innerText.toLowerCase().includes(target_val)) {
+        filteredArr.push(tbody.children[i].cloneNode(true));
+      }
+    }
+
+    for (let i = tbody.children.length - 1; i >= 2; i--) {
+      tbody.removeChild(tbody.children[i]);
+    }
+
+    for (let i = 0; i < filteredArr.length; i++) {
+      tbody.appendChild(filteredArr[i]);
+    }
+  }
+  records_p.innerText = `(${tbody.children.length - 2})`;
+  initializeCheckboxes();
+});
+
+
 const modal_button = document.getElementById("modal-button");
 
 modal_button.addEventListener("click", (e) => {
