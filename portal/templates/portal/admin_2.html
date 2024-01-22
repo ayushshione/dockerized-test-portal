@@ -1,4 +1,6 @@
 {% load static %}
+{% load custom_filters %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -205,7 +207,7 @@
                       >ACTIVE</span
                     >
                     <span class="text-[14px] font-semibold text-gray-400"
-                      >CREATED 14-01-2024</span
+                      >CREATED {{test.created_date.day}}-{{test.created_date.month}}-{{test.created_date.year}}</span
                     >
                   </div>
                   <button onclick='showModal(event, {{test.id}})' id='{{test.id}}' class='hidden items-center justify-center group-hover:flex group-hover:text-red-500 '>
@@ -243,7 +245,7 @@
                     />
                   </svg>
                   <p>
-                    <span class="font-bold text-[18px]">45.2%</span>
+                    <span class="font-bold text-[18px]">{{test.id|avgscore}}%</span>
                     <span class="text-[17px] ml-2 text-gray-500">avg. score</span>
                   </p>
                 </div>

@@ -9,6 +9,7 @@ class Test(models.Model):
     test_name = models.CharField(max_length=100)
     test_question_no = models.BigIntegerField(default=0)
     instructions = HTMLField(default='')
+    created_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.test_name}"

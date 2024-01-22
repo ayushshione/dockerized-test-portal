@@ -166,7 +166,7 @@ def admin_panel(request):
         else:
             is_form_invalid = True
 
-    form = CreateTestForm()
+    form = CreateTestForm()        
 
     return render(request, 'portal/admin_2.html', {
         "tests": test,
@@ -474,6 +474,42 @@ def delete_question(request, questionID):
 
     return redirect(reverse('edit-test', args=[test.id]))
 
+def helper_get_scores(testID):
+    test = Test.objects.filter(id=testID).first()
+    test_statuses = TestStatus.objects.filter(test=test)
+
+    user_details = []
+    avg_score = 0.0
+
+    for test_status in test_statuses:
+        user = test_status.user
+        test = test_status.test
+
+        user_answers = UserAnswers.objects.filter(user=user)
+        score = 0
+
+        for user_answer in user_answers:
+            question = user_answer.question
+            if(question is not None):
+                correct_op = question.correct_op
+
+                if (correct_op == user_answer.user_option):
+                    score += 1
+
+        avg_score += score
+    
+    questions = Question.objects.filter(test = test)
+
+    if(len(test_statuses) != 0):
+        avg_score /= len(test_statuses)
+    
+    if(len(questions) != 0):
+        avg_score /= len(questions)
+    
+    avg_score *= 100
+    
+    return round(avg_score, 2)
+    
 
 def user_details(request, testID):
     if (not request.user.is_authenticated):
