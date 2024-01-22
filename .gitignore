@@ -4,3 +4,4 @@ data
 .pyc
 .pyo
 node_modules
+*.xlsx

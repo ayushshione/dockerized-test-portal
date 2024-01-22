@@ -8,7 +8,7 @@ import pytz
 @shared_task
 def print_hello():
     current_time = datetime.now(pytz.utc)
-    times = Time.objects.all()
+    times = Time.objects.all() # fetching
 
     for time in times:
         user_start_time = time.start_time

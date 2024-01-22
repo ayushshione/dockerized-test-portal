@@ -37,3 +37,4 @@ document.getElementById("delete-test-btn").addEventListener("click", (e) => {
   const id = parseInt(modal.getAttribute("data-id"));
   window.location.href = `/delete-test/${id}`;
 });
+

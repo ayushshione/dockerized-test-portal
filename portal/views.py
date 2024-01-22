@@ -523,6 +523,44 @@ def get_next_question(request, questionnum):
 
     return JsonResponse(questions[questionnum-1])
 
+def reset_helper(user, test):
+    user_answers = UserAnswers.objects.filter(user=user)
+
+    for user_answer in user_answers:
+        if (user_answer.question.test == test):
+            user_answer.delete()
+
+    time = Time.objects.get(user=user, test=test)
+    time.delete()
+
+    ts = TestStatus.objects.filter(user=user, test=test).first()
+    ts.test_status = '1'
+    ts.save()
+
+def reset_users(request):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!') 
+    
+    if(request.method == "POST"):
+        data = json.loads(request.body)
+        to_reset = data['to_reset']
+        test_id = data['test_id']
+
+        print(type(test_id))
+
+        test = Test.objects.get(id=test_id)
+
+        for userid in to_reset:
+            user = User.objects.get(id=userid)
+            reset_helper(user, test)
+    
+    return JsonResponse({
+        'message': 'Users are reset!'
+    })
+        
 
 def delete_questions(request):
     if (not request.user.is_authenticated):
@@ -812,6 +850,7 @@ def results(request, testID):
 
     test = Test.objects.get(id=testID)
     test_statuses = TestStatus.objects.filter(test=test)
+    test_question_no = len(Question.objects.filter(test=test))
 
     user_details = []
 
@@ -842,6 +881,7 @@ def results(request, testID):
     
     return render(request, 'portal/test-settings/results.html', {
         'test': test,
+        'test_question_no': test_question_no,
         'users': user_details,
     })
 
