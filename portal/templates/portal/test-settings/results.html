@@ -382,13 +382,13 @@
                   >
                     TEST NAME
                   </td>
-                  {% comment %} <td class="py-2 text-[12px] font-semibold tracking-wide text-left">
+                  <td class="py-2 text-[12px] font-semibold tracking-wide text-left">
                       <button id='delete-btn' class="hidden p-2">
                         <svg xmlns="http://www.w3.org/2000/svg" id='reset-user' fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                         </svg>
                       </button>
-                  </td> {% endcomment %}
+                  </td>
                 </tr>
                 <tr class="">
                   <td
@@ -457,8 +457,8 @@
                       id="checkbox-all"
                     />
                   </td>
-                  {% comment %} <td class="py-2 text-[12px] font-semibold tracking-wide text-left">                  
-                  </td> {% endcomment %}
+                  <td class="py-2 text-[12px] font-semibold tracking-wide text-left">                  
+                  </td>
                 </tr>
                 {% for user in users %}
                 <tr class="">
@@ -506,15 +506,15 @@
                      </span>
                     {% endif %}
                   </td>
-                  {% comment %} <td class="py-2 text-[12px] font-semibold tracking-wide text-left">
-                    <a href="{% url 'reset-user' user.id test.id  %}">
+                  <td class="py-2 text-[12px] font-semibold tracking-wide text-left">
+                    <a class='hidden' href="{% url 'reset-user' user.id test.id  %}">
                       <button class="{% if user.test_status == '1' %} hidden {% elif user.test_status == '2' %} inline-block {% endif %} p-3">
                         <svg xmlns="http://www.w3.org/2000/svg" id='reset-user' fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                         </svg>
                       </button>
                     </a>
-                  </td> {% endcomment %}
+                  </td>
                 </tr>
                 {% endfor %}
               </tbody>

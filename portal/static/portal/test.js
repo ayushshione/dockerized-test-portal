@@ -19,6 +19,13 @@ const escapeHtml = (unsafe) => {
   return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 }
 
+function handleClear(){
+  op1_r.checked = false;
+  op2_r.checked = false;
+  op3_r.checked = false;
+  op4_r.checked = false;
+}
+
 function updateClassList(currQuestion_ID) {
   if (currQuestion_ID == -1) {
     currQuestion_ID = currQuestionID;

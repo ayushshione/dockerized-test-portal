@@ -8,11 +8,15 @@ import pytz
 @shared_task
 def print_hello():
     current_time = datetime.now(pytz.utc)
+    current_time = datetime(year=1, month=1, day=1, hour=current_time.hour,
+                      minute=current_time.minute, second=current_time.second)
     times = Time.objects.all() # fetching
 
     for time in times:
-        user_start_time = time.start_time
+        user_start_time = datetime(year=1, month=1, day=1, hour=time.start_time.hour,
+                      minute=time.start_time.minute, second=time.start_time.second)
         time_difference = current_time-user_start_time
+        print(time_difference)
 
         test_hours = TestHour.objects.filter(test=time.test).first()
 
