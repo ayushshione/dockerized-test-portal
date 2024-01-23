@@ -138,6 +138,24 @@ def user_page(request):
         "test": test,
     })
 
+def get_test_details(request):
+    if(not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    test_status = TestStatus.objects.filter(user=request.user).first()
+
+    if(test_status.test_status != '1'):
+        return HttpResponseRedirect(reverse('err1'))
+    
+    test = Test.objects.filter(id=test_status.test.id).first()
+
+    return JsonResponse({
+        'id': test.id,
+        'name': test.test_name,
+        'instruction': test.instructions,
+    })
+
+
 
 def admin_panel(request):
     if (not request.user.is_authenticated):
