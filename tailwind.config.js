@@ -6,6 +6,7 @@ module.exports = {
     './portal/templates/portal/test-settings/*.html',
     './portal/templates/portal/admin_2.html',
     './portal/templates/portal/users-database.html',
+    "./portal/templates/portal/user-login/src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {},
