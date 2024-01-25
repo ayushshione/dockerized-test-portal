@@ -150,3 +150,5 @@ TINYMCE_DEFAULT_CONFIG = {
     'plugins': 'textcolor lists link',
     'toolbar': 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link',
 }
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000']

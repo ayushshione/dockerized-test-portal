@@ -11,6 +11,7 @@ import pytz
 import pandas as pd
 from django.conf import settings
 from .forms import CreateTestForm, AddQuestionForm, EditTestForm, AddUserForm
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 def err1_page(request):
@@ -19,7 +20,7 @@ def err1_page(request):
 
     return render(request, 'portal/err1.html')
 
-
+@ensure_csrf_cookie
 def test_page(request):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
@@ -71,13 +72,13 @@ def test_page(request):
     else:
         questions = request.session['questions']
 
-    nums = []
+    # nums = []
 
-    for i in range(1, len(question)+1):
-        nums.append({
-            'question_id': questions[i-1]["id"],
-            'i': i,
-        })
+    # for i in range(1, len(question)+1):
+    #     nums.append({
+    #         'question_id': questions[i-1]["id"],
+    #         'i': i,
+    #     })
 
     time = Time.objects.filter(user=user, test=test).first()
 
@@ -87,12 +88,10 @@ def test_page(request):
             test=test,
         )
 
-    # test_hour = TestHour.objects.filter(test=test).first()
     time_a = datetime.now().astimezone(pytz.utc).replace(tzinfo=None)
     time_b = datetime(year=1, month=1, day=1, hour=time_a.hour,
                       minute=time_a.minute, second=time_a.second)
 
-    # aware_datetime2 = target_timezone.localize(time.start_time)
     time_c = time.start_time.astimezone(pytz.utc).replace(tzinfo=None)
     time_d = datetime(year=1, month=1, day=1, hour=time_c.hour,
                       minute=time_c.minute, second=time_c.second)
@@ -107,11 +106,8 @@ def test_page(request):
     minutes = (time_diff.seconds // 60) % 60
     seconds = time_diff.seconds % 60
 
-    print(f"{hours}:{minutes}:{seconds}")
-
-    return render(request, 'portal/test.html', {
+    return render(request, 'portal/user-login/build/index.html', {
         'test': test,
-        'nums': nums,
         'question_len': len(question),
         'saved_answers': json_string,
         'first_qid': questions[0]["id"],
@@ -119,7 +115,6 @@ def test_page(request):
         'minutes': minutes,
         'seconds': seconds,
     })
-
 
 def user_page(request):
     if (not request.user.is_authenticated):
@@ -139,22 +134,61 @@ def user_page(request):
     })
 
 def get_test_details(request):
-    if(not request.user.is_authenticated):
+    if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
+
+    if (request.session.get('test_id') is None):
+        return HttpResponseRedirect(reverse('err1'))
 
     test_status = TestStatus.objects.filter(user=request.user).first()
 
-    if(test_status.test_status != '1'):
+    if (test_status.test_status != '1'):
         return HttpResponseRedirect(reverse('err1'))
+
+    test = test_status.test
+    question = Question.objects.filter(test=test)
+
+    questions = request.session['questions']
+
+    saved_options = list(UserAnswers.objects.filter(user=request.user))
+    question_list = list(question)
+    saved_answers = {}
+
+    for option in saved_options:
+        if (option.question in question_list):
+            saved_answers[int(option.question.id)] = option.user_option
+
+    json_string = json.dumps(saved_answers)
+
+    time = Time.objects.filter(user=request.user, test=test).first()
+
+    time_a = datetime.now().astimezone(pytz.utc).replace(tzinfo=None)
+    time_b = datetime(year=1, month=1, day=1, hour=time_a.hour,
+                      minute=time_a.minute, second=time_a.second)
+
+    time_c = time.start_time.astimezone(pytz.utc).replace(tzinfo=None)
+    time_d = datetime(year=1, month=1, day=1, hour=time_c.hour,
+                      minute=time_c.minute, second=time_c.second)
+    time_diff2 = time_b-time_d
+
+    test_hour = TestHour.objects.get(test=test)
+
+    time_diff = timedelta(hours=test_hour.time.hour, minutes=test_hour.time.minute,
+                          seconds=test_hour.time.second) - time_diff2
+
+    hours = time_diff.seconds // 3600
+    minutes = (time_diff.seconds // 60) % 60
+    seconds = time_diff.seconds % 60
     
-    test = Test.objects.filter(id=test_status.test.id).first()
+    print(questions)
 
     return JsonResponse({
-        'id': test.id,
-        'name': test.test_name,
-        'instruction': test.instructions,
+        'questions': questions,
+        'saved_answers': json_string,
+        'hour': hours,
+        'minute': minutes,
+        'second': seconds,
     })
-
 
 
 def admin_panel(request):
@@ -184,7 +218,7 @@ def admin_panel(request):
         else:
             is_form_invalid = True
 
-    form = CreateTestForm()        
+    form = CreateTestForm()
 
     return render(request, 'portal/admin_2.html', {
         "tests": test,
@@ -492,6 +526,7 @@ def delete_question(request, questionID):
 
     return redirect(reverse('edit-test', args=[test.id]))
 
+
 def helper_get_scores(testID):
     test = Test.objects.filter(id=testID).first()
     test_statuses = TestStatus.objects.filter(test=test)
@@ -508,26 +543,26 @@ def helper_get_scores(testID):
 
         for user_answer in user_answers:
             question = user_answer.question
-            if(question is not None):
+            if (question is not None):
                 correct_op = question.correct_op
 
                 if (correct_op == user_answer.user_option):
                     score += 1
 
         avg_score += score
-    
-    questions = Question.objects.filter(test = test)
 
-    if(len(test_statuses) != 0):
+    questions = Question.objects.filter(test=test)
+
+    if (len(test_statuses) != 0):
         avg_score /= len(test_statuses)
-    
-    if(len(questions) != 0):
+
+    if (len(questions) != 0):
         avg_score /= len(questions)
-    
+
     avg_score *= 100
-    
+
     return round(avg_score, 2)
-    
+
 
 def user_details(request, testID):
     if (not request.user.is_authenticated):
@@ -577,6 +612,7 @@ def get_next_question(request, questionnum):
 
     return JsonResponse(questions[questionnum-1])
 
+
 def reset_helper(user, test):
     user_answers = UserAnswers.objects.filter(user=user)
 
@@ -591,14 +627,15 @@ def reset_helper(user, test):
     ts.test_status = '1'
     ts.save()
 
+
 def reset_users(request):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
 
     if (not request.user.is_superuser):
-        return HttpResponseForbidden('You are not allowed to access this resource!') 
-    
-    if(request.method == "POST"):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+
+    if (request.method == "POST"):
         data = json.loads(request.body)
         to_reset = data['to_reset']
         test_id = data['test_id']
@@ -610,11 +647,11 @@ def reset_users(request):
         for userid in to_reset:
             user = User.objects.get(id=userid)
             reset_helper(user, test)
-    
+
     return JsonResponse({
         'message': 'Users are reset!'
     })
-        
+
 
 def delete_questions(request):
     if (not request.user.is_authenticated):
@@ -641,6 +678,7 @@ def delete_questions(request):
         'message': 'Questions are deleted.'
     })
 
+
 def delete_users(request):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
@@ -648,7 +686,7 @@ def delete_users(request):
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
 
-    if(request.method == "POST"):
+    if (request.method == "POST"):
         data = json.loads(request.body)
         to_delete = data['to_delete']
 
@@ -659,6 +697,26 @@ def delete_users(request):
 
     return JsonResponse({
         'message': 'Users are deleted!'
+    })
+
+def clear_answer(request):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (request.method == "POST"):
+        data = json.loads(request.body)
+
+        question = Question.objects.filter(id=data["question_id"]).first()
+        user = request.user
+
+        user_answer = UserAnswers.objects.filter(
+            question=question, user=user).first()
+
+        if(user_answer is not None):
+            user_answer.delete()
+    
+    return JsonResponse({
+        'message': 'Answer cleared'
     })
 
 def save_question(request):
@@ -726,6 +784,7 @@ def get_test_status(request):
         "test_status": test_status.test_status
     })
 
+
 def delete_test(request, testID):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
@@ -737,6 +796,7 @@ def delete_test(request, testID):
     test.delete()
 
     return HttpResponseRedirect(reverse('admin'))
+
 
 def reset_user(request, userID, testID):
     if (not request.user.is_authenticated):
@@ -878,7 +938,7 @@ def users_database(request):
         if test_status is not None:
             test = Test.objects.filter(id=test_status.test.id).first()
 
-        if user.is_active:    
+        if user.is_active:
             users.append({
                 'user_id': user.id,
                 'first_name': user.first_name,
@@ -894,6 +954,7 @@ def users_database(request):
         'users': users,
         'users_len': users_len,
     })
+
 
 def results(request, testID):
     if (not request.user.is_authenticated):
@@ -911,7 +972,7 @@ def results(request, testID):
     for test_status in test_statuses:
         user = test_status.user
 
-        if(user.is_active == False or user.is_superuser == True):
+        if (user.is_active == False or user.is_superuser == True):
             continue
 
         user_answers = UserAnswers.objects.filter(user=user)
@@ -919,7 +980,7 @@ def results(request, testID):
 
         for user_answer in user_answers:
             question = user_answer.question
-            if(question.test == test):
+            if (question.test == test):
                 correct_op = Question.objects.filter(
                     question=question, test=test).first().correct_op
 
@@ -932,7 +993,7 @@ def results(request, testID):
                              "last_name": user.last_name,
                              "test_status": test_status.test_status,
                              "score": score})
-    
+
     return render(request, 'portal/test-settings/results.html', {
         'test': test,
         'test_question_no': test_question_no,
