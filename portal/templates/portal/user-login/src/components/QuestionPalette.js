@@ -1,7 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import style from "../styles.css";
 
-const QuestionPalette = ({bookmarkedQuestions, currQuestion, savedAnswers, questions, handleQuestionChangeClick }) => {
+const QuestionPalette = ({bookmarkedQuestions, currQuestion, savedAnswers1, questions, handleQuestionChangeClick }) => {
+    const [savedAnswers, setSavedAnswers] = useState()
+
+    useEffect(() => {
+        setSavedAnswers(savedAnswers1)
+    }, [savedAnswers1])
+    
     const handleFinish = () => {
         const res = prompt("Are you sure you want to end the test? Type 'yes' if you are sure.").toLowerCase();
 

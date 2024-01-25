@@ -123,3 +123,28 @@ document.getElementById("delete-test-btn").addEventListener("click", (e) => {
       console.error("There was a problem with the fetch operation:", error);
     });
 });
+
+function showModal2(){
+  const modal = document.getElementById('modal-sam2')
+  const add_user = document.getElementById('add-question')
+  const modal_button = document.getElementById('modal-button')
+
+  add_user.disabled = true;
+  modal_button.disabled = true;
+
+  modal.classList.remove('hidden');
+  modal.classList.add('flex')
+}
+
+document.getElementById('hide-modal2').addEventListener('click', (e) => {
+  e.preventDefault();
+  const modal = document.getElementById('modal-sam2')
+  const add_user = document.getElementById('add-question')
+  const modal_button = document.getElementById('modal-button')
+
+  add_user.disabled = false;
+  modal_button.disabled = false;
+
+  modal.classList.remove('flex');
+  modal.classList.add('hidden')
+})

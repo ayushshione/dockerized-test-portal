@@ -338,7 +338,7 @@
               Add question         
             </button>
             <button
-              onclick = 'showModal()'
+              onclick = 'showModal2()'
               id='modal-button'
               class="bg-orange-400 text-white px-4 py-[12px] font-semibold text-[18px] rounded-tl-none rounded-bl-none rounded-md hover:bg-orange-500"
             >                    
@@ -445,6 +445,81 @@
       </div>
     </div>
   </div>
+
+  <div
+  id="modal-sam2"
+  class="modal-sam hidden fixed inset-0 bg-black bg-opacity-25 justify-center items-center"
+>
+  <div class="w-[600px] flex flex-col">
+    <div class="bg-white p-5 rounded">
+      <div>
+        <h1 class="text-[16px] font-semibold">Excel File Upload</h1>
+      </div>
+      <div class="mt-8">
+        <p class="text-[14px]">
+          Structure of the excel file should be of this format.
+        </p>
+        <table class="min-w-full mt-5">
+          <tbody>
+            <tr class="">
+              <td
+                class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
+              >
+                QUESTION
+              </td>
+              <td
+                class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
+              >
+                OPTION 1
+              </td>
+              <td
+                class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
+              >
+                OPTION 2
+              </td>
+              <td
+                class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
+              >
+               OPTION 3
+              </td>
+              <td
+                class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
+              >
+                OPTION 4
+              </td>
+              <td
+                class="px-3 py-5 text-[12px] font-semibold tracking-wide text-left"
+              >
+                CORRECT OP
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <form action="{% url 'upload-questions' tests.id %}" class="mt-8 flex flex-col" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="p-3 border-[1px] border-slate-300 rounded-md">
+            <input required type="file" name='questions' />
+          </div>
+
+          <div class="buttons mt-9 flex gap-4 self-end items-center">
+            <button
+              id="hide-modal2"
+              class="text-black px-4 py-[10px] font-semibold border-[2px] text-[16px] rounded-md hover:border-orange-400 hover:text-orange-400"
+            >
+              Cancel
+            </button>
+              <button
+                onclick=""
+                class="bg-orange-400 text-white px-4 py-[10px] font-semibold text-[16px] rounded-md hover:bg-orange-500"
+              >
+                Upload
+              </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
     <script src='{% static "portal/questions-manager.js" %}'></script>
     <script>
       function changeLoc(){

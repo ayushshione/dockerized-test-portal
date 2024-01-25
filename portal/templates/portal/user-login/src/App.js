@@ -282,7 +282,7 @@ function App() {
             </button>
           </div>
         </div>
-        <QuestionPalette bookmarkedQuestions={bookmarkedQuestions} currQuestion={question} savedAnswers={savedAnswers} handleQuestionChangeClick={handleQuestionChangeClick} questions={questions} />
+        <QuestionPalette bookmarkedQuestions={bookmarkedQuestions} currQuestion={question} savedAnswers1={savedAnswers} handleQuestionChangeClick={handleQuestionChangeClick} questions={questions} />
       </div>
     </>
   );
