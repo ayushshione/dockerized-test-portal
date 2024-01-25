@@ -3,7 +3,7 @@ import sokalp from "./sokalp.png";
 import style from "./styles.css";
 import QuestionPalette from "./components/QuestionPalette";
 import Timer from "./components/Timer";
-import DjangoCSRFToken from 'django-react-csrftoken'
+import Countdown from 'react-countdown';
 
 function App() {
 
@@ -13,21 +13,22 @@ function App() {
   const [savedAnswers, setSavedAnswers] = useState({});
   const [bookmarkedQuestions, setBookmarkedQuestions] = useState({});
   const [questions, setQuestions] = useState([]);
+  let [seconds, setSeconds] = useState(0);
 
   function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
         }
+      }
     }
     return cookieValue;
-}
+  }
 
   useEffect(() => {
     fetch('/get-test-details')
@@ -40,14 +41,34 @@ function App() {
       .then((data) => {
         setQuestions(data['questions'])
         setQuestion(data['questions'][0])
+        setSeconds(parseInt(data['seconds'])*1000);
         const inputObject = JSON.parse(data['saved_answers'])
-        console.log((inputObject))
         setSavedAnswers(inputObject)
-      
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
       });
+  }, [])
+
+  useEffect(() => {
+    const intervalID = setInterval(() => {
+      fetch(`${window.location.href}get-test-status`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data['test_status'])
+          if (data["test_status"] == '2') {
+            window.location.href = "finish";
+          }
+  
+        })
+
+        return () => clearInterval(intervalID);
+    }, 1000)
   }, [])
 
   useEffect(() => {
@@ -181,14 +202,13 @@ function App() {
     }
   }
 
-
   return (
     <>
       <nav>
         <div className="bg-white p-4 shadow-sm flex justify-center items-center">
           <div className="w-full mx-9 flex items-center justify-between">
             <img className="h-8" src={sokalp} alt="sokalp-logo" />
-            <Timer hours={0} minutes={0} seconds={10} />
+            <Countdown date={Date.now() + seconds} />
           </div>
         </div>
       </nav>

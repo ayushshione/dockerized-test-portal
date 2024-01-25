@@ -2,9 +2,19 @@ import { useEffect } from "react";
 import style from "../styles.css";
 
 const QuestionPalette = ({bookmarkedQuestions, currQuestion, savedAnswers, questions, handleQuestionChangeClick }) => {
+    const handleFinish = () => {
+        const res = prompt("Are you sure you want to end the test? Type 'yes' if you are sure.").toLowerCase();
+
+        if(res == 'yes'){
+            window.location.href = 'finish';
+        }
+
+        return;
+    }
+    
     return (
-        <div className="palette-div mr-10 p-4 w-[400px] rounded-md bg-white shadow-sm flex flex-col justify-center items-center overflow-auto max-h-[410px]">
-            <div className="grid grid-cols-5 gap-4 mt-3">
+        <div className="palette-div mr-10 p-4 w-[400px] rounded-md bg-white shadow-sm flex flex-col justify-center items-center max-h-[410px]">
+            <div className="grid grid-cols-5 gap-4 mt-3 overflow-auto">
                 {questions.map((question, index) => {
                     return (
                         question["id"] === currQuestion["id"]
@@ -25,6 +35,12 @@ const QuestionPalette = ({bookmarkedQuestions, currQuestion, savedAnswers, quest
                               </div>));
                 })}
             </div>
+            <button
+                onClick={handleFinish}
+              className="p-3 mt-6 transition-all rounded-md border-slate-300 border-[2px] hover:text-red-400 hover:border-red-400"
+            >
+              Finish
+            </button>
         </div>
     );
 };

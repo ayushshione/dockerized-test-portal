@@ -175,19 +175,13 @@ def get_test_details(request):
 
     time_diff = timedelta(hours=test_hour.time.hour, minutes=test_hour.time.minute,
                           seconds=test_hour.time.second) - time_diff2
-
-    hours = time_diff.seconds // 3600
-    minutes = (time_diff.seconds // 60) % 60
-    seconds = time_diff.seconds % 60
     
-    print(questions)
-
+    print(time_diff.seconds)
+    
     return JsonResponse({
         'questions': questions,
         'saved_answers': json_string,
-        'hour': hours,
-        'minute': minutes,
-        'second': seconds,
+        'seconds': time_diff.seconds,
     })
 
 
@@ -639,8 +633,6 @@ def reset_users(request):
         data = json.loads(request.body)
         to_reset = data['to_reset']
         test_id = data['test_id']
-
-        print(type(test_id))
 
         test = Test.objects.get(id=test_id)
 
