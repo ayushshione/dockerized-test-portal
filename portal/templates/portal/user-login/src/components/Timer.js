@@ -1,49 +1,49 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
 
-export default function Timer({hours, seconds, minutes}){
-    const [hour, setHour] = useState(0);
-    const [minute, setMinute] = useState(0);
-    const [second, setSecond] = useState(0);
-    const [timeUp, setTimeUp] = useState(false);
+const CountdownTimer = ({ remainingTime, onTimerEnd }) => {
+  const [time, setTime] = useState(remainingTime);
 
-    useEffect(() => {
-        setHour(hours);
-        setMinute(minutes);
-        setSecond(seconds);
-    }, [])
+  useEffect(() => {
+    console.log(remainingTime);
+    setTime(remainingTime);
+  }, [remainingTime]);
 
-    const setTimer = () => {
-        if(hour === 0 && minute === 0 && second === 0){
-            setTimeUp(true);
-            clearInterval(intervalId)
-        }
+  useEffect(() => {
+    if (time === null) return;
 
-        if(hour <= 0 || minute <= 0 || second <= 0){
-            clearInterval(intervalId);
-        }
+    const intervalId = setInterval(() => {
+      // Decrease time by 1 second
+      setTime(prevTime => prevTime - 1);
 
-        setSecond(second-1);
+      // Check if the timer has reached zero
+      if (time === 0) {
+        clearInterval(intervalId);
+        // Call the callback function when the timer reaches zero
+        onTimerEnd();
+      }
+    }, 1000);
 
-        if(second === 0){
-            setMinute(minute-1);
-            setSecond(59);
-        }
+    // Cleanup the interval when the component is unmounted
+    return () => clearInterval(intervalId);
+  }, [time, onTimerEnd]);
 
+  if (time === null) {
+    return <p>Loading...</p>;
+  }
 
-        if(minute === 0){
-            setHour(hour-1);
-            setMinute(59);
-            setSecond(59);
-        }
-    }
+  // Calculate hours, minutes, and seconds
+  const hours = Math.floor(time / 3600);
+  const minutes = Math.floor((time % 3600) / 60);
+  const seconds = time % 60;
 
-    const intervalId = setInterval(setTimer, 1000)
+  // Format the time as HH:MM:SS
+  const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-    return(
-        <>
-            {!timeUp 
-            ? (<p className="text-lg font-semibold">{hour}:{minute}:{second}</p>) 
-            : (<p className="text-lg font-semibold">Time Up!</p>)}
-        </>        
-    );
-}
+  return (
+    <div>
+      <p>Time Remaining: {formattedTime}</p>
+    </div>
+  );
+};
+
+export default CountdownTimer;

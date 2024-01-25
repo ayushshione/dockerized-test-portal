@@ -3,7 +3,6 @@ import sokalp from "./sokalp.png";
 import style from "./styles.css";
 import QuestionPalette from "./components/QuestionPalette";
 import Timer from "./components/Timer";
-import Countdown from 'react-countdown';
 
 function App() {
 
@@ -13,7 +12,9 @@ function App() {
   const [savedAnswers, setSavedAnswers] = useState({});
   const [bookmarkedQuestions, setBookmarkedQuestions] = useState({});
   const [questions, setQuestions] = useState([]);
-  let [seconds, setSeconds] = useState(0);
+  const [seconds, setSeconds] = useState(100);
+  const [loaded, setLoaded] = useState(false);
+  let second = 100;
 
   function getCookie(name) {
     var cookieValue = null;
@@ -41,9 +42,11 @@ function App() {
       .then((data) => {
         setQuestions(data['questions'])
         setQuestion(data['questions'][0])
-        setSeconds(parseInt(data['seconds'])*1000);
+        setSeconds(Number(data['seconds']));
+        second = Number(data['seconds']);
         const inputObject = JSON.parse(data['saved_answers'])
         setSavedAnswers(inputObject)
+        setLoaded(true);
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
@@ -64,10 +67,9 @@ function App() {
           if (data["test_status"] == '2') {
             window.location.href = "finish";
           }
-  
         })
 
-        return () => clearInterval(intervalID);
+      return () => clearInterval(intervalID);
     }, 1000)
   }, [])
 
@@ -95,24 +97,24 @@ function App() {
     let index = currQuestionNumber;
 
     if (index + 1 >= questions.length) {
-      return;
+      index = -1;
     }
-    else {
-      setQuestion(questions[index + 1]);
-      setCurrQuestionNumber(index + 1)
-    }
+
+    setQuestion(questions[index + 1]);
+    setCurrQuestionNumber(index + 1)
+
   }
 
   const handleBack = () => {
     let index = currQuestionNumber;
 
     if (index - 1 < 0) {
-      return;
+      index = questions.length;
     }
-    else {
-      setQuestion(questions[index - 1])
-      setCurrQuestionNumber(index - 1)
-    }
+
+    setQuestion(questions[index - 1])
+    setCurrQuestionNumber(index - 1)
+
   }
 
   const handleSave = () => {
@@ -208,7 +210,7 @@ function App() {
         <div className="bg-white p-4 shadow-sm flex justify-center items-center">
           <div className="w-full mx-9 flex items-center justify-between">
             <img className="h-8" src={sokalp} alt="sokalp-logo" />
-            <Countdown date={Date.now() + seconds} />
+            {loaded && <Timer remainingTime={seconds} onTimerEnd={() => console.log("hi")} />}
           </div>
         </div>
       </nav>
