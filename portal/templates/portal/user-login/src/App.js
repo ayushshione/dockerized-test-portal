@@ -51,6 +51,13 @@ function App() {
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
       });
+
+    let obj = JSON.parse(localStorage.getItem('bookmarkedQuestions'));
+
+    if (obj) {
+      console.log(obj);
+      setBookmarkedQuestions(obj);
+    }
   }, [])
 
   useEffect(() => {
@@ -191,17 +198,19 @@ function App() {
   }
 
   const handleBookmark = () => {
-    let updatedObj = bookmarkedQuestions;
+    let updatedObj = { ...bookmarkedQuestions };
 
     if (question["id"] in updatedObj) {
       delete updatedObj[question['id']]
-      setBookmarkedQuestions(updatedObj)
     }
     else {
-      let updatedObj = bookmarkedQuestions;
       updatedObj[question['id']] = true;
-      setBookmarkedQuestions(updatedObj);
     }
+
+    let jsonStringObj = JSON.stringify(updatedObj);
+    // console.log(jsonStringObj);
+    localStorage.setItem('bookmarkedQuestions', jsonStringObj)
+    setBookmarkedQuestions(updatedObj);
   }
 
   return (
@@ -282,7 +291,7 @@ function App() {
             </button>
           </div>
         </div>
-        <QuestionPalette bookmarkedQuestions={bookmarkedQuestions} currQuestion={question} savedAnswers1={savedAnswers} handleQuestionChangeClick={handleQuestionChangeClick} questions={questions} />
+        <QuestionPalette bookmarkedQuestions1={bookmarkedQuestions} currQuestion={question} savedAnswers1={savedAnswers} handleQuestionChangeClick={handleQuestionChangeClick} questions={questions} />
       </div>
     </>
   );
