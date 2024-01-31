@@ -20,6 +20,7 @@ def err1_page(request):
 
     return render(request, 'portal/err1.html')
 
+
 @ensure_csrf_cookie
 def test_page(request):
     if (not request.user.is_authenticated):
@@ -116,6 +117,7 @@ def test_page(request):
         'seconds': seconds,
     })
 
+
 def user_page(request):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
@@ -132,6 +134,7 @@ def user_page(request):
         "test_status": test_status,
         "test": test,
     })
+
 
 def get_test_details(request):
     if (not request.user.is_authenticated):
@@ -175,9 +178,9 @@ def get_test_details(request):
 
     time_diff = timedelta(hours=test_hour.time.hour, minutes=test_hour.time.minute,
                           seconds=test_hour.time.second) - time_diff2
-    
+
     print(time_diff.seconds)
-    
+
     return JsonResponse({
         'questions': questions,
         'saved_answers': json_string,
@@ -691,6 +694,7 @@ def delete_users(request):
         'message': 'Users are deleted!'
     })
 
+
 def clear_answer(request):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
@@ -704,12 +708,13 @@ def clear_answer(request):
         user_answer = UserAnswers.objects.filter(
             question=question, user=user).first()
 
-        if(user_answer is not None):
+        if (user_answer is not None):
             user_answer.delete()
-    
+
     return JsonResponse({
         'message': 'Answer cleared'
     })
+
 
 def save_question(request):
     if (not request.user.is_authenticated):

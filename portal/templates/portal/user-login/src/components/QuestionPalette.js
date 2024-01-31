@@ -10,7 +10,6 @@ const QuestionPalette = ({ bookmarkedQuestions1, currQuestion, savedAnswers1, qu
     }, [savedAnswers1])
 
     useEffect(() => {
-        console.log('sex2');
         let updatedObj = { ...bookmarkedQuestions1 };
         setBookmarkedQuestions(updatedObj)
     }, [bookmarkedQuestions1])
