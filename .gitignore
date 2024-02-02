@@ -1,7 +1,7 @@
 .vscode
 data
 .venv
-.pyc
-.pyo
+*.pyc
+*.pyo
 node_modules
 *.xlsx
