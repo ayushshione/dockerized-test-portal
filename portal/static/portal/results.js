@@ -88,7 +88,8 @@ document.getElementById('reset-user-btn').addEventListener("click", () => {
 
 function initializeCheckboxes(){
   checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener("change", () => {
+    checkbox.addEventListener("change", (event) => {
+      event.stopPropagation()
       if (checkbox.checked == true) {
         if (delete_button.classList.contains("hidden")) {
           delete_button.classList.add("flex");
@@ -112,7 +113,6 @@ function initializeCheckboxes(){
   });
   
   checkbox_all.addEventListener("change", () => {
-  
     if (checkbox_all.checked) {
       checkboxes.forEach((checkbox) => {
         if(checkbox.disabled == false && checkbox.checked == false){

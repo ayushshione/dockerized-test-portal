@@ -318,7 +318,6 @@ def edit_test(request, testID):
 
     test = Test.objects.filter(id=testID).first()
 
-    test = Test.objects.filter(id=testID).first()
     question = Question.objects.filter(test=test)
 
     questions_len = len(question)
@@ -328,6 +327,59 @@ def edit_test(request, testID):
         'questions': question,
         'questions_len': questions_len
     })
+
+
+def detailed_result(request, userID, testID):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+
+    test = Test.objects.filter(id=testID).first()
+    questions = Question.objects.filter(test=test)
+
+    user = User.objects.get(id=userID)
+    user_answers = UserAnswers.objects.filter(user=user)
+    print(user_answers)
+
+    user_answers_list : UserAnswers = []
+
+    for user_answer in user_answers:
+        if user_answer.question in questions:
+            user_answers_list.append(user_answer)
+    
+    print(user_answers_list)
+    
+    question = []
+
+    for que in questions:
+        question.append({
+            "id": que.id,
+            "question": que.question,
+            "op1": que.op1,
+            "op2": que.op2,
+            "op3": que.op3,
+            "op4": que.op4,
+            "correct_op": que.correct_op,
+            "selected_option": "null",
+        })
+
+    for user_answer in user_answers_list:
+        for que in question:
+            if user_answer.question.id == que["id"]:
+                que["selected_option"] = user_answer.user_option
+                break
+
+    print(question)
+    
+    return render(request, 'portal/test-settings/result-detailed.html', {
+        'tests': test,
+        'questions': question,
+        'questions_len': len(questions),
+        'user': user,
+    })
+    
 
 
 def add_question(request, testID):
