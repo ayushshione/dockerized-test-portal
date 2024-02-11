@@ -35,6 +35,7 @@ urlpatterns = [
     path('reset-users', views.reset_users, name='reset-users'),
     path('get-test-details/', views.get_test_details, name='get-test-details'),
     path('clear-answer', views.clear_answer, name='clear-answer'),
+    path('test-activate/<int:testID>', views.test_activate, name='test-activate'),
     path('result-detailed/<int:userID>/<int:testID>', views.detailed_result ,name='result-detailed'),
 ]
  

@@ -210,9 +210,21 @@
       <div class="flex mt-7 items-baseline gap-6 w-screen">
         <div class="ml-[96px] mt-2 flex flex-col gap-6 w-[260px]">
           <span
-            class="text-[12.5px] px-[8px] mb-4 py-[6px] font-semibold border-2 self-start border-green-500 rounded-md text-green-500"
-            >ACTIVE</span
+            class="text-[12.5px] px-[8px] mb-4 py-[6px] rounded-md font-semibold border-2 self-start 
+            {% if tests.activated %}
+              border-green-500 text-green-500
+            {% else %}
+              border-slate-400
+              text-slate-400
+            {% endif %}
+            "
           >
+            {% if tests.activated %}
+              ACTIVE
+            {% else %}
+              INACTIVE
+            {% endif %}
+          </span>
           <h1 class="font-bold text-[18px]">Test configuration</h1>
           <ul class="list-none">
             <li>

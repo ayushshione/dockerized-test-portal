@@ -110,6 +110,9 @@ function initializeCheckboxes(){
         // selected_box.innerText = `${selected} SELECTED`;
       }
     });
+    checkbox.addEventListener("click", (event) => {
+      event.stopPropagation()
+    });
   });
   
   checkbox_all.addEventListener("change", () => {
