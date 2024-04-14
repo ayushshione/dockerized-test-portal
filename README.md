@@ -4,7 +4,7 @@ Key Technologies used :-
 
 1.Frontend: HTML, CSS, JavaScript for the user interface.
 
-2.Backend: Python with Flask or Django, SQLite or PostgreSQL for data management.
+2.Backend: Python with Django, MySQL for data management.
 
 3.Docker: Containerization for deployment and scalability.
 
