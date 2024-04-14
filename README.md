@@ -1,10 +1,15 @@
 TestPortal is a web-based application developed for online assessments and quizzes in a college environment. It includes features like user authentication, customizable test creation, test-taking, grading, and analytics.
 
-Key Technologies used :
+Key Technologies used :-
+
 Frontend: HTML, CSS, JavaScript for the user interface.
+
 Backend: Python with Flask or Django, SQLite or PostgreSQL for data management.
+
 Docker: Containerization for deployment and scalability.
+
 Key Features: User Authentication, Test Creation, Test Taking, Grading and Analytics
+
 Other Technologies:NVINX, Tailwind CSS, Rest, API.
 
 1.Login Page
