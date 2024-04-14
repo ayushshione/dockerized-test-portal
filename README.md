@@ -1,20 +1,30 @@
-1.Login
-<img width="959" alt="TP" src="https://github.com/samarth4445/dockerized-test-portal/assets/113175706/ee739d6d-ed7b-4168-b089-3adbac0e5552">
+TestPortal is a web-based application developed for online assessments and quizzes in a college environment. It includes features like user authentication, customizable test creation, test-taking, grading, and analytics.
+Key Technologies used :
+Frontend: HTML, CSS, JavaScript for the user interface.
+Backend: Python with Flask or Django, SQLite or PostgreSQL for data management.
+Docker: Containerization for deployment and scalability.
+Key Features: User Authentication, Test Creation, Test Taking, Grading and Analytics
+Other Technologies:NVINX, Tailwind CSS, Rest, API.
 
-2.Test Portal Main Page
-<img width="958" alt="TP1" src="https://github.com/samarth4445/dockerized-test-portal/assets/113175706/adb63bc6-a39e-4d6f-ba64-a564b4f9fd5b">
+1.Login Page
+![Login](https://github.com/samarth4445/dockerized-test-portal/assets/113175706/2f30b5fd-edf7-40fc-ba9a-093536b78123)
 
-3.Basic Settings
-<img width="943" alt="TP2" src="https://github.com/samarth4445/dockerized-test-portal/assets/113175706/aa381ce3-35f1-4a19-b0d4-1af2e44c98f9">
+2.Home Page(Main)
+![Main Page](https://github.com/samarth4445/dockerized-test-portal/assets/113175706/1718d77a-bac7-4178-a411-72e56adb2a55)
 
-4.Question Manager
-<img width="947" alt="TP3" src="https://github.com/samarth4445/dockerized-test-portal/assets/113175706/0abace2f-85f2-4cc6-b473-cd415e83bdec">
+3.Basic Settings(Inside Test)
+![Basic Settings](https://github.com/samarth4445/dockerized-test-portal/assets/113175706/dc1d7cc7-149a-41d3-933f-ceb1936d61c1)
 
-5.Time Settings
-<img width="956" alt="TP4" src="https://github.com/samarth4445/dockerized-test-portal/assets/113175706/82120cca-ece0-4617-b783-cbeb10a04abc">
+4.Questions Manager(Inside Test)
+![Questions Manager](https://github.com/samarth4445/dockerized-test-portal/assets/113175706/1ada7631-0e9d-4298-8de7-697a6b6c2ec8)
 
-6.Results Page
-<img width="953" alt="TP5" src="https://github.com/samarth4445/dockerized-test-portal/assets/113175706/4feb1576-eefb-48be-8ce2-07140614f323">
+5.Time Settings(Inside Test)
+![Time Settings](https://github.com/samarth4445/dockerized-test-portal/assets/113175706/6fab5947-d156-4c7d-8652-deac0f2f82cf)
 
-7.Users Page
-<img width="950" alt="TP6" src="https://github.com/samarth4445/dockerized-test-portal/assets/113175706/681740a5-9e2f-4be3-990f-ac7a261ec958">
+6.Results(Inside Test)
+![Results](https://github.com/samarth4445/dockerized-test-portal/assets/113175706/85ccee57-5ad0-4669-88f7-e18ab7b530b1)
+
+7.User Database
+![User Database](https://github.com/samarth4445/dockerized-test-portal/assets/113175706/d1746bc2-dbc4-4adf-b100-0ba83e2625b0)
+
+
