@@ -227,7 +227,7 @@ def edit_test(request, testID):
     if (request.method == "POST"):
         form = AddQuestionForm(request.POST)
 
-        if(form.is_valid()):
+        if (form.is_valid()):
             form_data = form.cleaned_data
             question = form_data['question']
             op1 = form_data['op1']
@@ -281,7 +281,6 @@ def create_question(request, testID):
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
 
-
     return redirect(reverse('edit-test', args=[testID]))
 
 
@@ -324,7 +323,8 @@ def user_details(request, testID):
 
         for user_answer in user_answers:
             question = user_answer.question
-            correct_op = Question.objects.filter(question=question, test=test).first().correct_op
+            correct_op = Question.objects.filter(
+                question=question, test=test).first().correct_op
 
             if (correct_op == user_answer.user_option):
                 score += 1
@@ -333,9 +333,8 @@ def user_details(request, testID):
                              "username": user.username,
                              "test_status": test_status.test_status,
                              "score": score})
-    
-    sorted_users = sorted(user_details, key=lambda x: x['score'], reverse=True)
 
+    sorted_users = sorted(user_details, key=lambda x: x['score'], reverse=True)
 
     return render(request, "portal/user-details.html", {
         "user_details": sorted_users,
@@ -459,7 +458,6 @@ def set_time(request):
         while (time_now[i] != ':'):
             hour += time_now[i]
             i += 1
-
         i += 1
 
         while (time_now[i] != ':'):
@@ -584,7 +582,6 @@ def upload_users(request, testID):
                     test=test,
                     test_status='1',
                 )
-
     return HttpResponseRedirect(reverse('user-details', args=[testID]))
 
 
@@ -594,20 +591,4 @@ def create_test(request):
 
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
-
-    # if (request.method == "POST"):
-    #     form = CreateTestForm(request.POST)
-    #     is_form_valid = True
-
-    #     if(form.is_valid()):
-    #         form_data = form.cleaned_data
-    #         test_name = form_data["test_name"]
-    #         test = Test.objects.create(test_name=test_name)
-    #         time = datetime(year=1, month=1, day=1,
-    #                         hour=1, minute=0, second=0)
-
-    #         TestHour.objects.create(test=test, time=time)
-    #     else:
-    #         is_form_valid = False
-
     return HttpResponseRedirect(reverse('admin'))
