@@ -73,16 +73,7 @@ def test_page(request):
     else:
         questions = request.session['questions']
 
-    # nums = []
-
-    # for i in range(1, len(question)+1):
-    #     nums.append({
-    #         'question_id': questions[i-1]["id"],
-    #         'i': i,
-    #     })
-
     time = Time.objects.filter(user=user, test=test).first()
-
     if (time is None):
         time = Time.objects.create(
             user=request.user,
@@ -178,8 +169,6 @@ def get_test_details(request):
 
     time_diff = timedelta(hours=test_hour.time.hour, minutes=test_hour.time.minute,
                           seconds=test_hour.time.second) - time_diff2
-
-    print(time_diff.seconds)
 
     return JsonResponse({
         'questions': questions,
@@ -407,16 +396,13 @@ def detailed_result(request, userID, testID):
 
     user = User.objects.get(id=userID)
     user_answers = UserAnswers.objects.filter(user=user)
-    print(user_answers)
 
     user_answers_list : UserAnswers = []
 
     for user_answer in user_answers:
         if user_answer.question in questions:
             user_answers_list.append(user_answer)
-    
-    print(user_answers_list)
-    
+        
     question = []
 
     for que in questions:
@@ -436,8 +422,6 @@ def detailed_result(request, userID, testID):
             if user_answer.question.id == que["id"]:
                 que["selected_option"] = user_answer.user_option
                 break
-
-    print(question)
     
     return render(request, 'portal/test-settings/result-detailed.html', {
         'tests': test,
