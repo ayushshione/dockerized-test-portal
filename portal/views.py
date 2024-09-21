@@ -11,6 +11,8 @@ import pytz
 import pandas as pd
 from django.conf import settings
 from .forms import CreateTestForm, AddQuestionForm
+from django.db import transaction
+
 
 
 def err1_page(request):
@@ -486,65 +488,48 @@ def set_time(request):
         'message': 'Time was set successfully'
     })
 
-
 def upload_questions(request, testID):
-    if (request.method == 'POST'):
+    if request.method == 'POST':
         file = request.FILES['questions']
-        obj = ExcelFile.objects.create(
-            file=file
-        )
+        obj = ExcelFile.objects.create(file=file)
         path = file.file
         df = pd.read_excel(path)
         test = Test.objects.get(id=testID)
 
+        existing_questions = set(
+            Question.objects.filter(test=test).values_list(
+                'question', 'op1', 'op2', 'op3', 'op4', 'correct_op', 'questionIsCode', 'op1IsCode', 'op2IsCode', 'op3IsCode', 'op4IsCode'
+            )
+        )
+
+        new_questions = []
         for d in df.values:
-            question = d[0]
-            questionIsCode = d[1]
-            op1 = d[2]
-            op1IsCode = d[3]
-            op2 = d[4]
-            op2IsCode = d[5]
-            op3 = d[6]
-            op3IsCode = d[7]
-            op4 = d[8]
-            op4IsCode = d[9]
-            correct_op = d[10]
-
-            questionObj = Question.objects.filter(
-                test=test,
-                question=question,
-                op1=op1,
-                op2=op2,
-                op3=op3,
-                op4=op4,
-                correct_op=correct_op,
-                questionIsCode=questionIsCode,
-                op1IsCode=(op1IsCode),
-                op2IsCode=op2IsCode,
-                op3IsCode=op3IsCode,
-                op4IsCode=op4IsCode,
-            ).first()
-
-            if (questionObj is None):
-                Question.objects.create(
+            question_data = (
+                d[0], d[2], d[4], d[6], d[8], d[10], d[1], d[3], d[5], d[7], d[9]
+            )
+            if question_data not in existing_questions:
+                new_questions.append(Question(
                     test=test,
-                    question=question,
-                    op1=op1,
-                    op2=op2,
-                    op3=op3,
-                    op4=op4,
-                    correct_op=correct_op,
-                    questionIsCode=questionIsCode,
-                    op1IsCode=op1IsCode,
-                    op2IsCode=op2IsCode,
-                    op3IsCode=op3IsCode,
-                    op4IsCode=op4IsCode,
-                )
-                test.test_question_no += 1
+                    question=d[0],
+                    questionIsCode=d[1],
+                    op1=d[2],
+                    op1IsCode=d[3],
+                    op2=d[4],
+                    op2IsCode=d[5],
+                    op3=d[6],
+                    op3IsCode=d[7],
+                    op4=d[8],
+                    op4IsCode=d[9],
+                    correct_op=d[10]
+                ))
+
+        if new_questions:
+            with transaction.atomic():
+                Question.objects.bulk_create(new_questions)
+                test.test_question_no += len(new_questions)
                 test.save()
 
     return HttpResponseRedirect(reverse('edit-test', args=[testID]))
-
 
 def upload_users(request, testID):
     if (request.method == "POST"):
