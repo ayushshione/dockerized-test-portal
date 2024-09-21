@@ -10,6 +10,31 @@
 {% endblock styles %}
 
 {% block content %}
+<div class="spinner-wrapper" style='display: none'>
+  <div class="spinner-border text-primary" role='status'>
+    <span class="visually-hidden" style='color:white; font-size:18px'>Saving your response...</span>
+  </div>
+</div>
+<style>
+  .spinner-wrapper {
+    background-color: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    z-index:9999;
+    display: flex;
+    justify-content: center;
+  }
+
+  .spinner-border {
+    height: 60px;
+    width: 60px;
+    margin-top: 30vh;
+  }
+
+</style>
   <nav>
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
     <div class="nav-div">
@@ -51,8 +76,8 @@
             // Update the timer every second
             const timerInterval = setInterval(updateTimer, 1000);
         
-        </script>
-      </div>
+          </script>
+        </div>
       </div>
     </div>
   </nav>
@@ -106,10 +131,10 @@
       <script src='{% static "portal/test.js" %}'></script>
 
       <div class="navigation-button">
-        <button name="saveandnext" id="save" class="saveandnext" onclick="handleSave()">Save</button>
         <button name="saveandnext" id="saveandnext" class="saveandnext" onclick="handleSaveAndNext()">Save and Next</button>
         <button name="saveandnext" id="next" class="saveandnext" onclick="handleNext()">Next</button>
-        <button name="goback" id="goback" class="saveandnext" onclick="handleBack()">Go Back</button>
+        <button name="goback" id="goback" class="saveandnext" onclick="handleBack()">Back</button>
+        <button name="saveandnext" id="save" class="saveandnext" onclick="handleClear()">Clear</button>
       </div>
       
     </div>

@@ -10,10 +10,8 @@ celery_app = Celery('core')
 
 celery_app.config_from_object('django.conf:settings', namespace='CELERY')
 
-# Discover and register tasks in your apps
 celery_app.autodiscover_tasks()
 
-# Add a periodic task to print "Hello" every 10 seconds
 celery_app.conf.beat_schedule = {
     'print-hello': {
         'task': 'portal.tasks.print_hello',
