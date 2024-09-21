@@ -73,16 +73,7 @@ def test_page(request):
     else:
         questions = request.session['questions']
 
-    # nums = []
-
-    # for i in range(1, len(question)+1):
-    #     nums.append({
-    #         'question_id': questions[i-1]["id"],
-    #         'i': i,
-    #     })
-
     time = Time.objects.filter(user=user, test=test).first()
-
     if (time is None):
         time = Time.objects.create(
             user=request.user,
@@ -179,8 +170,6 @@ def get_test_details(request):
     time_diff = timedelta(hours=test_hour.time.hour, minutes=test_hour.time.minute,
                           seconds=test_hour.time.second) - time_diff2
 
-    print(time_diff.seconds)
-
     return JsonResponse({
         'questions': questions,
         'saved_answers': json_string,
@@ -224,23 +213,25 @@ def admin_panel(request):
         "test_number": no_tests,
     })
 
+
 def test_activate(request, testID):
     if (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('login'))
 
     if (not request.user.is_superuser):
         return HttpResponseForbidden('You are not allowed to access this resource!')
-    
+
     test = Test.objects.get(id=testID)
 
-    if(test.activated):
+    if (test.activated):
         test.activated = False
     else:
         test.activated = True
-    
+
     test.save()
 
     return HttpResponseRedirect(reverse('basic-settings', args=[testID]))
+
 
 def time_settings(request, testID):
     if (not request.user.is_authenticated):
@@ -254,6 +245,60 @@ def time_settings(request, testID):
     return render(request, 'portal/test-settings/time-settings.html', {
         'test': test
     })
+
+
+def test_activate(request, testID):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+
+    test = Test.objects.get(id=testID)
+
+    if (test.activated):
+        test.activated = False
+    else:
+        test.activated = True
+
+    test.save()
+
+    return HttpResponseRedirect(reverse('basic-settings', args=[testID]))
+
+
+def time_settings(request, testID):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+
+    test = Test.objects.filter(id=testID).first()
+
+    return render(request, 'portal/test-settings/time-settings.html', {
+        'test': test
+    })
+
+
+def signup_user(request):
+    if request.user.is_authenticated:
+        if (request.user.is_superuser):
+            return HttpResponseRedirect(reverse('admin'))
+        return HttpResponseRedirect(reverse('user'))
+
+    if (request.method == 'POST'):
+        username = request.POST["email"]
+        password = request.POST["password"]
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            user = User.objects.create_superuser(
+                username=username, password=password)
+            return HttpResponseRedirect(reverse('admin'))
+        else:
+            return render(request, 'portal/login.html', {
+                'error': True
+            })
 
 
 def login_user(request):
@@ -358,16 +403,13 @@ def detailed_result(request, userID, testID):
 
     user = User.objects.get(id=userID)
     user_answers = UserAnswers.objects.filter(user=user)
-    print(user_answers)
 
-    user_answers_list : UserAnswers = []
+    user_answers_list: UserAnswers = []
 
     for user_answer in user_answers:
         if user_answer.question in questions:
             user_answers_list.append(user_answer)
-    
-    print(user_answers_list)
-    
+
     question = []
 
     for que in questions:
@@ -388,15 +430,12 @@ def detailed_result(request, userID, testID):
                 que["selected_option"] = user_answer.user_option
                 break
 
-    print(question)
-    
     return render(request, 'portal/test-settings/result-detailed.html', {
         'tests': test,
         'questions': question,
         'questions_len': len(questions),
         'user': user,
     })
-    
 
 
 def add_question(request, testID):

@@ -1,10 +1,8 @@
 .vscode
 data
 .venv
-*.pyc
-*.pyo
-node_modules
-*.xlsx
+.pyc
+.pyo
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
