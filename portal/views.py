@@ -255,6 +255,37 @@ def time_settings(request, testID):
         'test': test
     })
 
+def test_activate(request, testID):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+    
+    test = Test.objects.get(id=testID)
+
+    if(test.activated):
+        test.activated = False
+    else:
+        test.activated = True
+    
+    test.save()
+
+    return HttpResponseRedirect(reverse('basic-settings', args=[testID]))
+
+def time_settings(request, testID):
+    if (not request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('login'))
+
+    if (not request.user.is_superuser):
+        return HttpResponseForbidden('You are not allowed to access this resource!')
+
+    test = Test.objects.filter(id=testID).first()
+
+    return render(request, 'portal/test-settings/time-settings.html', {
+        'test': test
+    })
+
 def signup_user(request):
     if request.user.is_authenticated:
         if (request.user.is_superuser):
