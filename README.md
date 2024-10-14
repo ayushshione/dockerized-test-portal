@@ -1,5 +1,3 @@
-## This repository houses the original and comprehensive implementation of Test Portal. As the sole contributor, I have personally developed and maintained all aspects of this project. While this work has garnered significant attention and has been replicated across multiple forks and copies, this remains the authoritative source for the project's development and updates.
-
 TestPortal is a web-based application developed for online assessments and quizzes in a college environment. It includes features like user authentication, customizable test creation, test-taking, grading, and analytics.
 
 Key Technologies used :-
